@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service.impl;
 
+import org.apache.shiro.authc.AccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import webiste.lhc.heron.util.Assert;
 import webiste.lhc.heron.util.PasswordUtil;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -32,7 +34,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = new UserInfo();
         userInfo.setAccount(account);
         userInfo.setIsDelete(false);
-        return userInfoMapper.selectOne(userInfo);
+        List<UserInfo> userInfoList = userInfoMapper.select(userInfo);
+        if (userInfoList.size() >1){
+            throw new AccountException();
+        }
+        return userInfoList.get(0);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -12,7 +12,6 @@ import webiste.lhc.heron.vo.MenuVo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: heron
@@ -48,18 +47,11 @@ public class MenuController {
 
     @ResponseBody
     @GetMapping(value = "getMenuForTree")
-    public Resp getParentMenu() {
+    public List<MenuForTree> getParentMenu() {
         List<Menu> list = menuService.listParentMen();
-        List<MenuForTree> ztreeVo = new ArrayList<>(list.size());
-        list.forEach(item -> {
-            MenuForTree tree = new MenuForTree();
-            tree.setId(item.getId());
-            tree.setpId(item.getParentId());
-            tree.setName(item.getMenuName());
-            ztreeVo.add(tree);
-        });
-        ztreeVo.add(new MenuForTree(0L, -1L, "根节点"));
-        return Resp.ok(ztreeVo);
+        List<MenuForTree> trees = new ArrayList<>(list.size());
+        list.forEach(item -> trees.add(new MenuForTree(item.getId(), item.getParentId(), item.getMenuName(), item.getUrl())));
+        return trees;
     }
 
     @ResponseBody

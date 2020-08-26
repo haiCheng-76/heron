@@ -14,15 +14,14 @@ public class MenuForTree implements Serializable {
     private static final long serialVersionUID = 1583233230504784331L;
     private Long id;
     private Long pId;
-    private String name;
+    private String text;
+    private String url;
 
-    public MenuForTree() {
-    }
-
-    public MenuForTree(Long id, Long pId, String name) {
+    public MenuForTree(Long id, Long pId, String text, String url) {
         this.id = id;
         this.pId = pId;
-        this.name = name;
+        this.text = text;
+        this.url = url;
     }
 
     public Long getId() {
@@ -41,11 +40,19 @@ public class MenuForTree implements Serializable {
         this.pId = pId;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -16,7 +16,6 @@ public class MenuVo implements Serializable {
     private Integer id;
     private String text;
     private String url;
-    private String targetType;
     private String icon;
 
     private List<MenuVo> children;
@@ -45,14 +44,6 @@ public class MenuVo implements Serializable {
         this.url = url;
     }
 
-    public String getTargetType() {
-        return targetType;
-    }
-
-    public void setTargetType(String targetType) {
-        this.targetType = targetType;
-    }
-
     public String getIcon() {
         return icon;
     }
@@ -67,5 +58,16 @@ public class MenuVo implements Serializable {
 
     public void setChildren(List<MenuVo> children) {
         this.children = children;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuVo{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", url='" + url + '\'' +
+                ", icon='" + icon + '\'' +
+                ", children=" + children +
+                '}';
     }
 }
