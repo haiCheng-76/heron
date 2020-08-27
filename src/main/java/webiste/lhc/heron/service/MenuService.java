@@ -15,9 +15,5 @@ import java.util.List;
  * @Date: 2020/8/16 下午 05:23
  */
 public interface MenuService {
-    List<Menu> listParentMen();
-
-    void insertMenu(MenuDto menuDto);
-
-    List<MenuVo> listMenus();
+    List<Menu> listMenu(String account);
 }

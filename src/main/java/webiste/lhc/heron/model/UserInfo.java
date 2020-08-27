@@ -14,6 +14,11 @@ public class UserInfo implements Serializable {
     private Long id;
 
     /**
+     * 名字
+     */
+    private String userName;
+
+    /**
      * 账号
      */
     private String account;
@@ -64,6 +69,11 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+    public UserInfo(String account) {
+        this.account = account;
+    }
+
     /**
      * 获取id
      *
@@ -80,6 +90,14 @@ public class UserInfo implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     /**
