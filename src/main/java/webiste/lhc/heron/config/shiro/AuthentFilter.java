@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import webiste.lhc.heron.mapper.UserInfoMapper;
 import webiste.lhc.heron.model.UserInfo;
+import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.UserSession;
 
 import javax.servlet.ServletRequest;
@@ -30,6 +31,8 @@ public class AuthentFilter extends FormAuthenticationFilter {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private MenuService menuService;
 
     private static final Logger log = LoggerFactory.getLogger(AuthentFilter.class);
 
@@ -47,9 +50,11 @@ public class AuthentFilter extends FormAuthenticationFilter {
         userSession.setAccount(userInfo.getAccount());
         userSession.setUserId(userInfo.getId());
         userSession.setAvatar(userInfo.getAvatar());
-        userSession.seteMail(userInfo.getEMail());
+        userSession.seteMail(userInfo.geteMail());
 
+//        menu
         httpSession.setAttribute("currentUser", userSession);
+        httpSession.setAttribute("menu", );
         return super.onLoginSuccess(token, subject, request, response);
     }
 

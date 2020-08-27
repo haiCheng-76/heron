@@ -1,6 +1,7 @@
 package webiste.lhc.heron.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.sun.tracing.ProbeName;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -34,7 +35,8 @@ public class ShiroConfig {
     }
 
 
-    @Bean(name = "webSecurityManager")
+
+    @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier(value = "userInfoRealm") UserInfoRealm userInfoRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(userInfoRealm);
@@ -42,19 +44,17 @@ public class ShiroConfig {
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier(value = "webSecurityManager") DefaultWebSecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier(value = "defaultWebSecurityManager") DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean filterFactoryBean = new ShiroFilterFactoryBean();
         filterFactoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = new LinkedHashMap<>(1);
-//        filterMap.put("authc", authentFilter());
+        filterMap.put("authc", authentFilter());
         filterFactoryBean.setFilters(filterMap);
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("/dist/**", "anon");
         map.put("/static/**", "anon");
-        map.put("/login", "anon");
+        map.put("/userLogin", "anon");
+        map.put("/login", "authc");
         map.put("/**", "authc");
-
-//        map.put("/**", "anon");
         filterFactoryBean.setFilterChainDefinitionMap(map);
         filterFactoryBean.setLoginUrl("/login");
         filterFactoryBean.setUnauthorizedUrl("/403");
@@ -88,16 +88,8 @@ public class ShiroConfig {
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
-
     @Bean
     public AuthentFilter authentFilter() {
         return new AuthentFilter();
-    }
-
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier(value = "webSecurityManager") DefaultWebSecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
     }
 }
