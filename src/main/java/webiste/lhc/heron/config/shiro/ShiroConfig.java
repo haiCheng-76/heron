@@ -51,13 +51,14 @@ public class ShiroConfig {
         filterMap.put("authc", authentFilter());
         filterFactoryBean.setFilters(filterMap);
         Map<String, String> map = new LinkedHashMap<>();
-//        map.put("/**", "anon");
         map.put("/static/**", "anon");
+        map.put("/userLogin", "anon");
+        map.put("/login", "authc");
         map.put("/**", "authc");
         filterFactoryBean.setFilterChainDefinitionMap(map);
         filterFactoryBean.setLoginUrl("/login");
         filterFactoryBean.setUnauthorizedUrl("/403");
-        filterFactoryBean.setSuccessUrl("/");
+        filterFactoryBean.setSuccessUrl("/index");
 
         return filterFactoryBean;
     }
@@ -91,13 +92,4 @@ public class ShiroConfig {
     public AuthentFilter authentFilter() {
         return new AuthentFilter();
     }
-
-//    @Bean
-//    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor() {
-//        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-//        authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager());
-//        return authorizationAttributeSourceAdvisor;
-//    }
-
-
 }

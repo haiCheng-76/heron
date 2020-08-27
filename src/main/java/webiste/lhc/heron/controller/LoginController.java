@@ -51,10 +51,9 @@ public class LoginController {
     public Map<String, Object> login(String account, String password, HttpSession session) {
         Map<String, Object> map = new HashMap<>(2);
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(account, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(account, password,true);
         try {
             subject.login(token);
-//            session.setAttribute();
             log.info("登录成功");
         } catch (AuthenticationException e) {
             map.put("code", 500);
@@ -70,6 +69,7 @@ public class LoginController {
         }
         map.put("messge", "success");
         map.put("code", 200);
+//        subject.logout();
         return map;
     }
 
@@ -80,7 +80,7 @@ public class LoginController {
         return "index_iframe";
     }
 
-    @GetMapping(value = {"/", "index"})
+    @GetMapping(value = {"index"})
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
 //        List<MenuVo> menuVoList = menuService.listMenus();
