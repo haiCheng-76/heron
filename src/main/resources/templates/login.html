@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -14,11 +14,12 @@
     <meta name="HandheldFriendly" content="True"/>
     <meta name="MobileOptimized" content="320"/>
     <meta name="robots" content="noindex,nofollow,noarchive"/>
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+<!--    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>-->
+<!--    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>-->
     <!-- CSS files -->
-    <link href="./dist/css/tabler.min.css" rel="stylesheet"/>
-    <link href="./dist/css/demo.min.css" rel="stylesheet"/>
+<!--    <link href="./dist/css/tabler.min.css" rel="stylesheet"/>-->
+    <link  th:href="@{/dist/css/tabler.min.css}" rel="stylesheet"/>
+    <link  th:href="@{/dist/css/demo.min.css}" rel="stylesheet"/>
     <style>
         body {
             display: none;
@@ -83,9 +84,9 @@
     </div>
 </div>
 <!-- Libs JS -->
-<script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js" th:src="@{/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
 <!-- Tabler Core -->
-<script src="./dist/js/tabler.min.js"></script>
+<script src="./dist/js/tabler.min.js" th:src="@{/dist/js/tabler.min.js}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     document.body.style.display = "block";
@@ -96,13 +97,12 @@
             url: "login",
             data: {
                 account: $(".account").val(),
-                password: $(".password").val(),
-                rememberMe: "true"
+                password: $(".password").val()
             },
             success: function (resp) {
                 console.log(resp);
                 if (resp.code == 200) {
-                    window.location.href = "/";
+                    window.location.href = "/index";
                 } else {
                     alert(resp.message)
                 }
