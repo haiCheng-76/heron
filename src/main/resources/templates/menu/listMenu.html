@@ -1,73 +1,191 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Empty page - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <meta name="msapplication-TileColor" content="#206bc4"/>
-    <meta name="theme-color" content="#206bc4"/>
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <meta name="mobile-web-app-capable" content="yes"/>
-    <meta name="HandheldFriendly" content="True"/>
-    <meta name="MobileOptimized" content="320"/>
-    <meta name="robots" content="noindex,nofollow,noarchive"/>
-<!--    <link rel="icon" href="./favicon.ico" type="image/x-icon" th:href="@{}"/>-->
-<!--    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>-->
-    <!-- CSS files -->
-    <link href="./dist/css/tabler.min.css" rel="stylesheet" th:href="@{/dist/css/tabler.min.css}"/>
-    <link href="./dist/css/demo.min.css" rel="stylesheet" th:href="@{/dist/css/demo.min.css}"/>
-    <style>
-        body {
-            display: none;
-        }
-    </style>
-</head>
-<body class="antialiased">
-<div class="page">
-    <div th:replace="header :: top"></div>
-    <div class="content">
-        <div class="container-xl">
-            <!-- Page title -->
-            <div class="page-header">
-                <div class="row align-items-center">
-                    <div class="col-auto">
-                        <h2 class="page-title">
-                            Empty page
-                        </h2>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <title th:text="${text}"></title>
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+        <meta name="msapplication-TileColor" content="#206bc4"/>
+        <meta name="theme-color" content="#206bc4"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <meta name="HandheldFriendly" content="True"/>
+        <meta name="MobileOptimized" content="320"/>
+        <meta name="robots" content="noindex,nofollow,noarchive"/>
+        <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+        <!-- CSS files -->
+        <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
+        <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+        <!--bootstrap table-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+        <style>
+            body {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="antialiased">
+        <div class="page">
+            <div th:replace="header :: top"></div>
+            <div class="content">
+                <div class="container-xl">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" th:text="${text}"></h3>
+                        </div>
+                        <div class="table-responsive">
+<!--                            <table id="menuTable" class="table card-table table-vcenter text-nowrap datatable"></table>-->
+                            <table id="table" class="table card-table table-vcenter text-nowrap datatable"></table>
+                        </div>
                     </div>
                 </div>
+                <div th:replace="footer :: footer"></div>
             </div>
-            <!-- Content here -->
         </div>
-        <footer class="footer footer-transparent">
-            <div class="container">
-                <div class="row text-center align-items-center flex-row-reverse">
-                    <div class="col-lg-auto ml-lg-auto">
-                        <ul class="list-inline list-inline-dots mb-0">
-                            <li class="list-inline-item"><a href="./docs/index.html" class="link-secondary">文档</a></li>
-                            <li class="list-inline-item"><a href="./faq.html" class="link-secondary">FAQ</a></li>
-                            <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary">源代码</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                        Copyright © 2020
-                        <a href="." class="link-secondary">Tabler</a>.
-                        All rights reserved.
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-</div>
-<!-- Libs JS -->
-<script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js" th:src="@{/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
-<!-- Tabler Core -->
-<script src="./dist/js/tabler.min.js" th:src="@{/dist/js/tabler.min.js}"></script>
-<script>
-    document.body.style.display = "block"
-</script>
-</body>
+        <!-- Libs JS -->
+        <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+        <!--bootstrap table-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+                integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+                crossorigin="anonymous"></script>
+
+        <!-- Tabler Core -->
+        <script src="/dist/js/tabler.min.js"></script>
+        <script>
+            document.body.style.display = "block";
+            var $table = $('#table');
+            var data = JSON.parse(
+                '[{"id":1,"pid":0,"status":1,"name":"用户管理","permissionValue":"open:user:manage"},' +
+                '{"id":2,"pid":0,"status":1,"name":"系统管理","permissionValue":"open:system:manage"},' +
+                '{"id":3,"pid":1,"status":1,"name":"新增用户","permissionValue":"open:user:add"},' +
+                '{"id":4,"pid":1,"status":1,"name":"修改用户","permissionValue":"open:user:edit"},' +
+                '{"id":5,"pid":1,"status":0,"name":"删除用户","permissionValue":"open:user:del"},' +
+                '{"id":6,"pid":2,"status":1,"name":"系统配置管理","permissionValue":"open:systemconfig:manage"},' +
+                '{"id":7,"pid":6,"status":1,"name":"新增配置","permissionValue":"open:systemconfig:add"},' +
+                '{"id":8,"pid":6,"status":1,"name":"修改配置","permissionValue":"open:systemconfig:edit"},' +
+                '{"id":9,"pid":6,"status":0,"name":"删除配置","permissionValue":"open:systemconfig:del"},' +
+                '{"id":10,"pid":2,"status":1,"name":"系统日志管理","permissionValue":"open:log:manage"},' +
+                '{"id":11,"pid":10,"status":1,"name":"新增日志","permissionValue":"open:log:add"},' +
+                '{"id":12,"pid":10,"status":1,"name":"修改日志","permissionValue":"open:log:edit"},' +
+                '{"id":13,"pid":10,"status":0,"name":"删除日志","permissionValue":"open:log:del"}]');
+            $(function() {
+
+                //控制台输出一下数据
+                console.log(data);
+                console.log(data);
+                console.log(JSON.stringify(data));
+
+                $table.bootstrapTable({
+                    data:data,
+                    idField: 'id',
+                    dataType:'jsonp',
+                    columns: [
+                        { field: 'check',  checkbox: true, formatter: function (value, row, index) {
+                                if (row.check == true) {
+                                    // console.log(row.serverName);
+                                    //设置选中
+                                    return {  checked: true };
+                                }
+                            }
+                        },
+                        { field: 'name',  title: '名称' },
+                        // {field: 'id', title: '编号', sortable: true, align: 'center'},
+                        // {field: 'pid', title: '所属上级'},
+                        { field: 'status',  title: '状态', sortable: true,  align: 'center', formatter: 'statusFormatter'  },
+                        { field: 'permissionValue', title: '权限值'  },
+                        { field: 'operate', title: '操作', align: 'center', events : operateEvents, formatter: 'operateFormatter' },
+                    ],
+
+                    // bootstrap-table-treegrid.js 插件配置 -- start
+
+                    //在哪一列展开树形
+                    treeShowField: 'name',
+                    //指定父id列
+                    parentIdField: 'pid',
+
+                    onResetView: function(data) {
+                        //console.log('load');
+                        $table.treegrid({
+                            initialState: 'collapsed',// 所有节点都折叠
+                            // initialState: 'expanded',// 所有节点都展开，默认展开
+                            treeColumn: 1,
+                            // expanderExpandedClass: 'glyphicon glyphicon-minus',  //图标样式
+                            // expanderCollapsedClass: 'glyphicon glyphicon-plus',
+                            onChange: function() {
+                                $table.bootstrapTable('resetWidth');
+                            }
+                        });
+
+                        //只展开树形的第一级节点
+                        $table.treegrid('getRootNodes').treegrid('expand');
+
+                    },
+                    onCheck:function(row){
+                        var datas = $table.bootstrapTable('getData');
+                        // 勾选子类
+                        selectChilds(datas,row,"id","pid",true);
+
+                        // 勾选父类
+                        selectParentChecked(datas,row,"id","pid")
+
+                        // 刷新数据
+                        $table.bootstrapTable('load', datas);
+                    },
+
+                    onUncheck:function(row){
+                        var datas = $table.bootstrapTable('getData');
+                        selectChilds(datas,row,"id","pid",false);
+                        $table.bootstrapTable('load', datas);
+                    },
+                    // bootstrap-table-treetreegrid.js 插件配置 -- end
+                });
+            });
+            // 格式化按钮
+            function operateFormatter(value, row, index) {
+                return [
+                    '<button type="button" class="RoleOfadd btn-small  btn-primary" style="margin-right:15px;"><i class="fa fa-plus" ></i> 新增</button>',
+                    '<button type="button" class="RoleOfedit btn-small   btn-primary" style="margin-right:15px;"><i class="fa fa-pencil-square-o" ></i> 修改</button>',
+                    '<button type="button" class="RoleOfdelete btn-small   btn-primary" style="margin-right:15px;"><i class="fa fa-trash-o" ></i> 删除</button>'
+                ].join('');
+
+            }
+            // 格式化类型
+            function typeFormatter(value, row, index) {
+                if (value === 'menu') {  return '菜单';  }
+                if (value === 'button') {  return '按钮'; }
+                if (value === 'api') {  return '接口'; }
+                return '-';
+            }
+            // 格式化状态
+            function statusFormatter(value, row, index) {
+                if (value === 1) {
+                    return '<span class="label label-success">正常</span>';
+                } else {
+                    return '<span class="label label-default">锁定</span>';
+                }
+            }
+
+            //初始化操作按钮的方法
+            window.operateEvents = {
+                'click .RoleOfadd': function (e, value, row, index) {
+                    add(row.id);
+                },
+                'click .RoleOfdelete': function (e, value, row, index) {
+                    del(row.id);
+                },
+                'click .RoleOfedit': function (e, value, row, index) {
+                    update(row.id);
+                }
+            };
+        </script>
+    </body>
 </html>

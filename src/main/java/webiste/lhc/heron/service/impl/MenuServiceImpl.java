@@ -3,6 +3,9 @@ package webiste.lhc.heron.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
+import webiste.lhc.heron.commo.RoleConstant;
+import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
@@ -22,11 +25,6 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
 
 
-    /**
-     * 超级管理员ID
-     */
-    private static final Long ADMIN_USER_ID = 1L;
-
     @Autowired
     private MenuMapper menuMapper;
 
@@ -40,11 +38,23 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Menu> getMenuByUserId(long userId) {
         // 所有菜单
-        if (ADMIN_USER_ID == userId) {
+        if (RoleConstant.ADMIN_USER_ID == userId) {
             return getAllMenus(null);
         }
         List<Long> menuIdList = menuMapper.listMenuIdByUserId(userId);
         return getAllMenus(menuIdList);
+    }
+
+    @Override
+    public List<Menu> listMenu() {
+        Example example = new Example(Menu.class);
+        Example.Criteria criteria = example.createCriteria();
+        List<String> typeList = new ArrayList<>(2);
+        typeList.add(MenuEnum.DIR.val());
+        typeList.add(MenuEnum.MENU.val());
+        criteria.andIn("type", typeList);
+        criteria.andEqualTo("isDelete", false);
+        return menuMapper.selectByExample(example);
     }
 
 
