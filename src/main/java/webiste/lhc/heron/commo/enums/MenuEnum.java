@@ -5,18 +5,22 @@ package webiste.lhc.heron.commo.enums;
  * @Package: webiste.lhc.heron.commo.enums
  * @ClassName: MenuEnum
  * @Author: lhc
- * @Description: TODO
+ * @Description: 菜单类型枚举
  * @Date: 2020/8/16 下午 05:41
  */
 public enum MenuEnum {
     /**
+     * 目录
+     */
+    DIR("D"),
+    /**
      * 菜单
      */
-    menu("M"),
+    MENU("M"),
     /**
      * 按钮
      */
-    button("B");
+    BUTTON("B");
 
     private final String type;
 
