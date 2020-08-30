@@ -1,9 +1,7 @@
 package webiste.lhc.heron.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-import webiste.lhc.heron.util.JsonUtil;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -45,14 +43,12 @@ public class Menu implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 修改时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "update_time")
     private Date updateTime;
 
@@ -83,9 +79,4 @@ public class Menu implements Serializable {
     private List<Menu> child;
 
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public String toString() {
-        return JsonUtil.toJsonString(this);
-    }
-            }
+}

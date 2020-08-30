@@ -1,10 +1,8 @@
 package webiste.lhc.heron.config.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.sun.tracing.ProbeName;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -35,7 +33,6 @@ public class ShiroConfig {
     }
 
 
-
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier(value = "userInfoRealm") UserInfoRealm userInfoRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
@@ -51,10 +48,11 @@ public class ShiroConfig {
         filterMap.put("authc", authentFilter());
         filterFactoryBean.setFilters(filterMap);
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("/static/**", "anon");
-        map.put("/userLogin", "anon");
-        map.put("/login", "authc");
-        map.put("/**", "authc");
+//        map.put("/static/**", "anon");
+//        map.put("/login", "authc");
+//        map.put("/**", "authc");
+
+        map.put("/**", "anon");
         filterFactoryBean.setFilterChainDefinitionMap(map);
         filterFactoryBean.setLoginUrl("/login");
         filterFactoryBean.setUnauthorizedUrl("/403");
@@ -88,6 +86,7 @@ public class ShiroConfig {
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
+
     @Bean
     public AuthentFilter authentFilter() {
         return new AuthentFilter();
