@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webiste.lhc.heron.mapper.UserInfoMapper">
-  <resultMap id="BaseResultMap" type="webiste.lhc.heron.model.UserInfo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="account" jdbcType="VARCHAR" property="account" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="salt" jdbcType="VARCHAR" property="salt" />
-    <result column="is_delete" jdbcType="BIT" property="isDelete" />
-    <result column="enable" jdbcType="BIT" property="enable" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="e_mail" jdbcType="VARCHAR" property="eMail" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="webiste.lhc.heron.model.UserInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="enable" jdbcType="BIT" property="enable"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="e_mail" jdbcType="VARCHAR" property="eMail"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+    </resultMap>
 </mapper>

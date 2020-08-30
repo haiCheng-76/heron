@@ -1,8 +1,6 @@
 package webiste.lhc.heron.service;
 
-import webiste.lhc.heron.dto.MenuDto;
 import webiste.lhc.heron.model.Menu;
-import webiste.lhc.heron.vo.MenuVo;
 
 import java.util.List;
 
@@ -15,5 +13,7 @@ import java.util.List;
  * @Date: 2020/8/16 下午 05:23
  */
 public interface MenuService {
-    List<Menu> listMenu(String account);
+
+    List<Menu> getMenuByUserId(long userId);
+
 }
