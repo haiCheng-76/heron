@@ -57,6 +57,16 @@ public class MenuServiceImpl implements MenuService {
         return menuMapper.selectByExample(example);
     }
 
+    @Override
+    public List<Menu> listMenuBYType(long pid, String type) {
+        Example example = new Example(Menu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("parentId", pid);
+        criteria.andEqualTo("type", type);
+        criteria.andEqualTo("isDelete", false);
+        return menuMapper.selectByExample(example);
+    }
+
 
     /**
      * 若menuIdList为空表示超级管理员，否则表示特定用户
