@@ -13,7 +13,6 @@ import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.JsonUtil;
-import webiste.lhc.heron.util.Resp;
 
 import java.util.List;
 
@@ -33,14 +32,14 @@ public class MenuController extends AbstractController {
     @Autowired
     private MenuService menuService;
 
-    @GetMapping(value = "menuPage")
-    public ModelAndView menuPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
-        log.info("menuName:{}", name);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("menu/listMenu");
-        modelAndView.addObject("text", name);
-        return modelAndView;
-    }
+//    @GetMapping(value = "menuPage")
+//    public ModelAndView menuPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+//        log.info("menuName:{}", name);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("menu/listMenu");
+//        modelAndView.addObject("text", name);
+//        return modelAndView;
+//    }
 
     @ResponseBody
     @GetMapping(value = "listMenus")
@@ -63,4 +62,29 @@ public class MenuController extends AbstractController {
         });
         return list;
     }
+
+    @GetMapping(value = "menuPage")
+    public ModelAndView listDir(@RequestParam(value = "parentId",required = false, defaultValue = "0") long pid,
+                                @RequestParam(value = "type", required = false, defaultValue = "D") String type,
+                                @RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("menu/listMenu");
+        modelAndView.addObject("text", name);
+        modelAndView.addObject("menus", menuService.listMenuBYType(pid, type));
+        return modelAndView;
+    }
+
+
+
+    @GetMapping(value = "childMenu")
+    public ModelAndView childMenu(@RequestParam(value = "parentId") long pid,
+                                @RequestParam(value = "type") String type) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("menu/menuInfo");
+        modelAndView.addObject("menus", menuService.listMenuBYType(pid, type));
+        return modelAndView;
+    }
+
+
+
 }
