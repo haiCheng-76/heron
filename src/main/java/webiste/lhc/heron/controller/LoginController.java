@@ -1,5 +1,6 @@
 package webiste.lhc.heron.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
@@ -7,15 +8,18 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import webiste.lhc.heron.service.MenuService;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 /**
  * @ProjectName: heron
  * @Package: webiste.lhc.heron.controller
@@ -27,7 +31,9 @@ import java.util.Map;
 @Controller
 public class LoginController extends AbstractController {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+
+    @Autowired
+    private MenuService menuService;
 
     @GetMapping(value = "login")
     public String login() {
@@ -64,6 +70,7 @@ public class LoginController extends AbstractController {
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
+        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
         return modelAndView;
     }
 
