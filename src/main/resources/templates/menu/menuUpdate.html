@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -16,8 +16,10 @@
         <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
         <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
         <!-- CSS files -->
+        <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
         <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
         <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+        <link href="/dist/css/metroStyle/metroStyle.css" rel="stylesheet"/>
         <style>
             body {
                 display: none;
@@ -34,30 +36,31 @@
                                 <form action="https://httpbin.org/post" method="post">
                                     <div class="mb-3">
                                         <label class="form-label">子菜单</label>
-                                        <input type="text" class="form-control" name="example-text-input"
-                                               placeholder="Input placeholder">
+                                        <ul id="treeDemo" class="ztree"></ul>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">名称</label>
                                         <input type="text" class="form-control" name="example-text-input"
-                                               placeholder="Input placeholder">
+                                               th:value="${menu.menuName}">
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">状态</label>
-                                        <input type="text" class="form-control" name="example-text-input"
-                                               placeholder="Input placeholder">
+                                        <div class="form-label">状态</div>
+                                        <select class="form-select">
+                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>
+                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">类型</label>
+                                        <div class="form-label">类型</div>
+                                        <select class="form-select">
+                                            <option value="M" th:selected="${menu.type eq 'M'}">菜单</option>
+                                            <option value="D" th:selected="${menu.type eq 'D'}">目录</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">排序</label>
                                         <input type="text" class="form-control" name="example-disabled-input"
-                                               placeholder="Readonly..."
-                                               value="Well, how'd you become king, then?" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">创建时间</label>
-                                        <input type="text" class="form-control" name="example-disabled-input"
-                                               placeholder="Readonly..."
-                                               value="Well, how'd you become king, then?" readonly>
+                                               th:value="${menu.sort}">
                                     </div>
                                 </form>
                             </div>
@@ -67,11 +70,64 @@
             </div>
         </div>
         <!-- Libs JS -->
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
         <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/js/jquery.ztree.all.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
         <script>
-            document.body.style.display = "block"
+            var pid = '[[${pid}]]';
+            var url = "/menu/zTreeData?parentId=" + pid + "&type=M";
+            document.body.style.display = "block";
+            var setting = {
+                edit: {
+                    enable: true,
+                    showRenameBtn: false,
+                    removeTitle: '删除菜单'
+                },
+                async: {
+                    enable: true,
+                    url: url,
+                    autoParam: ["id"],
+                    type: "get",
+                },
+                callback: {
+                    beforeRemove: delChildMenu
+                }
+            };
+
+            function delChildMenu(treeId, treeNode) {
+                console.log(treeNode);
+                return delMenu(treeNode.id)
+            }
+
+
+            $(document).ready(function () {
+                var tree = $.fn.zTree.init($("#treeDemo"), setting);
+                // var nodes = tree.getNodes();
+                // if (nodes.length == 0) {
+                //     var newNode = {id:pid, pid:0, name:'root'};
+                //     // var newNode = {name: "无子元素"};
+                //     newNode = tree.addNodes(null, newNode);
+                // }
+            });
+
+            function delMenu(id) {
+                var url = "/menu/delMenu?id=" + id;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code == 0) {
+                            layer.msg(res.message);
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
         </script>
     </body>
 </html>
