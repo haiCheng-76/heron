@@ -73,8 +73,8 @@
                                             <span th:text="${#dates.format(menu.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
                                         </td>
                                         <td th:switch="${menu.isDelete}">
-                                            <span th:case="true">有效</span>
-                                            <span th:case="false">失效</span>
+                                            <span th:case="false">有效</span>
+                                            <span th:case="true">失效</span>
                                         </td>
                                         <td>
                                             <span th:case="D">目录</span>
@@ -109,23 +109,20 @@
         <script src="/dist/js/tabler.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+        <script src="/dist/js/base.js"></script>
         <script>
             document.body.style.display = "block";
 
             function show(id) {
-                layuiIframe(id, "查看","/menu/childMenu?parentId="+id+"&type=M");
+                layuiIframe(id, "查看", "/menu/menuInfo?parentId=" + id + "&type=M");
             }
 
             function edit(id) {
-                layuiIframe(id, "编辑","/menu/childMenu?parentId="+id+"&type=M");
+                layuiIframe(id, "编辑", "/menu/menuUpdate?parentId=" + id + "&type=M");
             }
 
             function del(id) {
-                layuiIframe(id, "删除","/menu/childMenu?parentId="+id+"&type=M");
-            }
-
-            function layuiIframe(id, title,url) {
-                layer.open({type: 2,title: title,closeBtn: 1,shade: [0],area: ['1000px', '600px'],offset: 'auto',content: [url, 'yes']});
+                layer.msg("删除:"+id);
             }
         </script>
     </body>
