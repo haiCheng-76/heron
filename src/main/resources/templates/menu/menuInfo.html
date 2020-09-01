@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -41,26 +41,41 @@
                                     <div class="mb-3">
                                         <label class="form-label">名称</label>
                                         <input type="text" class="form-control" name="example-text-input"
-                                               placeholder="Input placeholder" readonly>
+                                               th:value="${menu.menuName}" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">状态</label>
                                         <input type="text" class="form-control" name="example-text-input"
-                                               placeholder="Input placeholder" readonly>
+                                               th:value="${menu.isDelete} ? 失效: 有效" readonly>
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="mb-3" th:switch="${menu.type}">
                                         <label class="form-label">类型</label>
-                                        <input type="datetime-local" class="form-control" name="example-disabled-input"
-                                               placeholder="Readonly..."
-                                               value="Well, how'd you become king, then?" readonly>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:case="D"
+                                               value="目录" readonly>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:case="M"
+                                               value="菜单" readonly>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:case="B"
+                                               value="按钮" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">排序</label>
-                                        <input type="number" class="form-control" name="example-disabled-input" readonly>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:value="${menu.sort}" readonly>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">创建时间</label>
-                                        <input type="datetime-local" class="form-control" name="example-disabled-input" readonly>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:value="${#dates.format(menu.createTime,'yyyy-MM-dd HH:mm:ss')}"
+                                               readonly>
+                                    </div>
+                                    <div class="mb-3" th:if="${menu.updateTime != null}">
+                                        <label class="form-label">修改时间</label>
+                                        <input type="text" class="form-control" name="example-disabled-input"
+                                               th:value="${#dates.format(menu.updateTime,'yyyy-MM-dd HH:mm:ss')}"
+                                               readonly>
                                     </div>
                                 </form>
                             </div>
@@ -76,50 +91,28 @@
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
         <script>
+            var pid = '[[${pid}]]';
+            var currentMenu = '[[${menu.menuName}]]';
+            var url = "/menu/zTreeData?parentId=" + pid + "&type=M";
             document.body.style.display = "block";
             var setting = {
-                data: {
-                    simpleData: {
-                        enable: true
-                    }
+                async: {
+                    enable: true,
+                    url: url,
+                    autoParam: ["id"],
+                    type: "get",
                 }
             };
-
-            var zNodes =[
-                { id:1, pId:0, name:"pNode 1", open:true},
-                { id:11, pId:1, name:"pNode 11"},
-                { id:111, pId:11, name:"leaf node 111"},
-                { id:112, pId:11, name:"leaf node 112"},
-                { id:113, pId:11, name:"leaf node 113"},
-                { id:114, pId:11, name:"leaf node 114"},
-                { id:12, pId:1, name:"pNode 12"},
-                { id:121, pId:12, name:"leaf node 121"},
-                { id:122, pId:12, name:"leaf node 122"},
-                { id:123, pId:12, name:"leaf node 123"},
-                { id:124, pId:12, name:"leaf node 124"},
-                { id:13, pId:1, name:"pNode 13 - no child", isParent:true},
-                { id:2, pId:0, name:"pNode 2"},
-                { id:21, pId:2, name:"pNode 21", open:true},
-                { id:211, pId:21, name:"leaf node 211"},
-                { id:212, pId:21, name:"leaf node 212"},
-                { id:213, pId:21, name:"leaf node 213"},
-                { id:214, pId:21, name:"leaf node 214"},
-                { id:22, pId:2, name:"pNode 22"},
-                { id:221, pId:22, name:"leaf node 221"},
-                { id:222, pId:22, name:"leaf node 222"},
-                { id:223, pId:22, name:"leaf node 223"},
-                { id:224, pId:22, name:"leaf node 224"},
-                { id:23, pId:2, name:"pNode 23"},
-                { id:231, pId:23, name:"leaf node 231"},
-                { id:232, pId:23, name:"leaf node 232"},
-                { id:233, pId:23, name:"leaf node 233"},
-                { id:234, pId:23, name:"leaf node 234"},
-                { id:3, pId:0, name:"pNode 3 - no child", isParent:true}
-            ];
-
-            $(document).ready(function(){
-                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            $(document).ready(function () {
+                var tree = $.fn.zTree.init($("#treeDemo"), setting);
+                var nodes = tree.getNodes();
+                console.log(nodes)
+                // if (nodes.length == 0) {
+                    var newNode = {pid: 0, name: currentMenu};
+                    tree.addNodes(null, newNode);
+                // }
             });
+
         </script>
     </body>
 </html>

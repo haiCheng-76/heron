@@ -13,7 +13,10 @@ import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.JsonUtil;
+import webiste.lhc.heron.util.Resp;
+import webiste.lhc.heron.vo.ZtreeVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,14 +35,6 @@ public class MenuController extends AbstractController {
     @Autowired
     private MenuService menuService;
 
-//    @GetMapping(value = "menuPage")
-//    public ModelAndView menuPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
-//        log.info("menuName:{}", name);
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("menu/listMenu");
-//        modelAndView.addObject("text", name);
-//        return modelAndView;
-//    }
 
     @ResponseBody
     @GetMapping(value = "listMenus")
@@ -47,7 +42,6 @@ public class MenuController extends AbstractController {
         List<Menu> menuList = menuService.getMenuByUserId(RoleConstant.ADMIN_USER_ID);
         log.info("data:[{}]", JsonUtil.toJsonString(menuList));
         return menuList;
-//        return Resp.ok(menuList);
     }
 
 
@@ -64,7 +58,7 @@ public class MenuController extends AbstractController {
     }
 
     @GetMapping(value = "menuPage")
-    public ModelAndView listDir(@RequestParam(value = "parentId",required = false, defaultValue = "0") long pid,
+    public ModelAndView listDir(@RequestParam(value = "parentId", required = false, defaultValue = "0") long pid,
                                 @RequestParam(value = "type", required = false, defaultValue = "D") String type,
                                 @RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
         ModelAndView modelAndView = new ModelAndView();
@@ -75,23 +69,53 @@ public class MenuController extends AbstractController {
     }
 
 
-
     @GetMapping(value = "menuInfo")
     public ModelAndView menuInfo(@RequestParam(value = "parentId") long pid,
-                                @RequestParam(value = "type") String type) {
+                                 @RequestParam(value = "type") String type) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("menu/menuInfo");
-        modelAndView.addObject("menus", menuService.listMenuBYType(pid, type));
+        modelAndView.addObject("menu", menuService.getMenuById(pid));
+        modelAndView.addObject("pid", pid);
         return modelAndView;
     }
 
     @GetMapping(value = "menuUpdate")
     public ModelAndView menuUpdate(@RequestParam(value = "parentId") long pid,
-                                  @RequestParam(value = "type") String type) {
+                                   @RequestParam(value = "type") String type) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("menu/menuUpdate");
-        modelAndView.addObject("menus", menuService.listMenuBYType(pid, type));
+        modelAndView.addObject("menu", menuService.getMenuById(pid));
+        modelAndView.addObject("pid", pid);
         return modelAndView;
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = "zTreeData")
+    public List<ZtreeVo> zTreeData(@RequestParam(value = "parentId") long pid,
+                                   @RequestParam(value = "type") String type) {
+        List<Menu> menus = menuService.listMenuBYType(pid, type);
+        List<ZtreeVo> list = new ArrayList<>(menus.size());
+        for (Menu menu : menus) {
+            ZtreeVo vo = new ZtreeVo();
+            vo.setId(menu.getId());
+            vo.setPid(menu.getParentId());
+            vo.setName(menu.getMenuName());
+            list.add(vo);
+        }
+        return list;
+    }
+
+    /**
+     * 通过ID删除菜单
+     * @param menuId
+     * @return
+     */
+    @ResponseBody
+    @GetMapping(value = "delMenu")
+    public Resp delMenu(@RequestParam(value = "id") long menuId) {
+        menuService.delMenuById(menuId);
+        return Resp.ok();
     }
 
 
