@@ -60,7 +60,7 @@ public class AuthentFilter extends FormAuthenticationFilter {
         httpSession.setAttribute("currentUser", userSession);
         List<Menu> menus = menuService.getMenuByUserId(userInfo.getId());
         log.info("save userInfo and menus to session;userInfo:[{}]; menus:[{}]", JsonUtil.toJsonString(userInfo), JsonUtil.toJsonString(menus));
-        httpSession.setAttribute("menu", menus);
+//        httpSession.setAttribute("menu", menus);
         return super.onLoginSuccess(token, subject, request, response);
     }
 

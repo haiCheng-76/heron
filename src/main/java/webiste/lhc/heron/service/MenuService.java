@@ -16,7 +16,7 @@ public interface MenuService {
 
     List<Menu> getMenuByUserId(long userId);
     List<Menu> listMenu();
-    List<Menu> listMenuBYType(long pid, String type);
+    List<Menu> listMenuBYType(long pid);
 
 
     Menu getMenuById(long id);
