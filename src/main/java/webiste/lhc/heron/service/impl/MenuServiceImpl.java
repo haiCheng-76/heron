@@ -13,6 +13,7 @@ import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,11 +62,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> listMenuBYType(long pid, String type) {
+    public List<Menu> listMenuBYType(long pid) {
         Example example = new Example(Menu.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("parentId", pid);
-        criteria.andEqualTo("type", type);
+        List<String> list = new ArrayList<>(2);
+        list.add(MenuEnum.DIR.val());
+        list.add(MenuEnum.MENU.val());
+        criteria.andIn("type", list);
         criteria.andEqualTo("isDelete", false);
         return menuMapper.selectByExample(example);
     }
@@ -81,8 +85,14 @@ public class MenuServiceImpl implements MenuService {
         menu.setParentId(id);
         menu.setIsDelete(false);
         int menuCount = menuMapper.selectCount(menu);
+        log.info("id:{}; menuCount:{}", id, menuCount);
         Assert.stat(menuCount > 0, "请先删除子菜单");
-        log.info("menuCount:{}", menuCount);
+        Menu menu1 = new Menu();
+        menu1.setId(id);
+        menu1.setIsDelete(true);
+        menu1.setUpdateTime(new Date());
+        menuMapper.updateByPrimaryKeySelective(menu1);
+
     }
 
 

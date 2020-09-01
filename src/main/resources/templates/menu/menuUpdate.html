@@ -70,7 +70,7 @@
             </div>
         </div>
         <!-- Libs JS -->
-        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.7/jquery.min.js"></script>
         <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/js/jquery.ztree.all.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
@@ -98,35 +98,33 @@
             };
 
             function delChildMenu(treeId, treeNode) {
-                console.log(treeNode);
-                return delMenu(treeNode.id)
+                var fail = delMenu(treeNode.id);
+                if (fail){
+                    layer.msg("请先删除子菜单");
+                    return false;
+                }
             }
 
 
             $(document).ready(function () {
                 var tree = $.fn.zTree.init($("#treeDemo"), setting);
-                // var nodes = tree.getNodes();
-                // if (nodes.length == 0) {
-                //     var newNode = {id:pid, pid:0, name:'root'};
-                //     // var newNode = {name: "无子元素"};
-                //     newNode = tree.addNodes(null, newNode);
-                // }
             });
 
             function delMenu(id) {
+                var fail = null;
                 var url = "/menu/delMenu?id=" + id;
                 $.ajax({
                     type: 'GET',
                     url: url,
                     dataType: 'json',
+                    async: false,
                     success: function (res) {
-                        if (res.code == 0) {
-                            layer.msg(res.message);
-                            return false;
-                        }
-                        return true;
+                        // console.log(res);
+                        // console.log(res.code == 0);
+                        fail = (res.code == 0);
                     }
                 });
+                return fail;
             }
         </script>
     </body>
