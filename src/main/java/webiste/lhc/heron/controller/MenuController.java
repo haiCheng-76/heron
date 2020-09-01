@@ -76,8 +76,8 @@ public class MenuController extends AbstractController {
 
 
 
-    @GetMapping(value = "childMenu")
-    public ModelAndView childMenu(@RequestParam(value = "parentId") long pid,
+    @GetMapping(value = "menuInfo")
+    public ModelAndView menuInfo(@RequestParam(value = "parentId") long pid,
                                 @RequestParam(value = "type") String type) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("menu/menuInfo");
@@ -85,6 +85,14 @@ public class MenuController extends AbstractController {
         return modelAndView;
     }
 
+    @GetMapping(value = "menuUpdate")
+    public ModelAndView menuUpdate(@RequestParam(value = "parentId") long pid,
+                                  @RequestParam(value = "type") String type) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("menu/menuUpdate");
+        modelAndView.addObject("menus", menuService.listMenuBYType(pid, type));
+        return modelAndView;
+    }
 
 
 }
