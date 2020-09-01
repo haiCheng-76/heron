@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -9,6 +10,7 @@ import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
+import webiste.lhc.heron.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
  * @Description: TODO
  * @Date: 2020/8/16 下午 05:24
  */
+@Slf4j
 @Service
 public class MenuServiceImpl implements MenuService {
 
@@ -65,6 +68,21 @@ public class MenuServiceImpl implements MenuService {
         criteria.andEqualTo("type", type);
         criteria.andEqualTo("isDelete", false);
         return menuMapper.selectByExample(example);
+    }
+
+    @Override
+    public Menu getMenuById(long id) {
+        return menuMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void delMenuById(long id) {
+        Menu menu = new Menu();
+        menu.setParentId(id);
+        menu.setIsDelete(false);
+        int menuCount = menuMapper.selectCount(menu);
+        Assert.stat(menuCount > 0, "请先删除子菜单");
+        log.info("menuCount:{}", menuCount);
     }
 
 
