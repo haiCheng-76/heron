@@ -1,44 +1,16 @@
 server:
-  port: 8087
+  port: 8080
 spring:
   datasource:
     username: lhc
-    password: 123456
+    password: 1111
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/heron?characterEncoding=utf-8&useSSL=false
   thymeleaf:
     cache: false
     suffix: .html
     encoding: utf-8
-  jackson:
-    time-zone: GMT+8
-    locale: zh_CN
-    date-format: yyyy-MM-dd HH:mm:ss
-  quartz:
-    #相关属性配置
-    properties:
-      org:
-        quartz:
-          scheduler:
-            instanceName: clusteredScheduler
-            instanceId: AUTO
-          jobStore:
-            class: org.quartz.impl.jdbcjobstore.JobStoreTX
-            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-            tablePrefix: QRTZ_
-            isClustered: true
-            clusterCheckinInterval: 10000
-            useProperties: false
-          threadPool:
-            class: org.quartz.simpl.SimpleThreadPool
-            threadCount: 10
-            threadPriority: 5
-            threadsInheritContextClassLoaderOfInitializingThread: true
-    #数据库方式
-    job-store-type: jdbc
-      #初始化表结构
-    jdbc:
-      initialize-schema: always
+mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: webiste.lhc.heron.model
 logging:
@@ -47,4 +19,3 @@ logging:
       lhc:
         heron:
           mapper: debug
-
