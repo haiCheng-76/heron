@@ -35,7 +35,7 @@
                             <div class="row" style="padding: 20px">
                                 <form action="https://httpbin.org/post" method="post">
                                     <div class="mb-3">
-                                        <label class="form-label">子菜单</label>
+                                        <label class="form-label">结构</label>
                                         <ul id="treeDemo" class="ztree"></ul>
                                     </div>
                                     <div class="mb-3">
@@ -62,6 +62,9 @@
                                         <input type="text" class="form-control" name="example-disabled-input"
                                                th:value="${menu.sort}">
                                     </div>
+                                    <div class="form-footer">
+                                        <button type="button" class="btn btn-primary formCommit">提交</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -74,11 +77,11 @@
         <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/js/jquery.ztree.all.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+        <script src="/dist/js/menu.js"></script>
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
         <script>
             var pid = '[[${pid}]]';
-            var url = "/menu/zTreeData?parentId=" + pid + "&type=M";
             document.body.style.display = "block";
             var setting = {
                 edit: {
@@ -86,11 +89,10 @@
                     showRenameBtn: false,
                     removeTitle: '删除菜单'
                 },
-                async: {
-                    enable: true,
-                    url: url,
-                    autoParam: ["id"],
-                    type: "get",
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
                 },
                 callback: {
                     beforeRemove: delChildMenu
@@ -99,33 +101,60 @@
 
             function delChildMenu(treeId, treeNode) {
                 var fail = delMenu(treeNode.id);
-                if (fail){
+                if (fail) {
                     layer.msg("请先删除子菜单");
                     return false;
                 }
-            }
-
+            };
 
             $(document).ready(function () {
-                var tree = $.fn.zTree.init($("#treeDemo"), setting);
-            });
-
-            function delMenu(id) {
-                var fail = null;
-                var url = "/menu/delMenu?id=" + id;
+                var treeData = null;
                 $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'json',
+                    type: "GET",
+                    url: '/menu/getTreeData?id=' + pid,
                     async: false,
+                    dataType: 'json',
                     success: function (res) {
-                        // console.log(res);
-                        // console.log(res.code == 0);
-                        fail = (res.code == 0);
+                        treeData = res;
                     }
                 });
-                return fail;
-            }
+                $.fn.zTree.init($("#treeDemo"), setting, treeData);
+            });
+
+
+            $(".formCommit").click(function () {
+                console.log(treeChecked[0].id);
+                var menuData = {
+                    "menuName": $(".menuName").val(),
+                    "url": $(".url").val(),
+                    "isDelete": $(".menuStatus").val(),
+                    "sort": $(".menuSort").val(),
+                    "type": $("#type").val(),
+
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '/menu/saveMenu',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(menuData),
+                    success: function (res) {
+                        if (res.code == 1){
+
+                            // window.location.reload();
+                            window.parent.location.reload();
+
+                        } else {
+                            layer.msg(res.message);
+                        }
+                    },
+                    error: function (res) {
+
+                    }
+                });
+            });
+
+
         </script>
     </body>
 </html>

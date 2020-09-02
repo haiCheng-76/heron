@@ -159,6 +159,16 @@
                         </div>
                     </div>
                     <div class="card">
+                        <div class="card-body border-bottom py-3">
+                            <div class="d-flex">
+                                <div class="ml-auto text-muted">
+                                    <div class="ml-2 d-inline-block">
+                                        <button id="addMenu" type="button" class="btn btn-info btn-pill btn-block">新增
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead>
@@ -253,20 +263,30 @@
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <script src="/dist/js/base.js"></script>
+        <script src="/dist/js/menu.js"></script>
         <script>
             document.body.style.display = "block";
 
             function show(id) {
-                layuiIframe(id, "查看", "/menu/menuInfo?parentId=" + id + "&type=M");
+                layuiIframe("查看", "/menu/menuInfo?parentId=" + id + "&type=M");
             }
 
             function edit(id) {
-                layuiIframe(id, "编辑", "/menu/menuUpdate?parentId=" + id + "&type=M");
+                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + id + "&type=M");
             }
 
             function del(id) {
-                layer.msg("删除:" + id);
-            }
+                if (delMenu(id)) {
+                    layer.msg("请先删除子菜单");
+                    return;
+                }
+                ;
+                window.location.reload();
+            };
+
+            $("#addMenu").click(function () {
+                layuiIframe("新增", "/menu/addMenu");
+            });
         </script>
     </body>
 </html>
