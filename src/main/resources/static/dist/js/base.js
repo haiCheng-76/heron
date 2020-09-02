@@ -1,4 +1,4 @@
-function layuiIframe(id, title, url) {
+function layuiIframe(title, url) {
     layer.open({
         type: 2,
         title: title,

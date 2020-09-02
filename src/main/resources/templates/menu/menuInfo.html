@@ -35,7 +35,7 @@
                             <div class="row" style="padding: 20px">
                                 <form action="https://httpbin.org/post" method="post">
                                     <div class="mb-3">
-                                        <label class="form-label">子菜单</label>
+                                        <label class="form-label">结构</label>
                                         <ul id="treeDemo" class="ztree"></ul>
                                     </div>
                                     <div class="mb-3">
@@ -92,25 +92,26 @@
         <script src="/dist/js/tabler.min.js"></script>
         <script>
             var pid = '[[${pid}]]';
-            var currentMenu = '[[${menu.menuName}]]';
-            var url = "/menu/zTreeData?parentId=" + pid + "&type=M";
             document.body.style.display = "block";
             var setting = {
-                async: {
-                    enable: true,
-                    url: url,
-                    autoParam: ["id"],
-                    type: "get",
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
                 }
             };
             $(document).ready(function () {
-                var tree = $.fn.zTree.init($("#treeDemo"), setting);
-                var nodes = tree.getNodes();
-                console.log(nodes)
-                // if (nodes.length == 0) {
-                    var newNode = {pid: 0, name: currentMenu};
-                    tree.addNodes(null, newNode);
-                // }
+                var treeData = null;
+                $.ajax({
+                    type: "GET",
+                    url: '/menu/getTreeData?id=' + pid,
+                    async: false,
+                    dataType: 'json',
+                    success: function (res) {
+                        treeData = res;
+                    }
+                });
+                $.fn.zTree.init($("#treeDemo"), setting, treeData);
             });
 
         </script>
