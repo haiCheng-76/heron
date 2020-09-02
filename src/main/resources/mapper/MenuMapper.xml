@@ -11,7 +11,7 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="permission" jdbcType="VARCHAR" property="permission"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="is_delete" jdbcType="TINYINT" property="isDelete"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
@@ -31,6 +31,29 @@
         FROM sys_user_role AS t1,
              sys_role_menu AS t2
         WHERE t1.role_id = t2.role_id
-          AND t1.user_id =#{userId}
+          AND t1.user_id = #{userId}
+    </select>
+    <select id="listAvaliableMenu" resultMap="BaseResultMap">
+        SELECT id, parent_id, menu_name
+        FROM menu
+        WHERE type = 'D'
+           OR type = 'M' AND is_delete = FALSE and id = #{id}
+    </select>
+    <select id="haveChild" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM menu
+        WHERE parent_id = #{id}
+          AND is_delete = FALSE
+          and type = 'M'
+    </select>
+    <select id="listTree" resultMap="BaseResultMap">
+        SELECT id, parent_id, menu_name, type
+        from menu
+        WHERE type = #{type}
+          AND is_delete = FALSE
+          AND parent_id = #{id}
+    </select>
+    <select id="menuCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) from menu WHERE type='M' AND is_delete=FALSE AND parent_id=#{id}
     </select>
 </mapper>

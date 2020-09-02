@@ -35,38 +35,21 @@
                             <div class="row" style="padding: 20px">
                                 <div class="card-body">
                                     <form>
-<!--                                        <div class="form-group mb-3 ">-->
-<!--                                            <label class="form-label required">类型</label>-->
-<!--                                            <div>-->
-<!--                                                <select id="type" class="form-select " onchange="labelShow(this)">-->
-<!--                                                    <option value="">请选择</option>-->
-<!--                                                    <option value="D">目录</option>-->
-<!--                                                    <option value="M">菜单</option>-->
-<!--                                                    <option value="B">按钮</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-                                        <div class="form-group mb-3">
-                                            <div class="form-label">类型</div>
-                                            <div class="form-check-inline">
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="type" value="D"/>
-                                                    <span class="form-check-label">目录</span>
-                                                </label>
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="type" value="M"/>
-                                                    <span class="form-check-label">菜单</span>
-                                                </label>
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="type" value="B"/>
-                                                    <span class="form-check-label">按钮</span>
-                                                </label>
+                                        <div class="form-group mb-3 ">
+                                            <label class="form-label required">类型</label>
+                                            <div>
+                                                <select id="type" class="form-select " onchange="labelShow(this)">
+                                                    <option value="">请选择</option>
+                                                    <option value="D">目录</option>
+                                                    <option value="M">菜单</option>
+                                                    <option value="B">按钮</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
                                             <label class="form-label required">名称</label>
                                             <div>
-                                                <input type="text" class="form-control menuName" placeholder="请输入名称">
+                                                <input type="text" class="form-control menuName" placeholder="请输入菜单名称">
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
@@ -85,29 +68,14 @@
                                                 <input type="text" class="form-control menuPer" placeholder="请输入权限">
                                             </div>
                                         </div>
-<!--                                        <div class="form-group mb-3">-->
-<!--                                            <label class="form-label required">状态</label>-->
-<!--                                            <div>-->
-<!--                                                <select class="form-select menuStatus">-->
-<!--                                                    <option value="">请选择</option>-->
-<!--                                                    <option value="true">失效</option>-->
-<!--                                                    <option value="false">有效</option>-->
-<!--                                                </select>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-
-
                                         <div class="form-group mb-3">
-                                            <div class="form-label">状态</div>
-                                            <div class="form-check-inline">
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="menuStatus" value="false"/>
-                                                    <span class="form-check-label">有效</span>
-                                                </label>
-                                                <label class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="menuStatus" value="true"/>
-                                                    <span class="form-check-label">失效</span>
-                                                </label>
+                                            <label class="form-label required">状态</label>
+                                            <div>
+                                                <select class="form-select menuStatus">
+                                                    <option value="">请选择</option>
+                                                    <option value="true">失效</option>
+                                                    <option value="false">有效</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group mb-3">
@@ -139,7 +107,7 @@
         <script>
             document.body.style.display = "block";
             var treeChecked;
-            var url = "/menu/getZtreeMenu";
+            var url = "/menu/getTreeData?id=0";
             var setting = {
                 check: {
                     enable: true,
@@ -153,26 +121,27 @@
             };
             var tree;
             $(document).ready(function () {
-                var data = ["D", "M"];
                 var treeData = null;
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     url: url,
                     async: false,
                     dataType: 'json',
-                    contentType: "application/json",
-                    data: JSON.stringify(data),
                     success: function (res) {
                         treeData = res;
                     }
                 });
                 tree = $.fn.zTree.init($("#treeDemo"), setting, treeData);
-                tree.expandAll(true);
 
             });
 
-            $('input[type=radio][name=type]').change(function () {
-                var val = this.value;
+            function labelShow(item) {
+                $(".url").val('');
+                $(".menuName").val('');
+                $(".menuPer").val('');
+                $(".menuStatus").val('');
+                $(".menuSort").val('');
+                var val = item.value;
                 if (val == 'D') {
                     $(".menuUrl").hide();
                     $(".menuPermission").hide();
@@ -180,28 +149,27 @@
                 if (val == 'M') {
                     $(".menuUrl").show();
                     $(".menuPermission").hide();
-                    $(".menuPermission").show();
                 }
                 if (val == 'B') {
                     $(".menuUrl").hide();
                     $(".menuPermission").show();
                 }
-            });
+            };
 
             $(".formCommit").click(function () {
                 treeChecked = tree.getCheckedNodes();
-                if (treeChecked.length == 0) {
+                if (treeChecked.length == 0){
                     layer.msg("请选择归属关系!");
                     return;
                 }
+                console.log(treeChecked[0].id);
                 var menuData = {
                     "parentId": treeChecked[0].id,
                     "menuName": $(".menuName").val(),
                     "url": $(".url").val(),
-                    "isDelete": $("input[name='menuStatus']:checked").val(),
+                    "isDelete": $(".menuStatus").val(),
                     "sort": $(".menuSort").val(),
-                    "type": $("input[name='type']:checked").val(),
-                    "permission": $(".menuPer").val()
+                    "type": $("#type").val(),
 
                 };
                 $.ajax({
@@ -211,7 +179,9 @@
                     contentType: 'application/json',
                     data: JSON.stringify(menuData),
                     success: function (res) {
-                        if (res.code == 1) {
+                        if (res.code == 1){
+
+                            // window.location.reload();
                             window.parent.location.reload();
 
                         } else {

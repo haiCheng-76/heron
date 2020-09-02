@@ -11,6 +11,7 @@ import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.Assert;
+import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,17 +50,6 @@ public class MenuServiceImpl implements MenuService {
         return getAllMenus(menuIdList);
     }
 
-    @Override
-    public List<Menu> listMenu() {
-        Example example = new Example(Menu.class);
-        Example.Criteria criteria = example.createCriteria();
-        List<String> typeList = new ArrayList<>(2);
-        typeList.add(MenuEnum.DIR.val());
-        typeList.add(MenuEnum.MENU.val());
-        criteria.andIn("type", typeList);
-        criteria.andEqualTo("isDelete", false);
-        return menuMapper.selectByExample(example);
-    }
 
     @Override
     public List<Menu> listMenuBYType(long pid) {
@@ -93,6 +83,57 @@ public class MenuServiceImpl implements MenuService {
         menu1.setUpdateTime(new Date());
         menuMapper.updateByPrimaryKeySelective(menu1);
 
+    }
+
+    @Override
+    public List<ZtreeVo> listDataToTree(long id) {
+        List<ZtreeVo> ztreeVos = new ArrayList<>();
+        List<Menu> dirList = menuMapper.listTree(id, MenuEnum.DIR.val());
+        if (CollectionUtils.isEmpty(dirList)) {
+            Menu currentMenu = menuMapper.selectByPrimaryKey(id);
+            ztreeVos.add(new ZtreeVo(currentMenu.getId(), currentMenu.getParentId(), currentMenu.getMenuName(), true));
+            List<Menu> menuList = menuMapper.listTree(id, MenuEnum.MENU.val());
+            if (!CollectionUtils.isEmpty(menuList)) {
+                for (Menu menu : menuList) {
+                    ztreeVos.add(new ZtreeVo(menu.getId(), menu.getParentId(), menu.getMenuName(), false));
+                }
+            }
+            return ztreeVos;
+        }
+
+        ztreeVos.add(new ZtreeVo(0L, 999L, "根节点", true));
+        for (Menu dir : dirList) {
+            int count = menuMapper.menuCount(dir.getId());
+            ZtreeVo vo = new ZtreeVo();
+            vo.setId(dir.getId());
+            vo.setpId(dir.getParentId());
+            vo.setName(dir.getMenuName());
+            vo.setParent(count > 0);
+            ztreeVos.add(vo);
+
+            if (count > 0) {
+                List<Menu> menuList = menuMapper.listTree(dir.getId(), MenuEnum.MENU.val());
+                if (!CollectionUtils.isEmpty(menuList)) {
+                    for (Menu menu : menuList) {
+                        ztreeVos.add(new ZtreeVo(menu.getId(), menu.getParentId(), menu.getMenuName(), false));
+                    }
+                }
+            }
+        }
+
+        return ztreeVos;
+    }
+
+    @Override
+    public void insertMenu(Menu menu) {
+        menu.setCreateTime(new Date());
+        menuMapper.insert(menu);
+    }
+
+    @Override
+    public void updateMenu(Menu menu) {
+        menu.setUpdateTime(new Date());
+        menuMapper.updateByPrimaryKey(menu);
     }
 
 

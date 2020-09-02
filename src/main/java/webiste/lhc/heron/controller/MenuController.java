@@ -3,20 +3,15 @@ package webiste.lhc.heron.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import webiste.lhc.heron.commo.RoleConstant;
-import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.JsonUtil;
 import webiste.lhc.heron.util.Resp;
 import webiste.lhc.heron.vo.ZtreeVo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,20 +39,6 @@ public class MenuController extends AbstractController {
         return menuList;
     }
 
-
-//    @Deprecated
-//    @ResponseBody
-//    @GetMapping(value = "menuToTable")
-//    public List<Menu> menuToTable() {
-//        List<Menu> list = menuService.listMenu();
-//        list.forEach(item -> {
-//            if (item.getType().equals(MenuEnum.DIR.val())) {
-//                item.setId(null);
-//            }
-//        });
-//        return list;
-//    }
-
     @GetMapping(value = "menuPage")
     public ModelAndView listDir(@RequestParam(value = "parentId", required = false, defaultValue = "0") long pid,
                                 @RequestParam(value = "type", required = false, defaultValue = "D") String type,
@@ -67,6 +48,19 @@ public class MenuController extends AbstractController {
         modelAndView.addObject("text", name);
         modelAndView.addObject("menuList", menuService.listMenuBYType(pid));
         modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
+        return modelAndView;
+    }
+
+
+    /**
+     * 跳转菜单添加界面
+     *
+     * @return
+     */
+    @GetMapping(value = "addMenu")
+    public ModelAndView addMenu() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("menu/menuAdd");
         return modelAndView;
     }
 
@@ -91,23 +85,6 @@ public class MenuController extends AbstractController {
         return modelAndView;
     }
 
-
-    @ResponseBody
-    @GetMapping(value = "zTreeData")
-    public List<ZtreeVo> zTreeData(@RequestParam(value = "parentId") long pid,
-                                   @RequestParam(value = "type") String type) {
-        List<Menu> menus = menuService.listMenuBYType(pid);
-        List<ZtreeVo> list = new ArrayList<>(menus.size());
-        for (Menu menu : menus) {
-            ZtreeVo vo = new ZtreeVo();
-            vo.setId(menu.getId());
-            vo.setPid(menu.getParentId());
-            vo.setName(menu.getMenuName());
-            list.add(vo);
-        }
-        return list;
-    }
-
     /**
      * 通过ID删除菜单
      *
@@ -120,4 +97,28 @@ public class MenuController extends AbstractController {
         menuService.delMenuById(menuId);
         return Resp.ok();
     }
+
+    @ResponseBody
+    @PostMapping(value = "saveMenu")
+    public Resp saveMenu(@RequestBody Menu menu) {
+        log.info("menu:{}", menu.toString());
+        menuService.insertMenu(menu);
+        return Resp.ok();
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = "getTreeData")
+    public List<ZtreeVo> getTreeData(@RequestParam(value = "id") long id) {
+        return menuService.listDataToTree(id);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "updateMenu")
+    public Resp updateMenu(@RequestBody Menu menu) {
+        log.info("updateMenu:{}", menu.toString());
+        menuService.insertMenu(menu);
+        return Resp.ok();
+    }
+
 }

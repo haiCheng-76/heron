@@ -1,6 +1,7 @@
 package webiste.lhc.heron.service;
 
 import webiste.lhc.heron.model.Menu;
+import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
 
@@ -15,11 +16,18 @@ import java.util.List;
 public interface MenuService {
 
     List<Menu> getMenuByUserId(long userId);
-    List<Menu> listMenu();
+
+
     List<Menu> listMenuBYType(long pid);
 
 
     Menu getMenuById(long id);
 
     void delMenuById(long id);
+
+    List<ZtreeVo> listDataToTree(long id);
+
+    void insertMenu(Menu menu);
+
+    void updateMenu(Menu menu);
 }
