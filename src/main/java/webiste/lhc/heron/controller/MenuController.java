@@ -13,6 +13,7 @@ import webiste.lhc.heron.util.Resp;
 import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: heron
@@ -109,8 +110,8 @@ public class MenuController extends AbstractController {
 
     @ResponseBody
     @GetMapping(value = "getTreeData")
-    public List<ZtreeVo> getTreeData(@RequestParam(value = "id") long id) {
-        return menuService.listDataToTree(id);
+    public List<Map<String, Object>>  getTreeData() {
+        return menuService.listMenu();
     }
 
     @ResponseBody
@@ -119,6 +120,13 @@ public class MenuController extends AbstractController {
         log.info("updateMenu:{}", menu.toString());
         menuService.insertMenu(menu);
         return Resp.ok();
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = "getZtreeMenu")
+    public List<ZtreeVo> getZtreeMenu() {
+        return menuService.listDataToTree();
     }
 
 }

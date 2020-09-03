@@ -1,9 +1,11 @@
 package webiste.lhc.heron.service;
 
 import webiste.lhc.heron.model.Menu;
+import webiste.lhc.heron.vo.TreeVo;
 import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: heron
@@ -25,9 +27,11 @@ public interface MenuService {
 
     void delMenuById(long id);
 
-    List<ZtreeVo> listDataToTree(long id);
+    List<ZtreeVo> listDataToTree();
 
     void insertMenu(Menu menu);
 
     void updateMenu(Menu menu);
+
+    List<Map<String, Object>>  listMenu();
 }

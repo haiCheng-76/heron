@@ -13,9 +13,7 @@ import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.Assert;
 import webiste.lhc.heron.vo.ZtreeVo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @ProjectName: heron
@@ -86,22 +84,13 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<ZtreeVo> listDataToTree(long id) {
+    public List<ZtreeVo> listDataToTree() {
         List<ZtreeVo> ztreeVos = new ArrayList<>();
-        List<Menu> dirList = menuMapper.listTree(id, MenuEnum.DIR.val());
+        ztreeVos.add(new ZtreeVo(0L,999L,"根节点", true));
+        List<Menu> dirList = menuMapper.listTree(0, MenuEnum.DIR.val());
         if (CollectionUtils.isEmpty(dirList)) {
-            Menu currentMenu = menuMapper.selectByPrimaryKey(id);
-            ztreeVos.add(new ZtreeVo(currentMenu.getId(), currentMenu.getParentId(), currentMenu.getMenuName(), true));
-            List<Menu> menuList = menuMapper.listTree(id, MenuEnum.MENU.val());
-            if (!CollectionUtils.isEmpty(menuList)) {
-                for (Menu menu : menuList) {
-                    ztreeVos.add(new ZtreeVo(menu.getId(), menu.getParentId(), menu.getMenuName(), false));
-                }
-            }
-            return ztreeVos;
+            return Collections.emptyList();
         }
-
-        ztreeVos.add(new ZtreeVo(0L, 999L, "根节点", true));
         for (Menu dir : dirList) {
             int count = menuMapper.menuCount(dir.getId());
             ZtreeVo vo = new ZtreeVo();
@@ -134,6 +123,15 @@ public class MenuServiceImpl implements MenuService {
     public void updateMenu(Menu menu) {
         menu.setUpdateTime(new Date());
         menuMapper.updateByPrimaryKey(menu);
+    }
+
+    @Override
+    public List<Map<String, Object>> listMenu() {
+        Example example = new Example(Menu.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("isDelete", false);
+        example.selectProperties("id", "parentId", "menuName", "url", "permission", "isDelete", "type");
+        return menuMapper.listMenus();
     }
 
 

@@ -50,10 +50,17 @@
         SELECT id, parent_id, menu_name, type
         from menu
         WHERE type = #{type}
-          AND is_delete = FALSE
           AND parent_id = #{id}
     </select>
     <select id="menuCount" resultType="java.lang.Integer">
-        SELECT COUNT(1) from menu WHERE type='M' AND is_delete=FALSE AND parent_id=#{id}
+        SELECT COUNT(1)
+        from menu
+        WHERE type = 'M'
+          AND is_delete = FALSE
+          AND parent_id = #{id}
+    </select>
+    <select id="listMenus" resultType="java.util.Map">
+        SELECT id, parent_id AS pid, menu_name AS title, url, permission, type, is_delete as isDelete
+        FROM menu
     </select>
 </mapper>

@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
         <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-        <title th:text="${text}"></title>
+        <title th:text="${text}">Heron</title>
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
         <meta name="msapplication-TileColor" content="#206bc4"/>
         <meta name="theme-color" content="#206bc4"/>
@@ -14,11 +14,12 @@
         <meta name="HandheldFriendly" content="True"/>
         <meta name="MobileOptimized" content="320"/>
         <meta name="robots" content="noindex,nofollow,noarchive"/>
-        <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
-        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+        <!--    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>-->
+        <!--    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>-->
         <!-- CSS files -->
         <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
         <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+        <link href="/dist/css/layui.css" rel="stylesheet"/>
         <style>
             body {
                 display: none;
@@ -28,14 +29,14 @@
     <body class="antialiased">
         <div class="page">
             <header class="navbar navbar-expand-md navbar-light">
-                <div class="container-xl">
+                <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a href="/index" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
-                        <img src="/static/logo.svg" alt="Tabler" class="navbar-brand-image">
+                    <a href="." class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+                        <img src="./static/logo.svg" th:src="@{/static/logo.svg}" alt="Tabler"
+                             class="navbar-brand-image">
                     </a>
-                    <!--头像等用户信息-->
                     <div class="navbar-nav flex-row order-md-last">
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
@@ -71,11 +72,9 @@
                                     </svg>
                                     登录日志
                                 </a>
-                                <!--                        <div class="dropdown-divider"></div-->
                             </div>
                         </div>
-                        <!--退出按钮-->
-                        <div class="nav-item" style="margin-left: 20px">
+                        <div class="nav-item" style="margin-left: 20px;margin-right: 20px">
                             <a href="/logout">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -87,17 +86,15 @@
                                 退出
                             </a>
                         </div>
-
                     </div>
                 </div>
             </header>
-            <!--头部菜单栏-->
             <div class="navbar-expand-md">
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <div class="navbar navbar-light">
-                        <div class="container-xl">
+                        <div class="container-fluid">
                             <ul class="navbar-nav">
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                     <a class="nav-link" href="/index">
                                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +146,7 @@
                 </div>
             </div>
             <div class="content">
-                <div class="container-xl">
+                <div class="container-fluid">
                     <!-- Page title -->
                     <div class="page-header">
                         <div class="row align-items-center">
@@ -170,63 +167,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap datatable">
-                                <thead>
-                                    <tr>
-                                        <th>编号
-                                        </th>
-                                        <th>名称
-                                        </th>
-                                        <th>创建时间
-                                        </th>
-                                        <th>修改时间
-                                        </th>
-                                        <th>状态
-                                        </th>
-                                        <th>类型
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="menu:${menuList}" th:switch="${menu.type}">
-                                        <td>
-                                            <span th:text="${menu.id}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${menu.menuName}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${#dates.format(menu.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
-                                        </td>
-                                        <td>
-                                            <span th:text="${#dates.format(menu.updateTime,'yyyy-MM-dd HH:mm:ss')}"></span>
-                                        </td>
-                                        <td th:switch="${menu.isDelete}">
-                                            <span th:case="false">有效</span>
-                                            <span th:case="true">失效</span>
-                                        </td>
-                                        <td>
-                                            <span th:case="D">目录</span>
-                                            <span th:case="M">菜单</span>
-                                            <span th:case="B">按钮</span>
-                                        </td>
-                                        <td class="text-right">
-                                            <span>
-                                                <button type="button" class="btn btn-primary btn-sm btn-pill"
-                                                        th:onclick="show([[${menu.id}]]);">查看
-                                                </button>
-                                                <button type="button" class="btn btn-success btn-sm btn-pill"
-                                                        th:onclick="edit([[${menu.id}]]);">编辑
-                                                </button>
-                                                <button type="button" class="btn btn-warning btn-sm btn-pill"
-                                                        th:onclick="del([[${menu.id}]]);">删除
-                                                </button>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="layui-table layui-form" id="tree-table"></table>
                         </div>
                     </div>
                 </div>
@@ -264,8 +205,120 @@
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <script src="/dist/js/base.js"></script>
         <script src="/dist/js/menu.js"></script>
-        <script>
+        <script type="text/javascript" src="/layui/layui.js"></script>
+        <script type="text/javascript" th:inline="none">
             document.body.style.display = "block";
+            layui.config({
+                base: '/',
+            })
+            layui.use(['treeTable', 'layer', 'code', 'form'], function () {
+                var o = layui.$,
+                    form = layui.form,
+                    layer = layui.layer,
+                    treeTable = layui.treeTable;
+                var re = treeTable.render({
+                    elem: '#tree-table',
+                    url: '/menu/getTreeData',
+                    icon_key: 'title',
+                    is_checkbox: false,
+                    text: {null: '无数据'},
+                    end: function (e) {
+                        form.render();
+                    },
+                    cols: [
+                        {
+                            key: 'id',
+                            title: '编号',
+                            width: '100px',
+                            align: 'center',
+                        },
+                        {
+                            key: 'title',
+                            title: '名称',
+                            width: '200px'
+                        },
+                        {
+                            key: 'url',
+                            title: '地址',
+                            width: '200px',
+                            align: 'center'
+                        },
+                        {
+                            key: 'permission',
+                            title: '权限',
+                            width: '200px',
+                            align: 'center'
+                        },
+                        {
+                            key: 'type',
+                            title: '类型',
+                            width: '200px',
+                            align: 'center',
+                            template: function (item) {
+                                var type = item.type;
+                                if (type == 'D') {
+                                    return '<a class="btn btn-primary btn-pill btn-sm" style="cursor: default;color: #ffffff">目录</a>';
+                                }
+                                if (type == 'M') {
+                                    return '<a class="btn btn-success btn-pill btn-sm" style="cursor: default;color: #ffffff">菜单</a>';
+                                }
+                                if (type == 'B') {
+                                    return '<a class="btn btn-info btn-pill btn-sm" style="cursor: default;color: #ffffff">按钮</a>';
+                                }
+                            }
+                        },
+                        {
+                            key: 'isDelete',
+                            title: '状态',
+                            width: '200px',
+                            align: 'center',
+                            template: function (item) {
+                                var status = item.isDelete;
+                                if (status) {
+                                    return '<a class="btn btn-outline-danger active btn-sm" style="cursor: default;color: #ffffff">失效</a>';
+                                } else {
+                                    return '<a class="btn btn-outline-success active btn-sm" style="cursor: default;color: #ffffff">有效</a>';
+                                }
+                            }
+                        },
+                        {
+                            title: '操作',
+                            align: 'left    ',
+                            width: '200px',
+                            template: function (item) {
+                                if (item.isDelete) {
+                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + item.id + ')">编辑</button>';
+                                } else {
+                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + item.id + ')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button>';
+                                }
+
+                            }
+                        }
+                    ]
+                });
+                // 监听自定义
+                treeTable.on('tree(add)', function (data) {
+                    layer.msg(JSON.stringify(data));
+                })
+                // 获取选中值，返回值是一个数组（定义的primary_key参数集合）
+                o('.get-checked').click(function () {
+                    layer.msg('选中参数' + treeTable.checked(re).join(','))
+                })
+                // 刷新重载树表（一般在异步处理数据后刷新显示）
+                o('.refresh').click(function () {
+                    re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
+                    treeTable.render(re);
+                })
+                o('#tree1').on('click', '[data-down]', function () {
+                    o(this).find('span').length && o(this).parents('.layui-unselect').find('input').val(o(this).text());
+                })
+                o('.layui-select-title').click(function () {
+                    o(this).parent().hasClass('layui-form-selected') ? o(this).next().hide() : o(this).next().show(), o(this).parent().toggleClass('layui-form-selected');
+                })
+                o(document).on("click", function (i) {
+                    !o(i.target).parent().hasClass('layui-select-title') && !o(i.target).parents('table').length && !(!o(i.target).parents('table').length && o(i.target).hasClass('layui-icon')) && o(".layui-form-select").removeClass("layui-form-selected").find('.layui-anim').hide();
+                })
+            })
 
             function show(id) {
                 layuiIframe("查看", "/menu/menuInfo?parentId=" + id + "&type=M");
