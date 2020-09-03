@@ -5,6 +5,7 @@ import webiste.lhc.heron.config.mapperconfig.BaseMapper;
 import webiste.lhc.heron.model.Menu;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> getParent(long id);
@@ -23,4 +24,6 @@ public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> listTree(@Param(value = "id") long id, @Param(value = "type") String type);
 
     int menuCount(long id);
+
+    List<Map<String, Object>> listMenus();
 }

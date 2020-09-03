@@ -35,8 +35,8 @@
                             <div class="row" style="padding: 20px">
                                 <form action="https://httpbin.org/post" method="post">
                                     <div class="mb-3">
-                                        <label class="form-label">结构</label>
-                                        <ul id="treeDemo" class="ztree"></ul>
+                                        <label class="form-label">上级菜单</label>
+                                        <ul id="menuTree" class="ztree"></ul>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">名称</label>
@@ -48,13 +48,6 @@
                                         <select class="form-select">
                                             <option value="true" th:selected="${menu.isDelete eq true}">失效</option>
                                             <option value="false" th:selected="${menu.isDelete eq false}">有效</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-label">类型</div>
-                                        <select class="form-select">
-                                            <option value="M" th:selected="${menu.type eq 'M'}">菜单</option>
-                                            <option value="D" th:selected="${menu.type eq 'D'}">目录</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -81,29 +74,19 @@
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
         <script>
-            var pid = '[[${pid}]]';
             document.body.style.display = "block";
+            var menuId = '[[${menu.id}]]';
+            console.log(menuId);
             var setting = {
-                edit: {
+                check: {
                     enable: true,
-                    showRenameBtn: false,
-                    removeTitle: '删除菜单'
+                    chkStyle: "radio",
+                    radioType: "all"
                 },
                 data: {
                     simpleData: {
                         enable: true
                     }
-                },
-                callback: {
-                    beforeRemove: delChildMenu
-                }
-            };
-
-            function delChildMenu(treeId, treeNode) {
-                var fail = delMenu(treeNode.id);
-                if (fail) {
-                    layer.msg("请先删除子菜单");
-                    return false;
                 }
             };
 
@@ -111,14 +94,25 @@
                 var treeData = null;
                 $.ajax({
                     type: "GET",
-                    url: '/menu/getTreeData?id=' + pid,
+                    url: '/menu/getZtreeMenu',
                     async: false,
                     dataType: 'json',
                     success: function (res) {
                         treeData = res;
                     }
                 });
-                $.fn.zTree.init($("#treeDemo"), setting, treeData);
+                var ztree = $.fn.zTree.init($("#menuTree"), setting, treeData);
+                ztree.expandAll(true);
+                var nodes = ztree.transformToArray(ztree.getNodes());
+                console.log(nodes)
+                if (nodes.length>0) {
+                    for(var i=0;i<nodes.length;i++){
+                        if(menuId.indexOf(nodes[i].id) >= 0){
+                            nodes[i].checked = true;
+                            ztree.updateNode(nodes[i]);
+                        }
+                    }
+                }
             });
 
 
@@ -139,7 +133,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(menuData),
                     success: function (res) {
-                        if (res.code == 1){
+                        if (res.code == 1) {
 
                             // window.location.reload();
                             window.parent.location.reload();
