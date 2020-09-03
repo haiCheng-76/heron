@@ -3,12 +3,13 @@ package webiste.lhc.heron.vo;
 import java.io.Serializable;
 
 /**
- * @author haicheng.long@androidmov.com
- * @ClassName ZtreeVo
- * @Description TODO
- * @date 2020/9/1 下午 3:01
+ * @description:
+ * @author: 582895699@qq.com
+ * @time: 2020/9/3 下午 11:56
  */
 public class ZtreeVo implements Serializable {
+
+    private static final long serialVersionUID = 1189444780140043125L;
     private Long id;
     private Long pId;
     private String name;
@@ -16,7 +17,6 @@ public class ZtreeVo implements Serializable {
 
     public ZtreeVo() {
     }
-
 
     public ZtreeVo(Long id, Long pId, String name, Boolean isParent) {
         this.id = id;
