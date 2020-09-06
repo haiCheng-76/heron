@@ -55,58 +55,31 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label">用户名</label>
                                     <div>
-                                        <input type="text" class="form-control username" th:value="${user.userName}">
+                                        <input type="text" class="form-control" th:value="${user.userName}" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">账户名</label>
-                                    <input type="text" class="form-control account" th:value="${user.account}">
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label class="form-label">密码</label>
-                                    <input type="password" class="form-control pwd">
+                                    <input type="text" class="form-control" th:value="${user.account}" readonly>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">电子邮箱</label>
                                     <div>
-                                        <input type="text" class="form-control mail" th:value="${user.eMail}">
+                                        <input type="text" class="form-control" th:value="${user.eMail}" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <div class="form-label">状态</div>
-                                    <div class="form-check-inline">
-<!--                                        <label class="form-check form-check-inline">-->
-<!--                                            <input class="form-check-input delStstus" type="radio" value="true"-->
-<!--                                                   name="userDel" th:field="*{user.isDelete}"/>-->
-<!--                                            <span class="form-check-label">有效</span>-->
-<!--                                        </label>-->
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input delStstus" type="radio" value="false"
-                                                   name="userDel" th:checked="${user.isDelete == false}"/>
-                                            <span class="form-check-label">有效</span>
-                                        </label>
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input status" type="radio" value="true"
-                                                   name="userDel" th:checked="${user.isDelete == true}"/>
-                                            <span class="form-check-label">失效</span>
-                                        </label>
+                                    <label class="form-label">状态</label>
+                                    <div>
+                                        <input type="text" min="0" class="form-control"
+                                               th:value="${user.isDelete} ? 失效 :有效" readonly>
                                     </div>
                                 </div>
-
                                 <div class="form-group mb-3">
-                                    <div class="form-label">是否启用</div>
-                                    <div class="form-check-inline">
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input status" type="radio" value="false"
-                                                   name="userStatus" th:checked="${user.enable == false}"/>
-                                            <span class="form-check-label">启用</span>
-                                        </label>
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input status" type="radio" value="true"
-                                                   name="userStatus" th:checked="${user.enable == true}"/>
-                                            <span class="form-check-label">冻结</span>
-                                        </label>
+                                    <label class="form-label">是否启用</label>
+                                    <div>
+                                        <input type="text" min="0" class="form-control menuSort"
+                                               th:value="${user.enable} ==1 ? 冻结 :启用" readonly>
                                     </div>
                                 </div>
                                 <div class="form-footer">
@@ -130,27 +103,22 @@
 <script src="/dist/js/tabler.min.js"></script>
 <script>
     document.body.style.display = "block";
-    var userid = '[[${user.id}]]';
-    // 头像上传
     $('.avatarUpload').click(function () {
         $('.avatarChoose').click();
     });
-    // 保存
+
+
     $('.formCommit').click(function () {
-        // console.log($("input[name='userDel']:checked").val())
-        // alert($("input[name='rad']:checked").val());
-        // console.log($("input[name='userStatus']:checked").val())
         var data = {
-            'id': userid,
-            'userName': $(".username").val(),
-            'account': $(".account").val(),
-            'password': $(".pwd").val(),
-            'isDelete': $("input[name='userDel']:checked").val(),
-            'enable': $("input[name='userStatus']:checked").val(),
-            // 'avatar': '',
-            'eMail': $(".mail").val()
+            'id': '',
+            'userName': '',
+            'account': '',
+            'password': '',
+            'isDelete': '',
+            'enable': '',
+            'avatar': '',
+            'eMail': ''
         }
-        alert(JSON.stringify(data))
         $.ajax({
             type: 'POST',
             url: '/userInfo/updateUer',
@@ -158,11 +126,9 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (res) {
-                if (1 == res.code) {
-                    window.parent.location.reload();
-                }
+
             }, error: function () {
-                layer.msg('失败');
+                alert('失败')
             }
         });
     });

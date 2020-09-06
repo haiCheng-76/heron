@@ -1,7 +1,6 @@
 package webiste.lhc.heron.service;
 
 import com.github.pagehelper.PageInfo;
-import webiste.lhc.heron.dto.UserVo;
 import webiste.lhc.heron.model.UserInfo;
 
 /**
@@ -15,7 +14,7 @@ import webiste.lhc.heron.model.UserInfo;
 public interface UserInfoService {
     UserInfo getUserByAccount(String account);
 
-    void insertUserInfo(UserVo vo);
+    void insertUserInfo(UserInfo userInfo);
 
     PageInfo<UserInfo> pageUserInfo(int currnet, int size);
 

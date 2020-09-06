@@ -121,7 +121,6 @@
                 var nodes = ztree.transformToArray(ztree.getNodes());
                 if (nodes.length>0) {
                     for(var i=0;i<nodes.length;i++){
-                        console.log(nodes[i])
                         if(menuPid == nodes[i].id){
                             nodes[i].checked = true;
                             ztree.updateNode(nodes[i]);
@@ -149,7 +148,6 @@
                     contentType: 'application/json',
                     data: JSON.stringify(menuData),
                     success: function (res) {
-                        console.log(res)
                         if (res.code == 1) {
 
                             // window.location.reload();

@@ -1,5 +1,7 @@
 package webiste.lhc.heron.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +48,32 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setPassword(password);
         userInfo.setSalt(salt);
         userInfoMapper.insertSelective(userInfo);
+    }
+
+    @Override
+    public PageInfo<UserInfo> pageUserInfo(int current, int size) {
+        PageHelper.offsetPage(current, size);
+        PageInfo<UserInfo> userInfoPageInfo = new PageInfo<>(userInfoMapper.selectAll());
+        return userInfoPageInfo;
+    }
+
+    @Override
+    public UserInfo getUserById(long id) {
+        return userInfoMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setIsDelete(true);
+        userInfo.setUpdateTime(new Date());
+        userInfo.setId(id);
+        userInfoMapper.updateByPrimaryKeySelective(userInfo);
+    }
+
+    @Override
+    public void updateUser(UserInfo userInfo) {
+        userInfo.setUpdateTime(new Date());
+        userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 }
