@@ -2,6 +2,7 @@ package webiste.lhc.heron.config.shiro;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -29,6 +30,8 @@ public class UserInfoRealm extends AuthorizingRealm {
     @Autowired
     private UserInfoService userInfoService;
 
+
+
     /**
      * 授权
      *
@@ -37,8 +40,9 @@ public class UserInfoRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Object o = principalCollection.getPrimaryPrincipal();
-        log.info("principalCollection:{}", o);
+        UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
+        log.info("principalCollection:{}", userInfo.toString());
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         return null;
     }
 
