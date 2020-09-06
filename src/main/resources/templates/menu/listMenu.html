@@ -160,7 +160,7 @@
                             <div class="d-flex">
                                 <div class="ml-auto text-muted">
                                     <div class="ml-2 d-inline-block">
-                                        <button id="addMenu" type="button" class="btn btn-info btn-pill btn-block">新增
+                                        <button id="addMenu" type="button" class="btn btn-info btn-pill btn-sm">新增
                                         </button>
                                     </div>
                                 </div>
@@ -300,15 +300,15 @@
             })
 
             function edit(id, pid, type) {
-                // alert()
-                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + pid + "&id=" + id+"&type="+type);
+                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + pid + "&id=" + id + "&type=" + type);
             }
 
             function del(id) {
                 if (delMenu(id)) {
                     layer.msg("请先删除子菜单");
                     return;
-                };
+                }
+                ;
                 window.location.reload();
             };
 

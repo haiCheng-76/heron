@@ -1,6 +1,7 @@
 package webiste.lhc.heron.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class MenuController extends AbstractController {
 
 
     @ResponseBody
+    @RequiresPermissions(value = {"sys:menu:view"})
     @GetMapping(value = "listMenus")
     public List<Menu> listMens() {
         List<Menu> menuList = menuService.getMenuByUserId(RoleConstant.ADMIN_USER_ID);
@@ -40,14 +42,12 @@ public class MenuController extends AbstractController {
         return menuList;
     }
 
+    @RequiresPermissions(value = "sys:menu:list")
     @GetMapping(value = "menuPage")
-    public ModelAndView listDir(@RequestParam(value = "parentId", required = false, defaultValue = "0") long pid,
-                                @RequestParam(value = "type", required = false, defaultValue = "D") String type,
-                                @RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+    public ModelAndView listDir(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("menu/listMenu");
         modelAndView.addObject("text", name);
-        modelAndView.addObject("menuList", menuService.listMenuBYType(pid));
         modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
         return modelAndView;
     }
@@ -58,6 +58,7 @@ public class MenuController extends AbstractController {
      *
      * @return
      */
+    @RequiresPermissions(value = "sys:menu:add")
     @GetMapping(value = "addMenu")
     public ModelAndView addMenu() {
         ModelAndView modelAndView = new ModelAndView();
@@ -65,17 +66,18 @@ public class MenuController extends AbstractController {
         return modelAndView;
     }
 
+//    @RequiresPermissions(value = "sys:menu:list")
+//    @GetMapping(value = "menuInfo")
+//    public ModelAndView menuInfo(@RequestParam(value = "parentId") long pid,
+//                                 @RequestParam(value = "type") String type) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("menu/menuInfo");
+//        modelAndView.addObject("menu", menuService.getMenuById(pid));
+//        modelAndView.addObject("pid", pid);
+//        return modelAndView;
+//    }
 
-    @GetMapping(value = "menuInfo")
-    public ModelAndView menuInfo(@RequestParam(value = "parentId") long pid,
-                                 @RequestParam(value = "type") String type) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("menu/menuInfo");
-        modelAndView.addObject("menu", menuService.getMenuById(pid));
-        modelAndView.addObject("pid", pid);
-        return modelAndView;
-    }
-
+    @RequiresPermissions(value = "sys:menu:alter")
     @GetMapping(value = "menuUpdate")
     public ModelAndView menuUpdate(@RequestParam(value = "parentId") long pid,
                                    @RequestParam(value = "id") long id,
@@ -95,6 +97,7 @@ public class MenuController extends AbstractController {
      * @param menuId
      * @return
      */
+    @RequiresPermissions(value = "sys:menu:del")
     @ResponseBody
     @GetMapping(value = "delMenu")
     public Resp delMenu(@RequestParam(value = "id") long menuId) {
@@ -102,6 +105,7 @@ public class MenuController extends AbstractController {
         return Resp.ok();
     }
 
+    @RequiresPermissions(value = "sys:menu:add")
     @ResponseBody
     @PostMapping(value = "saveMenu")
     public Resp saveMenu(@RequestBody Menu menu) {
@@ -111,12 +115,16 @@ public class MenuController extends AbstractController {
     }
 
 
+    @RequiresPermissions(value = "sys:menu:list")
     @ResponseBody
     @GetMapping(value = "getTreeData")
-    public List<Map<String, Object>>  getTreeData() {
+    public List<Map<String, Object>> getTreeData() {
         return menuService.listMenu();
     }
 
+
+
+    @RequiresPermissions(value = "sys:menu:alter")
     @ResponseBody
     @PostMapping(value = "updateMenu")
     public Resp updateMenu(@RequestBody Menu menu) {
@@ -126,6 +134,7 @@ public class MenuController extends AbstractController {
     }
 
 
+    @RequiresPermissions(value = "sys:menu:list")
     @ResponseBody
     @GetMapping(value = "getZtreeMenu")
     public List<ZtreeVo> getZtreeMenu() {
