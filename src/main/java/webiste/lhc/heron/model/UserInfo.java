@@ -1,7 +1,10 @@
 package webiste.lhc.heron.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import webiste.lhc.heron.util.JsonUtil;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,6 +37,7 @@ public class UserInfo implements Serializable {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**
@@ -60,12 +64,14 @@ public class UserInfo implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "create_time")
     private Date createTime;
 
     /**
      * 修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "update_time")
     private Date updateTime;
 
@@ -83,5 +89,10 @@ public class UserInfo implements Serializable {
 
     public UserInfo(String account) {
         this.account = account;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJsonString(this);
     }
 }

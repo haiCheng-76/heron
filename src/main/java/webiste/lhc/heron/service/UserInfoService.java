@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service;
 
+import com.github.pagehelper.PageInfo;
 import webiste.lhc.heron.model.UserInfo;
 
 /**
@@ -14,4 +15,14 @@ public interface UserInfoService {
     UserInfo getUserByAccount(String account);
 
     void insertUserInfo(UserInfo userInfo);
+
+    PageInfo<UserInfo> pageUserInfo(int currnet, int size);
+
+    UserInfo getUserById(long id);
+
+
+    void updateUser(UserInfo userInfo);
+
+
+    void deleteUser(long id);
 }

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <meta name="msapplication-TileColor" content="#206bc4"/>
+    <meta name="theme-color" content="#206bc4"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="robots" content="noindex,nofollow,noarchive"/>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+    <!-- CSS files -->
+    <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <link href="/dist/css/metroStyle/metroStyle.css" rel="stylesheet"/>
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<div class="page">
+    <div class="content">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row" style="padding: 20px">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group mb-3 ">
+                                    <label class="form-label">头像</label>
+                                    <div th:switch="${user.avatar == '' or user.avatar == null}">
+                                        <span class="avatar avatar-lg" th:case="true"><svg
+                                                xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round"><path
+                                                stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="7"
+                                                                                               r="4"></circle><path
+                                                d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2"></path></svg></span>
+                                        <span class="avatar avatar-lg" th:case="false"
+                                              th:style="'background-image:url('+${user.avatar}+')'"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">用户名</label>
+                                    <div>
+                                        <input type="text" class="form-control" th:value="${user.userName}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">账户名</label>
+                                    <input type="text" class="form-control" th:value="${user.account}" readonly>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">电子邮箱</label>
+                                    <div>
+                                        <input type="text" class="form-control" th:value="${user.eMail}" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 menuPermission">
+                                    <label class="form-label">创建时间</label>
+                                    <div>
+                                        <input type="text" class="form-control"
+                                               th:value="${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}"
+                                               readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">修改时间</label>
+                                    <div>
+                                        <input type="text" class="form-control"
+                                               th:value="${#dates.format(user.updateTime, 'yyyy-MM-dd HH:mm:ss')}"
+                                               readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">状态</label>
+                                    <div>
+                                        <input type="text" min="0" class="form-control"
+                                               th:value="${user.isDelete} ? 失效 :有效" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">是否启用</label>
+                                    <div>
+                                        <input type="text" min="0" class="form-control menuSort"
+                                               th:value="${user.enable} ==1 ? 冻结 :启用" readonly>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Libs JS -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/js/jquery.ztree.all.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+<!-- Tabler Core -->
+<script src="/dist/js/tabler.min.js"></script>
+<script>
+    document.body.style.display = "block";
+</script>
+</body>
+</html>
