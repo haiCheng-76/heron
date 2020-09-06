@@ -86,7 +86,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<ZtreeVo> listDataToTree() {
         List<ZtreeVo> ztreeVos = new ArrayList<>();
-        ztreeVos.add(new ZtreeVo(0L,999L,"根节点", true));
+        ztreeVos.add(new ZtreeVo(0L, 999L, "根节点", true));
         List<Menu> dirList = menuMapper.listTree(0, MenuEnum.DIR.val());
         if (CollectionUtils.isEmpty(dirList)) {
             return Collections.emptyList();
@@ -122,7 +122,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public void updateMenu(Menu menu) {
         menu.setUpdateTime(new Date());
-        menuMapper.updateByPrimaryKey(menu);
+        menuMapper.updateByPrimaryKeySelective(menu);
     }
 
     @Override

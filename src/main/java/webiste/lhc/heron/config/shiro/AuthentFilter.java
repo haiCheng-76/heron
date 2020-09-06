@@ -8,17 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import webiste.lhc.heron.mapper.UserInfoMapper;
-import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.model.UserInfo;
-import webiste.lhc.heron.service.MenuService;
-import webiste.lhc.heron.util.JsonUtil;
 import webiste.lhc.heron.util.UserSession;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * @ProjectName: heron
@@ -34,9 +30,6 @@ public class AuthentFilter extends FormAuthenticationFilter {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-
-    @Autowired
-    private MenuService menuService;
 
     private static final Logger log = LoggerFactory.getLogger(AuthentFilter.class);
 
@@ -56,11 +49,7 @@ public class AuthentFilter extends FormAuthenticationFilter {
         userSession.setAvatar(userInfo.getAvatar());
         userSession.seteMail(userInfo.getEMail());
 
-//        menu
         httpSession.setAttribute("currentUser", userSession);
-        List<Menu> menus = menuService.getMenuByUserId(userInfo.getId());
-        log.info("save userInfo and menus to session;userInfo:[{}]; menus:[{}]", JsonUtil.toJsonString(userInfo), JsonUtil.toJsonString(menus));
-//        httpSession.setAttribute("menu", menus);
         return super.onLoginSuccess(token, subject, request, response);
     }
 
