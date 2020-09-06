@@ -221,7 +221,8 @@
                     url: '/menu/getTreeData',
                     icon_key: 'title',
                     is_checkbox: false,
-                    text: {null: '无数据'},
+                    text: {none: '无数据'},
+                    page: false,
                     end: function (e) {
                         form.render();
                     },
@@ -283,57 +284,31 @@
                         },
                         {
                             title: '操作',
-                            align: 'left    ',
+                            align: 'left',
                             width: '200px',
                             template: function (item) {
                                 if (item.isDelete) {
-                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + item.id + ')">编辑</button>';
+                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button>';
                                 } else {
-                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + item.id + ')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button>';
+                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button>';
                                 }
 
                             }
                         }
                     ]
                 });
-                // 监听自定义
-                treeTable.on('tree(add)', function (data) {
-                    layer.msg(JSON.stringify(data));
-                })
-                // 获取选中值，返回值是一个数组（定义的primary_key参数集合）
-                o('.get-checked').click(function () {
-                    layer.msg('选中参数' + treeTable.checked(re).join(','))
-                })
-                // 刷新重载树表（一般在异步处理数据后刷新显示）
-                o('.refresh').click(function () {
-                    re.data.push({"id": 50, "pid": 0, "title": "1-4"}, {"id": 51, "pid": 50, "title": "1-4-1"});
-                    treeTable.render(re);
-                })
-                o('#tree1').on('click', '[data-down]', function () {
-                    o(this).find('span').length && o(this).parents('.layui-unselect').find('input').val(o(this).text());
-                })
-                o('.layui-select-title').click(function () {
-                    o(this).parent().hasClass('layui-form-selected') ? o(this).next().hide() : o(this).next().show(), o(this).parent().toggleClass('layui-form-selected');
-                })
-                o(document).on("click", function (i) {
-                    !o(i.target).parent().hasClass('layui-select-title') && !o(i.target).parents('table').length && !(!o(i.target).parents('table').length && o(i.target).hasClass('layui-icon')) && o(".layui-form-select").removeClass("layui-form-selected").find('.layui-anim').hide();
-                })
             })
 
-            function show(id) {
-                layuiIframe("查看", "/menu/menuInfo?parentId=" + id + "&type=M");
-            }
-
-            function edit(id) {
-                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + id + "&type=M");
+            function edit(id, pid, type) {
+                // alert()
+                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + pid + "&id=" + id+"&type="+type);
             }
 
             function del(id) {
                 if (delMenu(id)) {
                     layer.msg("请先删除子菜单");
                     return;
-                }
-                ;
+                };
                 window.location.reload();
             };
 

@@ -33,27 +33,33 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="row" style="padding: 20px">
-                                <form action="https://httpbin.org/post" method="post">
+                                <form>
                                     <div class="mb-3">
                                         <label class="form-label">上级菜单</label>
                                         <ul id="menuTree" class="ztree"></ul>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">名称</label>
-                                        <input type="text" class="form-control" name="example-text-input"
-                                               th:value="${menu.menuName}">
+                                        <input type="text" class="form-control menu_name" th:value="${menu.menuName}">
+                                    </div>
+                                    <div id="menu_url" class="mb-3">
+                                        <label class="form-label">地址</label>
+                                        <input type="text" class="form-control url" th:value="${menu.url}">
+                                    </div>
+                                    <div id="menu_per" class="mb-3">
+                                        <label class="form-label">权限</label>
+                                        <input type="text" class="form-control menu_permission" th:value="${menu.permission}">
                                     </div>
                                     <div class="mb-3">
                                         <div class="form-label">状态</div>
-                                        <select class="form-select">
+                                        <select class="form-select menu_type">
                                             <option value="true" th:selected="${menu.isDelete eq true}">失效</option>
                                             <option value="false" th:selected="${menu.isDelete eq false}">有效</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">排序</label>
-                                        <input type="text" class="form-control" name="example-disabled-input"
-                                               th:value="${menu.sort}">
+                                        <input type="number" min="0" class="form-control menu_sort" th:value="${menu.sort}">
                                     </div>
                                     <div class="form-footer">
                                         <button type="button" class="btn btn-primary formCommit">提交</button>
@@ -76,7 +82,15 @@
         <script>
             document.body.style.display = "block";
             var menuId = '[[${menu.id}]]';
-            console.log(menuId);
+            var menuPid = '[[${pid}]]';
+            var menuType = '[[${type}]]';
+            if ('D' == menuType) {
+                $("#menu_url").hide();
+                $("#menu_per").hide();
+            }
+            if ('B' == menuType) {
+                $("#menu_url").hide();
+            }
             var setting = {
                 check: {
                     enable: true,
@@ -90,6 +104,7 @@
                 }
             };
 
+            var ztree;
             $(document).ready(function () {
                 var treeData = null;
                 $.ajax({
@@ -101,15 +116,16 @@
                         treeData = res;
                     }
                 });
-                var ztree = $.fn.zTree.init($("#menuTree"), setting, treeData);
+                ztree = $.fn.zTree.init($("#menuTree"), setting, treeData);
                 ztree.expandAll(true);
                 var nodes = ztree.transformToArray(ztree.getNodes());
-                console.log(nodes)
                 if (nodes.length>0) {
                     for(var i=0;i<nodes.length;i++){
-                        if(menuId.indexOf(nodes[i].id) >= 0){
+                        console.log(nodes[i])
+                        if(menuPid == nodes[i].id){
                             nodes[i].checked = true;
                             ztree.updateNode(nodes[i]);
+                            return;
                         }
                     }
                 }
@@ -117,22 +133,23 @@
 
 
             $(".formCommit").click(function () {
-                console.log(treeChecked[0].id);
                 var menuData = {
-                    "menuName": $(".menuName").val(),
+                    "id": menuId,
+                    "parentId": ztree.getCheckedNodes()[0].id,
+                    "menuName": $(".menu_name").val(),
                     "url": $(".url").val(),
-                    "isDelete": $(".menuStatus").val(),
-                    "sort": $(".menuSort").val(),
-                    "type": $("#type").val(),
-
+                    "permission": $(".menu_permission").val(),
+                    "isDelete": $(".menu_type").val(),
+                    "sort": $(".menu_sort").val()
                 };
                 $.ajax({
                     type: "POST",
-                    url: '/menu/saveMenu',
+                    url: '/menu/updateMenu',
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(menuData),
                     success: function (res) {
+                        console.log(res)
                         if (res.code == 1) {
 
                             // window.location.reload();
