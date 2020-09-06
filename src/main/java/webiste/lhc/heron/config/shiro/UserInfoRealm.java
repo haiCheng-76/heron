@@ -10,13 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import webiste.lhc.heron.model.UserInfo;
-import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.UserInfoService;
 import webiste.lhc.heron.util.PasswordUtil;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @ProjectName: heron
@@ -34,9 +31,6 @@ public class UserInfoRealm extends AuthorizingRealm {
     private UserInfoService userInfoService;
 
 
-    @Autowired
-    private MenuService menuService;
-
 
     /**
      * 授权
@@ -49,14 +43,7 @@ public class UserInfoRealm extends AuthorizingRealm {
         UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
         log.info("principalCollection:{}", userInfo.toString());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        Set<String> permissionSet = new HashSet<>(1);
-        if (1 == userInfo.getId()) {
-            permissionSet.add("*:*:*");
-        } else {
-            permissionSet = menuService.listPermissionByUserId(userInfo.getId());
-        }
-        authorizationInfo.setStringPermissions(permissionSet);
-        return authorizationInfo;
+        return null;
     }
 
     /**

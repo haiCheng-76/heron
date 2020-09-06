@@ -17,4 +17,8 @@
         <result column="e_mail" jdbcType="VARCHAR" property="eMail"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
     </resultMap>
+
+    <select id="listPermissionByUserId" parameterType="java.lang.Long">
+
+    </select>
 </mapper>
