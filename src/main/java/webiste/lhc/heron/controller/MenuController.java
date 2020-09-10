@@ -66,17 +66,6 @@ public class MenuController extends AbstractController {
         return modelAndView;
     }
 
-//    @RequiresPermissions(value = "sys:menu:list")
-//    @GetMapping(value = "menuInfo")
-//    public ModelAndView menuInfo(@RequestParam(value = "parentId") long pid,
-//                                 @RequestParam(value = "type") String type) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("menu/menuInfo");
-//        modelAndView.addObject("menu", menuService.getMenuById(pid));
-//        modelAndView.addObject("pid", pid);
-//        return modelAndView;
-//    }
-
     @RequiresPermissions(value = "sys:menu:alter")
     @GetMapping(value = "menuUpdate")
     public ModelAndView menuUpdate(@RequestParam(value = "parentId") long pid,
@@ -121,7 +110,6 @@ public class MenuController extends AbstractController {
     public List<Map<String, Object>> getTreeData() {
         return menuService.listMenu();
     }
-
 
 
     @RequiresPermissions(value = "sys:menu:alter")

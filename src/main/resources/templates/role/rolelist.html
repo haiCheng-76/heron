@@ -19,7 +19,6 @@
     <!-- CSS files -->
     <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
-    <!--    <link href="https://cdn.staticfile.org/bootstrap-table/1.1.4/bootstrap-table.min.css" rel="stylesheet">-->
     <link href="/dist/css/bootstrap-table.min.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.6.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -173,7 +172,7 @@
             </div>
             <div class="row text-center align-items-center flex-row-reverse">
                 <div class="table-responsive">
-                    <table id="table"></table>
+                    <table id="role_table"></table>
                 </div>
             </div>
         </div>
@@ -221,7 +220,7 @@
 <script type="text/javascript" th:inline="none">
     document.body.style.display = "block";
     $(document).ready(function () {
-        $("#table").bootstrapTable({
+        $("#role_table").bootstrapTable({
             url: '/userInfo/userInfoIPage',
             pagination: true,
             sortable: false,
@@ -293,17 +292,17 @@
     }
 
     function del(id) {
-        $.ajax({
-            type: 'GET',
-            url: '/userInfo/deleteUser?id=' + id,
-            success: function (res) {
-                if (1 == res.code) {
-                    window.location.reload();
-                }
-            }, error: function () {
-                alert('失败')
-            }
-        });
+        // $.ajax({
+        //     type: 'GET',
+        //     url: '/userInfo/deleteUser?id=' + id,
+        //     success: function (res) {
+        //         if (1 == res.code) {
+        //             window.location.reload();
+        //         }
+        //     }, error: function () {
+        //         alert('失败')
+        //     }
+        // });
     }
 </script>
 </body>

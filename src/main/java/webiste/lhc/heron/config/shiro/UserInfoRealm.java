@@ -13,7 +13,9 @@ import webiste.lhc.heron.model.UserInfo;
 import webiste.lhc.heron.service.UserInfoService;
 import webiste.lhc.heron.util.PasswordUtil;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @ProjectName: heron
@@ -31,7 +33,6 @@ public class UserInfoRealm extends AuthorizingRealm {
     private UserInfoService userInfoService;
 
 
-
     /**
      * 授权
      *
@@ -43,7 +44,10 @@ public class UserInfoRealm extends AuthorizingRealm {
         UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
         log.info("principalCollection:{}", userInfo.toString());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        return null;
+        Set<String> permissionSet = new HashSet<>(1);
+        permissionSet.add("*:*:*");
+        authorizationInfo.setStringPermissions(permissionSet);
+        return authorizationInfo;
     }
 
     /**
