@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
  */
 public class CodeGenerator {
     public static void main(String[] args) throws InterruptedException, SQLException, IOException, InvalidConfigurationException, XMLParserException {
-        doCode("menu", "id");
+        doCode("role_info", "id");
     }
 
     /**
@@ -63,9 +63,9 @@ public class CodeGenerator {
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
         // jdbc配置
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
-        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://localhost:3306/heron?characterEncoding=utf-8&useSSL=false");
-        jdbcConnectionConfiguration.setUserId("root");
-        jdbcConnectionConfiguration.setPassword("");
+        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://cdb-3t9j3qtg.cd.tencentcdb.com:10178/heron?characterEncoding=utf-8&useSSL=false");
+        jdbcConnectionConfiguration.setUserId("lhc");
+        jdbcConnectionConfiguration.setPassword("lhc1043153738");
         jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
         context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
         // 生成实体类的存放路径
