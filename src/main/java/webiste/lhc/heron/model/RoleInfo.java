@@ -1,13 +1,11 @@
 package webiste.lhc.heron.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -45,15 +43,8 @@ public class RoleInfo implements Serializable {
     @Column(name = "update_time")
     private Date updateTime;
 
-
-    @JsonIgnore
     @Column(name = "is_delete")
     private Boolean deleted;
-
-    /**
-     * 权限ID列表
-     */
-    private Set<Long> permissionIds;
 
     private static final long serialVersionUID = 1L;
 }

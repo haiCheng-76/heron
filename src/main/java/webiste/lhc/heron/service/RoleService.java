@@ -2,10 +2,6 @@ package webiste.lhc.heron.service;
 
 import com.github.pagehelper.PageInfo;
 import webiste.lhc.heron.model.RoleInfo;
-import webiste.lhc.heron.vo.RoleVo;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @description:
@@ -14,14 +10,4 @@ import java.util.Map;
  */
 public interface RoleService {
     PageInfo<RoleInfo> pageRole(int current, int size);
-
-    void insertRole(RoleVo roleVo);
-
-    void deleteRole(long id);
-
-    RoleInfo getRoleInfoById(long id);
-
-    void updateRoleInfo(RoleVo roleVo);
-
-    List<Map<String, Object>> listRole();
 }

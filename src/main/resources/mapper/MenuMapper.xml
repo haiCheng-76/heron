@@ -61,6 +61,6 @@
     </select>
     <select id="listMenus" resultType="java.util.Map">
         SELECT id, parent_id AS pid, menu_name AS title, url, permission, type, is_delete as isDelete
-        FROM menu
+        FROM menu where is_delete = false
     </select>
 </mapper>

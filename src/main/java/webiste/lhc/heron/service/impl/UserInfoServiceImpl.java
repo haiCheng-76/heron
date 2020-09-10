@@ -53,8 +53,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public PageInfo<UserInfo> pageUserInfo(int current, int size) {
         PageHelper.offsetPage(current, size);
-        PageInfo<UserInfo> userInfoPageInfo = new PageInfo<>(userInfoMapper.selectAll());
-        return userInfoPageInfo;
+        return new PageInfo<>(userInfoMapper.selectAll());
     }
 
     @Override
