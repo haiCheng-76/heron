@@ -171,34 +171,16 @@
                     </div>
                 </div>
             </div>
-            <div class="row text-center align-items-center flex-row-reverse">
-                <div class="table-responsive">
-                    <table id="table"></table>
+            <div class="card">
+                <div class="card-body border-bottom py-3">
+                    <div class="d-flex">
+                        <div class="text-muted">
+                            <button type="button" class="btn btn-primary btn-block">添加</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <hr>
-        <div class="container">
-            <div class="row align-items-center flex-row-reverse">
-                <div class="col-lg-auto ml-lg-auto">
-                    <ul class="list-inline list-inline-dots mb-0">
-                        <li class="list-inline-item">
-                            <a href="./docs/index.html" class="link-secondary">文档</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="./faq.html" class="link-secondary">FAQ</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="https://github.com/tabler/tabler" target="_blank"
-                               class="link-secondary">源代码
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                    Copyright © 2020
-                    <a href="." class="link-secondary">Tabler</a>.
-                    All rights reserved.
+                <div class="table-responsive" style="padding: 10px">
+                    <table id="user_table" class="table table-striped table-bordered"></table>
                 </div>
             </div>
         </div>
@@ -221,7 +203,7 @@
 <script type="text/javascript" th:inline="none">
     document.body.style.display = "block";
     $(document).ready(function () {
-        $("#table").bootstrapTable({
+        $("#user_table").bootstrapTable({
             url: '/userInfo/userInfoIPage',
             pagination: true,
             sortable: false,
@@ -230,13 +212,10 @@
             totalField: 'total',
             dataField: 'list',
             sidePagination: 'server',
+            pageSize: 10,
             search: false,
-            buttonsAlign: 'left',
             idField: 'id',
-            paginationNextText: '下一页',
-            paginationPreText: '下一页',
-            showRefresh: true,
-            height: 500,
+            showRefresh: false,
             columns: [{
                 field: 'userName',
                 title: '用户名'
