@@ -61,6 +61,26 @@
     </select>
     <select id="listMenus" resultType="java.util.Map">
         SELECT id, parent_id AS pid, menu_name AS title, url, permission, type, is_delete as isDelete
-        FROM menu where is_delete = false
+        FROM menu
+        where is_delete = false
+    </select>
+
+
+    <select id="getMenu" resultType="webiste.lhc.heron.vo.ZtreeVo">
+        SELECT id,
+               parent_id AS pId,
+               menu_name AS NAME
+        FROM menu
+        WHERE is_delete = FALSE and type in
+        <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        ORDER BY sort
+    </select>
+    <select id="getCount" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        SELECT COUNT(1)
+        from menu
+        where is_delete = FALSE
+          AND parent_id = #{id}
     </select>
 </mapper>

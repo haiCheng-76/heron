@@ -3,16 +3,28 @@ package webiste.lhc.heron.vo;
 import java.io.Serializable;
 
 /**
- * @description:
+ * @description: ztree返回类 用于树形显示菜单信息
  * @author: 582895699@qq.com
  * @time: 2020/9/3 下午 11:56
  */
 public class ZtreeVo implements Serializable {
 
     private static final long serialVersionUID = 1189444780140043125L;
+    /**
+     * id
+     */
     private Long id;
+    /**
+     * 父id
+     */
     private Long pId;
+    /**
+     * 菜单名称
+     */
     private String name;
+    /**
+     * 是否有子元素
+     */
     private Boolean isParent;
 
     public ZtreeVo() {

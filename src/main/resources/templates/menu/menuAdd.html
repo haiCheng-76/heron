@@ -121,17 +121,21 @@
             };
             var tree;
             $(document).ready(function () {
+                var data = ["D"];
                 var treeData = null;
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: url,
                     async: false,
                     dataType: 'json',
+                    contentType: "application/json",
+                    data:JSON.stringify(data),
                     success: function (res) {
                         treeData = res;
                     }
                 });
                 tree = $.fn.zTree.init($("#treeDemo"), setting, treeData);
+                tree.expandAll(true);
 
             });
 

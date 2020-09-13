@@ -104,10 +104,15 @@ public class MenuController extends AbstractController {
     }
 
 
+    /**
+     * layui-treeTable获取数据
+     *
+     * @return List<Map < String, Object>>
+     */
     @RequiresPermissions(value = "sys:menu:list")
     @ResponseBody
-    @GetMapping(value = "getTreeData")
-    public List<Map<String, Object>> getTreeData() {
+    @GetMapping(value = "getTreeTable")
+    public List<Map<String, Object>> getTreeTable() {
         return menuService.listMenu();
     }
 
@@ -122,11 +127,12 @@ public class MenuController extends AbstractController {
     }
 
 
-    @RequiresPermissions(value = "sys:menu:list")
+        @RequiresPermissions(value = "sys:menu:list")
     @ResponseBody
-    @GetMapping(value = "getZtreeMenu")
-    public List<ZtreeVo> getZtreeMenu() {
-        return menuService.listDataToTree();
+    @PostMapping(value = "getZtreeMenu")
+    public List<ZtreeVo> getZtreeMenu(@RequestBody List<String> strings) {
+        log.info("strings:{}", strings);
+        return menuService.listDataToTree(strings);
     }
 
 }

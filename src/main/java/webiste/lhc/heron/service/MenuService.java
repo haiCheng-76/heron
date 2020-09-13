@@ -27,7 +27,7 @@ public interface MenuService {
 
     void delMenuById(long id);
 
-    List<ZtreeVo> listDataToTree();
+    List<ZtreeVo> listDataToTree(List<String> types);
 
     void insertMenu(Menu menu);
 
