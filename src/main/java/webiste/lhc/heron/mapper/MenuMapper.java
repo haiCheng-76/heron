@@ -3,6 +3,7 @@ package webiste.lhc.heron.mapper;
 import org.apache.ibatis.annotations.Param;
 import webiste.lhc.heron.config.mapperconfig.BaseMapper;
 import webiste.lhc.heron.model.Menu;
+import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,9 @@ public interface MenuMapper extends BaseMapper<Menu> {
     int menuCount(long id);
 
     List<Map<String, Object>> listMenus();
+
+
+    List<ZtreeVo> getMenu(@Param(value = "types") List<String> types);
+
+    int getCount(@Param(value = "id") long id);
 }

@@ -42,15 +42,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
+                                    <label class="form-label required">权限字符</label>
+                                    <div>
+                                        <input type="text" class="form-control permission-str">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
                                     <label class="form-label">排序</label>
                                     <div>
-                                        <input type="number" min="0" class="form-control role_sort">
+                                        <input type="number" min="0" class="form-control menuSort">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">备注</label>
                                     <div>
-                                        <input type="text" class="form-control role_remark">
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
@@ -83,7 +89,7 @@
         check: {
             enable: true,
             chkStyle: "checkbox",
-            chkboxType: {"Y": "s", "N": "s"}
+            chkboxType: { "Y" : "s", "N" : "s" }
         }, data: {
             simpleData: {
                 enable: true
@@ -92,7 +98,7 @@
     };
     var tree;
     $(document).ready(function () {
-        var data = ["D", "M", "B"];
+        var data = ["D","M"];
         var treeData = null;
         $.ajax({
             type: "POST",
@@ -116,25 +122,25 @@
             layer.msg("请选择归属关系!");
             return;
         }
-        let arr = [];
-        for (var i = 0; i < treeChecked.length; i++) {
-            arr.push(treeChecked[i].id)
-        }
-        var data = {
-            "roleName": $(".role-name").val(),
-            "sort": $(".role_sort").val(),
-            "remark": $(".role_remark").val(),
-            "ids": arr
-        };
+        var menuData = {
+            "parentId": treeChecked[0].id,
+            "menuName": $(".menuName").val(),
+            "url": $(".url").val(),
+            "isDelete": $(".menuStatus").val(),
+            "sort": $(".menuSort").val(),
+            "type": $("#type").val(),
 
+        };
         $.ajax({
             type: "POST",
-            url: '/role/saveRole',
+            url: '/menu/saveMenu',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(data),
+            data: JSON.stringify(menuData),
             success: function (res) {
                 if (res.code == 1) {
+
+                    // window.location.reload();
                     window.parent.location.reload();
 
                 } else {
