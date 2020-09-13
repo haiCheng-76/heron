@@ -176,7 +176,7 @@
                 <div class="card-body border-bottom py-3">
                     <div class="d-flex">
                         <div class="text-muted">
-                            <button type="button" class="btn btn-primary btn-block">添加</button>
+                            <button type="button" class="btn btn-primary btn-block add-role">添加</button>
                         </div>
                     </div>
                 </div>
@@ -281,6 +281,13 @@
         //         alert('失败')
         //     }
         // });
+    }
+
+    $(".add-role").click(function () {
+        layuiIframe("新增角色", "/role/addRole");
+    });
+    function addRole() {
+
     }
 </script>
 </body>

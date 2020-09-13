@@ -43,4 +43,9 @@ public class RoleController extends AbstractController {
         return modelAndView;
     }
 
+    @GetMapping(value = "addRole")
+    public String addRole() {
+        return "role/addRole";
+    }
+
 }
