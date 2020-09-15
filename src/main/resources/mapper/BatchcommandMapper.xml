@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webiste.lhc.heron.mapper.BatchcommandMapper">
+  <resultMap id="BaseResultMap" type="webiste.lhc.heron.model.Batchcommand">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="isDelete" jdbcType="BIT" property="isdelete" />
+    <result column="updateDate" jdbcType="TIMESTAMP" property="updatedate" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="areas" jdbcType="VARCHAR" property="areas" />
+    <result column="commandName" jdbcType="VARCHAR" property="commandname" />
+    <result column="executed" jdbcType="BIT" property="executed" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="taskId" jdbcType="VARCHAR" property="taskid" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="autoUse" jdbcType="BIT" property="autouse" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="approveStatus" jdbcType="VARCHAR" property="approvestatus" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="serialNumbers" jdbcType="LONGVARCHAR" property="serialnumbers" />
+    <result column="userIds" jdbcType="LONGVARCHAR" property="userids" />
+    <result column="commandBody" jdbcType="LONGVARCHAR" property="commandbody" />
+  </resultMap>
+</mapper>

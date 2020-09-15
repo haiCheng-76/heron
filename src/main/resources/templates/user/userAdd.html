@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -20,8 +20,6 @@
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
     <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
     <link href="/dist/css/metroStyle/metroStyle.css" rel="stylesheet"/>
-    <link href="https://cdn.bootcdn.net/ajax/libs/AlertifyJS/0.0.0/css/alertify.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcdn.net/ajax/libs/AlertifyJS/0.0.0/css/themes/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             display: none;
@@ -40,41 +38,41 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label required">姓名</label>
                                     <div>
-                                        <input type="text" class="form-control username">
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">账户名</label>
                                     <div>
-                                        <input type="text" class="form-control account">
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">密码</label>
                                     <div>
-                                        <input type="password" class="form-control pwd1">
+                                        <input type="password" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">再次输入密码</label>
                                     <div>
-                                        <input type="password" class="form-control pwd2">
+                                        <input type="password" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">状态</label>
+                                    <div>
+                                        <select class="form-select menuStatus">
+                                            <option value="">请选择</option>
+                                            <option value="true">失效</option>
+                                            <option value="false">有效</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">邮箱</label>
                                     <div>
-                                        <input type="email" class="form-control mail">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="form-label">角色</div>
-                                    <div class="form-check-inline">
-                                        <label class="form-check form-check-inline" th:each="role:${roleList}">
-                                            <input class="form-check-input role_val" type="radio" th:value="${role.id}"
-                                                   name="role"/>
-                                            <span class="form-check-label" th:text="${role.name}"></span>
-                                        </label>
+                                        <input type="email" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-footer">
@@ -89,7 +87,6 @@
     </div>
 </div>
 </div>
-<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
 <!-- Libs JS -->
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.7/jquery.min.js"></script>
 <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -99,39 +96,6 @@
 <script src="/dist/js/tabler.min.js"></script>
 <script>
     document.body.style.display = "block";
-    $(".formCommit").click(function () {
-        var pwd1 = $(".pwd1").val();
-        var pwd2 = $(".pwd2").val();
-        if (pwd1 != null && pwd2 != null) {
-            if (pwd1 != pwd2) {
-                layer.msg('两次输入的密码不同');
-                return;
-            }
-        }
-        var data = {
-            "userName": $(".username").val(),
-            "account": $(".account").val(),
-            "password": pwd1,
-            "mail": $(".mail").val(),
-            "roleId": $("input[name='role']:checked").val()
-        };
-        $.ajax({
-            type: 'POST',
-            url: '/userInfo/addUserInfo',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (res) {
-                if (1 == res.code) {
-                    window.parent.location.reload();
-                } else {
-                    layer.msg('添加失败');
-                }
-            }, error: function () {
-                layer.msg('添加失败');
-            }
-        });
-    });
 </script>
 </body>
 </html>

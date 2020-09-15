@@ -175,7 +175,7 @@
                 <div class="card-body border-bottom py-3">
                     <div class="d-flex">
                         <div class="text-muted">
-                            <button type="button" class="btn btn-primary btn-block">添加</button>
+                            <button type="button" class="btn btn-primary btn-block user-add">添加</button>
                         </div>
                     </div>
                 </div>
@@ -284,6 +284,11 @@
             }
         });
     }
+
+
+    $(".user-add").click(function () {
+        layuiIframe("新增用户信息", "/userInfo/userAdd");
+    });
 </script>
 </body>
 </html>
