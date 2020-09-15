@@ -83,4 +83,14 @@ public class UserInfoController extends AbstractController {
         userInfoService.deleteUser(id);
         return Resp.ok();
     }
+
+
+    /**
+     * 跳转新增用户界面
+     * @return
+     */
+    @GetMapping(value = "userAdd")
+    public String userAdd() {
+        return "user/userAdd";
+    }
 }
