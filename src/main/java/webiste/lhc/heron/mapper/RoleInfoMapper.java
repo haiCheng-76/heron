@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface RoleInfoMapper extends BaseMapper<RoleInfo> {
     void addRolePer(@Param(value = "roleId") long roleId,@Param(value = "ids") List<Integer> ids);
+    void delRolePer(@Param(value = "roleId") long roleId);
 }

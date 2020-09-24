@@ -216,8 +216,8 @@
             search: false,
             buttonsAlign: 'left',
             idField: 'id',
-            paginationNextText: '下一页',
-            paginationPreText: '下一页',
+            // paginationNextText: '下一页',
+            // paginationPreText: '下一页',
             showRefresh: false,
             // height: 500,
             columns: [{
@@ -267,17 +267,17 @@
     }
 
     function del(id) {
-        // $.ajax({
-        //     type: 'GET',
-        //     url: '/userInfo/deleteUser?id=' + id,
-        //     success: function (res) {
-        //         if (1 == res.code) {
-        //             window.location.reload();
-        //         }
-        //     }, error: function () {
-        //         alert('失败')
-        //     }
-        // });
+        $.ajax({
+            type: 'GET',
+            url: '/role/delRole?id=' + id,
+            success: function (res) {
+                if (1 == res.code) {
+                    window.location.reload();
+                }
+            }, error: function () {
+                alert('失败')
+            }
+        });
     }
 
     $(".add-role").click(function () {
