@@ -228,13 +228,10 @@
                 title: '描述'
             }, {
                 field: 'deleted',
-                title: '是否删除',
+                title: '状态',
                 formatter: function accountFormatter(value, row) {
                     return value ? '失效' : '有效';
                 }
-            }, {
-                field: 'sort',
-                title: '排序'
             }, {
                 field: 'createTime',
                 title: '创建时间'
@@ -286,6 +283,7 @@
     $(".add-role").click(function () {
         layuiIframe("新增角色", "/role/addRole");
     });
+
     function addRole() {
 
     }
