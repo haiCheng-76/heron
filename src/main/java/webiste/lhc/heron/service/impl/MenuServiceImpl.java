@@ -89,7 +89,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<ZtreeVo> listDataToTree(List<String> types) {
         List<ZtreeVo> ztreeVoList = new ArrayList<>();
-        ztreeVoList.add(new ZtreeVo(0L, 999L, "根节点", true));
+//        ztreeVoList.add(new ZtreeVo(0L, 999L, "根节点", true));
         ztreeVoList.addAll(menuMapper.getMenu(types));
         for (ZtreeVo ztreeVo : ztreeVoList) {
             ztreeVo.setParent(menuMapper.getCount(ztreeVo.getId()) > 0);

@@ -3,14 +3,13 @@ package webiste.lhc.heron.controller;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import webiste.lhc.heron.model.RoleInfo;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.RoleService;
+import webiste.lhc.heron.util.Resp;
+import webiste.lhc.heron.vo.RoleVo;
 
 /**
  * @description:
@@ -46,6 +45,13 @@ public class RoleController extends AbstractController {
     @GetMapping(value = "addRole")
     public String addRole() {
         return "role/addRole";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "saveRole")
+    public Resp saveRole(@RequestBody RoleVo vo) {
+        roleService.insertRole(vo);
+        return Resp.ok();
     }
 
 }
