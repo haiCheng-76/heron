@@ -20,4 +20,9 @@
             (#{roleId},#{item})
         </foreach>
     </insert>
+    <delete id="delRolePer" parameterType="java.lang.Long">
+        DELETE
+        FROM role_menu
+        WHERE role_id = #{roleId}
+    </delete>
 </mapper>

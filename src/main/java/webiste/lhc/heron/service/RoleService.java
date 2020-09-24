@@ -13,4 +13,6 @@ public interface RoleService {
     PageInfo<RoleInfo> pageRole(int current, int size);
 
     void insertRole(RoleVo roleVo);
+
+    void deleteRole(long id);
 }
