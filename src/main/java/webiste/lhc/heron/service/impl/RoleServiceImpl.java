@@ -48,4 +48,11 @@ public class RoleServiceImpl implements RoleService {
         roleInfoMapper.insert(roleInfo);
         roleInfoMapper.addRolePer(roleInfo.getId(), roleVo.getIds());
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteRole(long id) {
+        roleInfoMapper.deleteByPrimaryKey(id);
+        roleInfoMapper.delRolePer(id);
+    }
 }
