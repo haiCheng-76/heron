@@ -2,6 +2,7 @@ package webiste.lhc.heron.service;
 
 import com.github.pagehelper.PageInfo;
 import webiste.lhc.heron.model.RoleInfo;
+import webiste.lhc.heron.vo.RoleVo;
 
 /**
  * @description:
@@ -10,4 +11,6 @@ import webiste.lhc.heron.model.RoleInfo;
  */
 public interface RoleService {
     PageInfo<RoleInfo> pageRole(int current, int size);
+
+    void insertRole(RoleVo roleVo);
 }
