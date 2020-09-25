@@ -74,9 +74,6 @@
                                     <label class="form-label required">菜单权限</label>
                                     <ul id="menuPermission" class="ztree"></ul>
                                 </div>
-                                <div class="form-footer">
-                                    <button type="button" class="btn btn-primary formCommit">提交</button>
-                                </div>
                             </form>
                         </div>
                     </div>
@@ -94,14 +91,14 @@
 <!-- Tabler Core -->
 <script src="/dist/js/tabler.min.js"></script>
 <script th:inline="javascript">
+
     var roleId = '[[${data.id}]]';
-    // alert("id:"+roleId);
     document.body.style.display = "block";
     var setting = {
         check: {
             enable: true,
             chkStyle: "checkbox",
-            chkboxType:  { "Y" : "p", "N" : "s" }
+            chkboxType: {"Y": "s", "N": "s"}
         }, data: {
             simpleData: {
                 enable: true
@@ -136,51 +133,11 @@
         for (var i = 0; i < nodes.length; i++) {
             for (var j = 0; j < permissionIds.length; j++) {
                 if (nodes[i].id == permissionIds[j]) {
-                    console.log(nodes[i].id)
                     tree.checkNode(nodes[i], true, true);
                 }
             }
         }
 
-    });
-
-    $(".formCommit").click(function () {
-        treeChecked = tree.getCheckedNodes();
-        if (treeChecked.length == 0) {
-            layer.msg("请选择归属关系!");
-            return;
-        }
-        let arr = [];
-        for (var i = 0; i < treeChecked.length; i++) {
-            arr.push(treeChecked[i].id)
-        }
-        console.log(arr)
-        var data = {
-            "id": roleId,
-            "roleName": $(".role-name").val(),
-            "sort": $(".role_sort").val(),
-            "remark": $(".role_remark").val(),
-            "ids": arr
-        };
-
-        $.ajax({
-            type: "POST",
-            url: '/role/updateRole',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (res) {
-                if (res.code == 1) {
-                    window.parent.location.reload();
-
-                } else {
-                    layer.msg(res.message);
-                }
-            },
-            error: function (res) {
-                layer.msg("失败");
-            }
-        });
     });
 </script>
 </body>

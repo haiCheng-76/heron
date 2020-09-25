@@ -25,4 +25,12 @@
         FROM role_menu
         WHERE role_id = #{roleId}
     </delete>
+
+    <select id="getPermissionIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT t2.menu_id
+        FROM role_info AS t1,
+             role_menu AS t2
+        WHERE t1.id = t2.role_id
+          AND t1.id = #{roleId}
+    </select>
 </mapper>

@@ -7,8 +7,6 @@ function delMenu(id) {
         dataType: 'json',
         async: false,
         success: function (res) {
-            // console.log(res);
-            // console.log(res.code == 0);
             fail = (res.code == 0);
         }
     });
