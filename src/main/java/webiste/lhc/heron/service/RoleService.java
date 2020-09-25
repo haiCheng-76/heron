@@ -15,4 +15,6 @@ public interface RoleService {
     void insertRole(RoleVo roleVo);
 
     void deleteRole(long id);
+
+    RoleInfo getRoleInfoById(long id);
 }

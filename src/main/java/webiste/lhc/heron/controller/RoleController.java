@@ -61,4 +61,19 @@ public class RoleController extends AbstractController {
         return Resp.ok();
     }
 
+    @ResponseBody
+    @GetMapping(value = "getRole")
+    public Resp getRole(@RequestParam(value = "id") long id) {
+        RoleInfo roleInfo = roleService.getRoleInfoById(id);
+        return Resp.ok(roleInfo);
+    }
+
+    @GetMapping(value = "updateRole")
+    public ModelAndView updateRole(@RequestParam(value = "id") long id) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("role/updateRole");
+        modelAndView.addObject("data", roleService.getRoleInfoById(id));
+        return modelAndView;
+    }
+
 }

@@ -100,7 +100,6 @@
                 password: $(".password").val()
             },
             success: function (resp) {
-                console.log(resp);
                 if (resp.code == 200) {
                     window.location.href = "/index";
                 } else {
@@ -108,7 +107,6 @@
                 }
             },
             error: function (resp) {
-                console.log(resp)
             }
         })
     });
