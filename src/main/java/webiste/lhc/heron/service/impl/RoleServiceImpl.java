@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.mapper.RoleInfoMapper;
 import webiste.lhc.heron.model.RoleInfo;
 import webiste.lhc.heron.service.RoleService;
 import webiste.lhc.heron.vo.RoleVo;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @description:
@@ -25,6 +27,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleInfoMapper roleInfoMapper;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     @Override
     public PageInfo<RoleInfo> pageRole(int current, int size) {
@@ -54,5 +59,13 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(long id) {
         roleInfoMapper.deleteByPrimaryKey(id);
         roleInfoMapper.delRolePer(id);
+    }
+
+    @Override
+    public RoleInfo getRoleInfoById(long id) {
+        RoleInfo roleInfo = roleInfoMapper.selectByPrimaryKey(id);
+        Set<Long> ids = roleInfoMapper.getPermissionIds(id);
+        roleInfo.setPermissionIds(ids);
+        return roleInfo;
     }
 }

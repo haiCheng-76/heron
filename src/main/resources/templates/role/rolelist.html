@@ -216,8 +216,6 @@
             search: false,
             buttonsAlign: 'left',
             idField: 'id',
-            // paginationNextText: '下一页',
-            // paginationPreText: '下一页',
             showRefresh: false,
             // height: 500,
             columns: [{
@@ -244,11 +242,9 @@
                 align: 'left',
                 formatter: function operation(value, row) {
                     if (row.isDelete) {
-                        return '<button type="button" class="btn btn-info btn-sm" onclick="show(' + row.id + ')">查看</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                            '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>';
+                        return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>';
                     } else {
-                        return '<button type="button" class="btn btn-info btn-sm" onclick="show(' + row.id + ')">查看</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                            '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
                             '<button type="button" class="btn btn-warning btn-sm" onclick="del(' + row.id + ')">刪除</button>';
                     }
                 }
@@ -256,14 +252,10 @@
         });
     });
 
-    function show(id) {
-        alert(id);
-        // layuiIframe("查看", "/userInfo/getUserInfo?id=" + id);
-    }
+
 
     function edit(id) {
-        alert(id);
-        // layuiIframe("编辑", "/userInfo/updateUserInfo?id=" + id);
+        layuiIframe("查看", "/role/updateRole?id=" + id);
     }
 
     function del(id) {
