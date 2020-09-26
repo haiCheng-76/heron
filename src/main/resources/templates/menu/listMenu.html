@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -20,6 +20,9 @@
         <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
         <link href="/dist/css/demo.min.css" rel="stylesheet"/>
         <link href="/dist/css/layui.css" rel="stylesheet"/>
+        <link href="https://cdn.bootcdn.net/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css"
+              rel="stylesheet">
+        <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.18.0/bootstrap-table.min.css" rel="stylesheet">
         <style>
             body {
                 display: none;
@@ -176,21 +179,22 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-body border-bottom py-3">
-                            <div class="d-flex">
-                                <div class="ml-auto text-muted">
-                                    <div class="ml-2 d-inline-block">
-                                        <shiro:hasPermission name="sys:menu:add">
-                                            <button id="addMenu" type="button" class="btn btn-info btn-pill btn-sm">新增
-                                            </button>
-                                        </shiro:hasPermission>
+                        <div class="table-responsive" style="padding: 10px">
+                            <div id="toolbar">
+                                <button class="btn btn-primary menu_add">
+                                    新增
+                                </button>
 
-                                    </div>
-                                </div>
+                                <button class="btn btn-primary menu_edit">
+                                    编辑
+                                </button>
+
+                                <button class="btn btn-primary menu_del">
+                                    删除
+                                </button>
                             </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="layui-table layui-form" id="tree-table"></table>
+                            <table id="user_table" data-toolbar="#toolbar"
+                                   class="table table-striped table-bordered"></table>
                         </div>
                     </div>
                 </div>
@@ -220,101 +224,81 @@
                 </div>
             </div>
         </div>
-        <!-- Libs JS -->
-        <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Tabler Core -->
-        <script src="/dist/js/tabler.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+        <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.18.0/bootstrap-table.min.js"></script>
+        <script src="https://cdn.bootcdn.net/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script>
+        <script src="/dist/js/bootstrap-table-treegrid.min.js"></script>
+        <script src="/dist/js/tabler.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <script src="/dist/js/base.js"></script>
         <script src="/dist/js/menu.js"></script>
-        <script type="text/javascript" src="/layui/layui.js"></script>
-        <script type="text/javascript" th:inline="none">
+        <script type="text/javascript">
             document.body.style.display = "block";
-            layui.config({
-                base: '/',
-            })
-            layui.use(['treeTable', 'layer', 'code', 'form'], function () {
-                var o = layui.$,
-                    form = layui.form,
-                    layer = layui.layer,
-                    treeTable = layui.treeTable;
-                var re = treeTable.render({
-                    elem: '#tree-table',
+            var $table = $('#user_table')
+            $(function () {
+                $table.bootstrapTable({
                     url: '/menu/getTreeTable',
-                    icon_key: 'title',
-                    is_checkbox: false,
-                    text: {none: '无数据'},
-                    page: false,
-                    end: function (e) {
-                        form.render();
-                    },
-                    cols: [
+                    idField: 'id',
+                    showColumns: true,
+                    treeEnable: true,
+                    treeShowField: 'title',
+                    parentIdField: 'pid',
+                    columns: [{radio: true},
                         {
-                            key: 'id',
-                            title: '编号',
-                            width: '100px',
-                            align: 'center',
+                            field: 'title',
+                            title: '名称'
                         },
                         {
-                            key: 'title',
-                            title: '名称',
-                            width: '200px'
-                        },
-                        {
-                            key: 'url',
-                            title: '地址',
-                            width: '200px',
-                            align: 'center'
-                        },
-                        {
-                            key: 'permission',
-                            title: '权限',
-                            width: '200px',
-                            align: 'center'
-                        },
-                        {
-                            key: 'type',
+                            field: 'type',
                             title: '类型',
-                            width: '200px',
-                            align: 'center',
-                            template: function (item) {
-                                var type = item.type;
-                                if (type == 'D') {
+                            formatter: function formatter(value, row) {
+                                if (value == 'D') {
                                     return '<a class="btn btn-primary btn-pill btn-sm" style="cursor: default;color: #ffffff">目录</a>';
                                 }
-                                if (type == 'M') {
+                                if (value == 'M') {
                                     return '<a class="btn btn-success btn-pill btn-sm" style="cursor: default;color: #ffffff">菜单</a>';
                                 }
-                                if (type == 'B') {
+                                if (value == 'B') {
                                     return '<a class="btn btn-info btn-pill btn-sm" style="cursor: default;color: #ffffff">按钮</a>';
                                 }
                             }
                         },
                         {
-                            key: 'isDelete',
-                            title: '状态',
-                            width: '200px',
-                            align: 'center',
-                            template: function (item) {
-                                var status = item.isDelete;
-                                if (status) {
-                                    return '<a class="btn btn-outline-danger active btn-sm" style="cursor: default;color: #ffffff">失效</a>';
-                                } else {
-                                    return '<a class="btn btn-outline-success active btn-sm" style="cursor: default;color: #ffffff">有效</a>';
-                                }
-                            }
+                            field: 'url',
+                            title: '地址',
                         },
                         {
-                            title: '操作',
-                            align: 'left',
-                            width: '200px',
-                            template: function (item) {
-                                return '<shiro:hasPermission name="sys:menu:alter"><button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button></shiro:hasPermission>&nbsp;&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:menu:del"><button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button></shiro:hasPermission>';
+                            field: 'permission',
+                            title: '权限'
+                        },
+                        {
+                            field: 'isDelete',
+                            title: '状态',
+                            formatter: function formatter(value, row) {
+                                if (1 == value) {
+                                    return "冻结";
+                                }
+                                if (0 == value) {
+                                    return "启用";
+                                }
                             }
                         }
-                    ]
-                });
+                    ],
+
+                    onPostBody: function () {
+                        var columns = $table.bootstrapTable('getOptions').columns
+
+                        if (columns && columns[0][1].visible) {
+                            $table.treegrid({
+                                treeColumn: 1,
+                                onChange: function () {
+                                    $table.bootstrapTable('resetView')
+                                }
+                            })
+                        }
+                    }
+                })
             })
 
             function edit(id, pid, type) {
@@ -330,9 +314,25 @@
                 window.location.reload();
             };
 
-            $("#addMenu").click(function () {
+            $(".menu_add").click(function () {
                 layuiIframe("新增", "/menu/addMenu");
             });
+
+            $(".menu_edit").click(function () {
+                var row = $table.bootstrapTable('getSelections')[0];
+                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + row.pid + "&id=" + row.id + "&type=" + row.type);
+            });
+
+            $(".menu_del").click(function () {
+                var row = $table.bootstrapTable('getSelections')[0];
+                if (delMenu(row.id)) {
+                    layer.msg("请先删除子菜单");
+                    return;
+                }
+                ;
+                window.location.reload();
+            });
+
         </script>
     </body>
 </html>
