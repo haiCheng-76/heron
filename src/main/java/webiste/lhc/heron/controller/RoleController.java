@@ -55,6 +55,13 @@ public class RoleController extends AbstractController {
     }
 
     @ResponseBody
+    @PostMapping(value = "updateRole")
+    public Resp updateRole(@RequestBody RoleVo vo) {
+        roleService.updateRoleInfo(vo);
+        return Resp.ok();
+    }
+
+    @ResponseBody
     @GetMapping(value = "delRole")
     public Resp delRole(@RequestParam(value = "id") long id) {
         roleService.deleteRole(id);

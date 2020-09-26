@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import webiste.lhc.heron.model.RoleInfo;
 import webiste.lhc.heron.vo.RoleVo;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @description:
  * @author: 582895699@qq.com
@@ -17,4 +20,8 @@ public interface RoleService {
     void deleteRole(long id);
 
     RoleInfo getRoleInfoById(long id);
+
+    void updateRoleInfo(RoleVo roleVo);
+
+    List<Map<String, Object>> listRole();
 }

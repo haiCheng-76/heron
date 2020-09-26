@@ -18,7 +18,8 @@
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
     </resultMap>
 
-    <select id="listPermissionByUserId" parameterType="java.lang.Long">
-
-    </select>
+    <insert id="addUserRole">
+        INSERT INTO user_role (role_id, user_id)
+        VALUES (#{roleId}, #{userId})
+    </insert>
 </mapper>

@@ -129,7 +129,7 @@
                     async: false,
                     dataType: 'json',
                     contentType: "application/json",
-                    data:JSON.stringify(data),
+                    data: JSON.stringify(data),
                     success: function (res) {
                         treeData = res;
                     }
@@ -162,7 +162,7 @@
 
             $(".formCommit").click(function () {
                 treeChecked = tree.getCheckedNodes();
-                if (treeChecked.length == 0){
+                if (treeChecked.length == 0) {
                     layer.msg("请选择归属关系!");
                     return;
                 }
@@ -182,9 +182,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(menuData),
                     success: function (res) {
-                        if (res.code == 1){
-
-                            // window.location.reload();
+                        if (res.code == 1) {
                             window.parent.location.reload();
 
                         } else {

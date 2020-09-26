@@ -33,15 +33,20 @@ public class MenuController extends AbstractController {
     private MenuService menuService;
 
 
-    @ResponseBody
-    @RequiresPermissions(value = {"sys:menu:view"})
-    @GetMapping(value = "listMenus")
-    public List<Menu> listMens() {
-        List<Menu> menuList = menuService.getMenuByUserId(RoleConstant.ADMIN_USER_ID);
-        log.info("data:[{}]", JsonUtil.toJsonString(menuList));
-        return menuList;
-    }
+//    @ResponseBody
+//    @RequiresPermissions(value = {"sys:menu:view"})
+//    @GetMapping(value = "listMenus")
+//    public List<Menu> listMens() {
+//        List<Menu> menuList = menuService.getMenuByUserId(RoleConstant.ADMIN_USER_ID);
+//        log.info("data:[{}]", JsonUtil.toJsonString(menuList));
+//        return menuList;
+//    }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     @RequiresPermissions(value = "sys:menu:list")
     @GetMapping(value = "menuPage")
     public ModelAndView listDir(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
@@ -66,6 +71,13 @@ public class MenuController extends AbstractController {
         return modelAndView;
     }
 
+    /**
+     * 跳转菜单编辑界面
+     * @param pid
+     * @param id
+     * @param type
+     * @return
+     */
     @RequiresPermissions(value = "sys:menu:alter")
     @GetMapping(value = "menuUpdate")
     public ModelAndView menuUpdate(@RequestParam(value = "parentId") long pid,
@@ -81,7 +93,7 @@ public class MenuController extends AbstractController {
     }
 
     /**
-     * 通过ID删除菜单
+     * 删除菜单
      *
      * @param menuId
      * @return
@@ -94,6 +106,11 @@ public class MenuController extends AbstractController {
         return Resp.ok();
     }
 
+    /**
+     * 新增菜单
+     * @param menu
+     * @return
+     */
     @RequiresPermissions(value = "sys:menu:add")
     @ResponseBody
     @PostMapping(value = "saveMenu")
@@ -105,7 +122,7 @@ public class MenuController extends AbstractController {
 
 
     /**
-     * layui-treeTable获取数据
+     * layui-treeTable树形菜单
      *
      * @return List<Map < String, Object>>
      */
@@ -117,6 +134,11 @@ public class MenuController extends AbstractController {
     }
 
 
+    /**
+     *  编辑菜单
+     * @param menu
+     * @return
+     */
     @RequiresPermissions(value = "sys:menu:alter")
     @ResponseBody
     @PostMapping(value = "updateMenu")
@@ -126,8 +148,11 @@ public class MenuController extends AbstractController {
         return Resp.ok();
     }
 
-
-        @RequiresPermissions(value = "sys:menu:list")
+    /**
+     * ztree树形菜单
+     * @param strings
+     * @return
+     */
     @ResponseBody
     @PostMapping(value = "getZtreeMenu")
     public List<ZtreeVo> getZtreeMenu(@RequestBody List<String> strings) {
