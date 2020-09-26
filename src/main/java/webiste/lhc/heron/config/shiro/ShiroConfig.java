@@ -50,9 +50,7 @@ public class ShiroConfig {
         filterFactoryBean.setFilters(filterMap);
         Map<String, String> map = new LinkedHashMap<>();
         map.put("/dist/**", "anon");
-        map.put("/layui/**", "anon");
         map.put("/static/**", "anon");
-        map.put("/treeTable.js", "anon");
         map.put("/login", "anon");
         map.put("/**", "authc");
 
