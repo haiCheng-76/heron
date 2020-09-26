@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import webiste.lhc.heron.dto.UserVo;
 import webiste.lhc.heron.model.UserInfo;
 import webiste.lhc.heron.service.MenuService;
+import webiste.lhc.heron.service.RoleService;
 import webiste.lhc.heron.service.UserInfoService;
 import webiste.lhc.heron.util.Resp;
 
@@ -29,10 +31,13 @@ public class UserInfoController extends AbstractController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private RoleService roleService;
+
     @ResponseBody
     @PostMapping(value = "addUserInfo")
-    public Resp addUserInfo(@RequestBody UserInfo user) {
-        userInfoService.insertUserInfo(user);
+    public Resp addUserInfo(@RequestBody UserVo vo) {
+        userInfoService.insertUserInfo(vo);
         return Resp.ok();
     }
 
@@ -46,9 +51,9 @@ public class UserInfoController extends AbstractController {
     }
 
     @ResponseBody
-    @GetMapping(value = "userInfoIPage")
-    public PageInfo<UserInfo> userInfoIPage(@RequestParam(value = "current", defaultValue = "0") int current,
-                                            @RequestParam(value = "size", defaultValue = "10") int size) {
+    @GetMapping(value = "pageUserInfo")
+    public PageInfo<UserInfo> pageUserInfo(@RequestParam(value = "offset", defaultValue = "0") int current,
+                                            @RequestParam(value = "limit", defaultValue = "10") int size) {
         PageInfo<UserInfo> pageInfo = userInfoService.pageUserInfo(current, size);
         return pageInfo;
     }
@@ -71,7 +76,7 @@ public class UserInfoController extends AbstractController {
     }
 
     @ResponseBody
-    @GetMapping(value = "updateUer")
+    @PostMapping(value = "updateUer")
     public Resp updateUer(@RequestBody UserInfo userInfo) {
         userInfoService.updateUser(userInfo);
         return Resp.ok();
@@ -87,10 +92,14 @@ public class UserInfoController extends AbstractController {
 
     /**
      * 跳转新增用户界面
+     *
      * @return
      */
     @GetMapping(value = "userAdd")
-    public String userAdd() {
-        return "user/userAdd";
+    public ModelAndView userAdd() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user/userAdd");
+        modelAndView.addObject("roleList", roleService.listRole());
+        return modelAndView;
     }
 }

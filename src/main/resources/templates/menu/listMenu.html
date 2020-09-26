@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -41,17 +41,23 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
                                 <div th:switch="${session.currentUser.avatar == '' or session.currentUser.avatar == null}">
-                                    <span class="avatar avatar-md" th:case="true"><svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-md" width="24"
-                                            height="24" viewBox="0 0 24 24"
-                                            stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round"><path
-                                            stroke="none" d="M0 0h24v24H0z"></path><circle
-                                            cx="12" cy="7"
-                                            r="4"></circle><path
-                                            d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2"></path></svg></span>
+                                    <span class="avatar avatar-md" th:case="true">
+                                        <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-md" width="24"
+                                                height="24" viewBox="0 0 24 24"
+                                                stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                            <path
+                                                    stroke="none" d="M0 0h24v24H0z"></path>
+                                            <circle
+                                                    cx="12" cy="7"
+                                                    r="4"></circle>
+                                            <path
+                                                    d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2"></path>
+                                        </svg>
+                                    </span>
                                     <span class="avatar avatar-md" th:case="false"
                                           th:style="'background-image:url('+${session.currentUser.avatar}+')'"></span>
                                 </div>
@@ -174,8 +180,11 @@
                             <div class="d-flex">
                                 <div class="ml-auto text-muted">
                                     <div class="ml-2 d-inline-block">
-                                        <button id="addMenu" type="button" class="btn btn-info btn-pill btn-sm">新增
-                                        </button>
+                                        <shiro:hasPermission name="sys:menu:add">
+                                            <button id="addMenu" type="button" class="btn btn-info btn-pill btn-sm">新增
+                                            </button>
+                                        </shiro:hasPermission>
+
                                     </div>
                                 </div>
                             </div>
@@ -301,12 +310,7 @@
                             align: 'left',
                             width: '200px',
                             template: function (item) {
-                                if (item.isDelete) {
-                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button>';
-                                } else {
-                                    return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button>';
-                                }
-
+                                return '<shiro:hasPermission name="sys:menu:alter"><button type="button" class="btn btn-primary btn-sm" onclick="edit(\'' + item.id + '\', \'' + item.pid + '\',\'' + item.type + '\')">编辑</button></shiro:hasPermission>&nbsp;&nbsp;&nbsp;&nbsp;<shiro:hasPermission name="sys:menu:del"><button type="button" class="btn btn-warning btn-sm del" onclick="del(' + item.id + ')">删除</button></shiro:hasPermission>';
                             }
                         }
                     ]

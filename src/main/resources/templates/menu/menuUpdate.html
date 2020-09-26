@@ -108,10 +108,12 @@
             $(document).ready(function () {
                 var treeData = null;
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: '/menu/getZtreeMenu',
+                    data: JSON.stringify(["D", "M"]),
                     async: false,
                     dataType: 'json',
+                    contentType: 'application/json',
                     success: function (res) {
                         treeData = res;
                     }

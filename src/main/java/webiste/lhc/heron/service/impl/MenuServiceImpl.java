@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 import webiste.lhc.heron.commo.RoleConstant;
 import webiste.lhc.heron.commo.enums.MenuEnum;
@@ -13,10 +14,7 @@ import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.Assert;
 import webiste.lhc.heron.vo.ZtreeVo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ProjectName: heron
@@ -112,6 +110,21 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<Map<String, Object>> listMenu() {
         return menuMapper.listMenus();
+    }
+
+    @Override
+    public Set<String> listPermissionByUserId(long userId) {
+        Set<String> strings = menuMapper.getPermissionByUserId(userId);
+        if (CollectionUtils.isEmpty(strings)) {
+            return Collections.emptySet();
+        }
+        Set<String> permissionSet = new HashSet<>(strings.size());
+        for (String string : strings) {
+            if (StringUtils.hasLength(string)) {
+                permissionSet.add(string);
+            }
+        }
+        return permissionSet;
     }
 
 
