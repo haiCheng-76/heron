@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
-import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.mapper.RoleInfoMapper;
 import webiste.lhc.heron.model.RoleInfo;
 import webiste.lhc.heron.service.RoleService;
 import webiste.lhc.heron.vo.RoleVo;
 
-import java.util.Date;
-import java.util.Set;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * @description:
@@ -27,9 +27,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleInfoMapper roleInfoMapper;
-
-    @Autowired
-    private MenuMapper menuMapper;
 
     @Override
     public PageInfo<RoleInfo> pageRole(int current, int size) {
@@ -67,5 +64,27 @@ public class RoleServiceImpl implements RoleService {
         Set<Long> ids = roleInfoMapper.getPermissionIds(id);
         roleInfo.setPermissionIds(ids);
         return roleInfo;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateRoleInfo(RoleVo vo) {
+        // 修改role信息
+        RoleInfo roleInfo = new RoleInfo();
+        roleInfo.setSort(vo.getSort());
+        roleInfo.setUpdateTime(new Date());
+        roleInfo.setRoleName(vo.getRoleName());
+        roleInfo.setDescription(vo.getRemark());
+        roleInfo.setId(vo.getId());
+        roleInfoMapper.updateByPrimaryKeySelective(roleInfo);
+        // 删除之前的角色-权限对应关系
+        roleInfoMapper.delRolePermission(vo.getId());
+        // 重新插入对应关系
+        roleInfoMapper.addRolePer(vo.getId(), vo.getIds());
+    }
+
+    @Override
+    public List<Map<String, Object>> listRole() {
+        return roleInfoMapper.listRoleMap();
     }
 }

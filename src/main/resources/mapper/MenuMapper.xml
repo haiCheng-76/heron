@@ -28,8 +28,8 @@
 
     <select id="listMenuIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
         SELECT DISTINCT t2.menu_id
-        FROM sys_user_role AS t1,
-             sys_role_menu AS t2
+        FROM user_role AS t1,
+             role_menu AS t2
         WHERE t1.role_id = t2.role_id
           AND t1.user_id = #{userId}
     </select>
@@ -68,8 +68,8 @@
 
     <select id="getMenu" resultType="webiste.lhc.heron.vo.ZtreeVo">
         SELECT id,
-               parent_id AS pId,
-               menu_name AS NAME
+        parent_id AS pId,
+        menu_name AS NAME
         FROM menu
         WHERE is_delete = FALSE and type in
         <foreach collection="types" item="item" index="index" open="(" close=")" separator=",">
@@ -82,5 +82,13 @@
         from menu
         where is_delete = FALSE
           AND parent_id = #{id}
+    </select>
+    <select id="getPermissionByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT t3.permission
+        FROM user_role AS t1
+                 LEFT JOIN role_menu AS t2 ON t1.role_id = t2.role_id
+                 LEFT JOIN menu AS t3 ON t2.menu_id = t3.id
+        WHERE t3.is_delete = FALSE
+          AND t1.user_id = #{userId}
     </select>
 </mapper>

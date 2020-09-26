@@ -81,6 +81,12 @@ public class UserInfo implements Serializable {
     @Column(name = "e_mail")
     private String eMail;
 
+    /**
+     * 角色id
+     */
+    @Transient
+    private Long roleId;
+
     private static final long serialVersionUID = 1L;
 
 
@@ -89,6 +95,10 @@ public class UserInfo implements Serializable {
 
     public UserInfo(String account) {
         this.account = account;
+    }
+
+    public UserInfo(Boolean isDelete) {
+        this.isDelete = isDelete;
     }
 
     @Override

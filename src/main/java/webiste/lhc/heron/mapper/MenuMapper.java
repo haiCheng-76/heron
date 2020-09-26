@@ -7,6 +7,7 @@ import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface MenuMapper extends BaseMapper<Menu> {
     List<Menu> getParent(long id);
@@ -32,4 +33,11 @@ public interface MenuMapper extends BaseMapper<Menu> {
     List<ZtreeVo> getMenu(@Param(value = "types") List<String> types);
 
     int getCount(@Param(value = "id") long id);
+
+    /**
+     * 用户Id查询所属角色
+     * @param userId
+     * @return
+     */
+    Set<String> getPermissionByUserId(long userId);
 }

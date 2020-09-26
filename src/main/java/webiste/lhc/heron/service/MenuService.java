@@ -6,6 +6,7 @@ import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @ProjectName: heron
@@ -34,4 +35,6 @@ public interface MenuService {
     void updateMenu(Menu menu);
 
     List<Map<String, Object>>  listMenu();
+
+    Set<String> listPermissionByUserId(long userId);
 }
