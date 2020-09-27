@@ -23,7 +23,7 @@
         FROM menu
         WHERE is_delete = FALSE
           AND parent_id = #{id}
-        ORDER BY sort DESC
+        ORDER BY sort
     </select>
 
     <select id="listMenuIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
