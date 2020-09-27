@@ -37,7 +37,7 @@
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a href="." class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+                    <a href="/" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
                         <img src="./static/logo.svg" th:src="@{/static/logo.svg}" alt="Tabler"
                              class="navbar-brand-image">
                     </a>
@@ -236,6 +236,7 @@
         <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-table/1.18.0/bootstrap-table.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script>
         <script src="/dist/js/bootstrap-table-treegrid.min.js"></script>
+        <script src="/dist/js/bootstrap-table-zh-CN.min.js"></script>
         <script src="/dist/js/tabler.min.js"></script>
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <script src="/dist/js/base.js"></script>
@@ -247,6 +248,7 @@
                 $table.bootstrapTable({
                     url: '/menu/getTreeTable',
                     idField: 'id',
+                    locale: 'zh-CN',
                     treeEnable: true,
                     treeShowField: 'title',
                     parentIdField: 'pid',
