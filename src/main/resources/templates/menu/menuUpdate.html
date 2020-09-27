@@ -50,13 +50,29 @@
                                         <label class="form-label">权限</label>
                                         <input type="text" class="form-control menu_permission" th:value="${menu.permission}">
                                     </div>
-                                    <div class="mb-3">
+<!--                                    <div class="mb-3">-->
+<!--                                        <div class="form-label">状态</div>-->
+<!--                                        <select class="form-select menu_type">-->
+<!--                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>-->
+<!--                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+
+
+                                    <div class="form-group mb-3">
                                         <div class="form-label">状态</div>
-                                        <select class="form-select menu_type">
-                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>
-                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>
-                                        </select>
+                                        <div class="form-check-inline">
+                                            <label class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="menuStatus" value="false" th:checked="${menu.isDelete == false}"/>
+                                                <span class="form-check-label">有效</span>
+                                            </label>
+                                            <label class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="menuStatus" value="true" th:checked="${menu.isDelete == true}"/>
+                                                <span class="form-check-label">失效</span>
+                                            </label>
+                                        </div>
                                     </div>
+
                                     <div class="mb-3">
                                         <label class="form-label">排序</label>
                                         <input type="number" min="0" class="form-control menu_sort" th:value="${menu.sort}">
@@ -140,7 +156,7 @@
                     "menuName": $(".menu_name").val(),
                     "url": $(".url").val(),
                     "permission": $(".menu_permission").val(),
-                    "isDelete": $(".menu_type").val(),
+                    "isDelete": $("input[name='menuStatus']:checked").val(),
                     "sort": $(".menu_sort").val()
                 };
                 $.ajax({

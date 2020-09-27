@@ -76,12 +76,7 @@ public class MenuServiceImpl implements MenuService {
         int menuCount = menuMapper.selectCount(menu);
         log.info("id:{}; menuCount:{}", id, menuCount);
         Assert.stat(menuCount > 0, "请先删除子菜单");
-        Menu menu1 = new Menu();
-        menu1.setId(id);
-        menu1.setIsDelete(true);
-        menu1.setUpdateTime(new Date());
-        menuMapper.updateByPrimaryKeySelective(menu1);
-
+        menuMapper.deleteByPrimaryKey(id);
     }
 
     @Override

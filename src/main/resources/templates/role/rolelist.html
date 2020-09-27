@@ -175,13 +175,13 @@
             <div class="card">
                 <div class="table-responsive" style="padding: 10px">
                     <div id="toolbar">
-                        <shiro:hasPermission name="sys:menu:add">
+                        <shiro:hasPermission name="sys:role:add">
                             <button class="btn btn-primary role_add">新增</button>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:menu:add">
+                        <shiro:hasPermission name="sys:role:alter">
                             <button class="btn btn-primary role_edit">编辑</button>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:menu:add">
+                        <shiro:hasPermission name="sys:role:del">
                             <button class="btn btn-primary role_del">删除</button>
                         </shiro:hasPermission>
                     </div>
@@ -192,8 +192,8 @@
     </div>
 </div>
 <!-- Libs JS -->
+<script src="https://libs.cdnjs.net/jquery/1.10.0/jquery.min.js"></script>
 <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 <script src="/dist/js/bootstrap-table.min.js"></script>
 <script src="/dist/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
@@ -202,8 +202,9 @@
 
 <script type="text/javascript" th:inline="none">
     document.body.style.display = "block";
+    var $table = $('#role_table')
     $(document).ready(function () {
-        $("#role_table").bootstrapTable({
+        $table.bootstrapTable({
             url: '/role/pageRole',
             pagination: true,
             sortable: false,
@@ -217,7 +218,7 @@
             idField: 'id',
             showRefresh: false,
             // height: 500,
-            columns: [{
+            columns: [{radio: true},{
                 field: 'roleName',
                 title: '角色名'
             }, {
@@ -235,31 +236,33 @@
             }, {
                 field: 'updateTime',
                 title: '修改时间'
-            }, {
-                field: '',
-                title: '操作',
-                align: 'left',
-                formatter: function operation(value, row) {
-                    if (row.isDelete) {
-                        return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>';
-                    } else {
-                        return '<button type="button" class="btn btn-primary btn-sm" onclick="edit(' + row.id + ')">编辑</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                            '<button type="button" class="btn btn-warning btn-sm" onclick="del(' + row.id + ')">刪除</button>';
-                    }
-                }
             }]
         });
     });
 
 
-    function edit(id) {
-        layuiIframe("查看", "/role/updateRole?id=" + id);
-    }
+    $(".role_add").click(function () {
+        layuiIframe("新增角色", "/role/addRole");
+    });
 
-    function del(id) {
+    $(".role_edit").click(function () {
+        var row = $table.bootstrapTable('getSelections');
+        if (row.length <= 0) {
+            layer.msg('请选择一条记录！');
+            return;
+        }
+        layuiIframe("查看", "/role/updateRole?id=" + row[0].id);
+    });
+
+    $(".role_del").click(function () {
+        var row = $table.bootstrapTable('getSelections');
+        if (row.length <= 0) {
+            layer.msg('请选择一条记录！');
+            return;
+        }
         $.ajax({
             type: 'GET',
-            url: '/role/delRole?id=' + id,
+            url: '/role/delRole?id=' + row[0].id,
             success: function (res) {
                 if (1 == res.code) {
                     window.location.reload();
@@ -268,12 +271,15 @@
                 alert('失败')
             }
         });
-    }
-
-    $(".role_add").click(function () {
-        layuiIframe("新增角色", "/role/addRole");
     });
 
+    function edit(id) {
+        layuiIframe("查看", "/role/updateRole?id=" + id);
+    }
+
+    function del(id) {
+
+    }
     function addRole() {
 
     }
