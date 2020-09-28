@@ -47,7 +47,7 @@ public class MenuController extends AbstractController {
      * @param name
      * @return
      */
-    @RequiresPermissions(value = "sys:menu:list")
+    @RequiresPermissions(value = "sys:menu:view")
     @GetMapping(value = "menuPage")
     public ModelAndView listDir(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
         ModelAndView modelAndView = new ModelAndView();
@@ -126,7 +126,7 @@ public class MenuController extends AbstractController {
      *
      * @return List<Map < String, Object>>
      */
-    @RequiresPermissions(value = "sys:menu:list")
+    @RequiresPermissions(value = "sys:menu:view")
     @ResponseBody
     @GetMapping(value = "getTreeTable")
     public List<Map<String, Object>> getTreeTable() {
