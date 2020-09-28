@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
-      xmlns:shirp="http://www.pollix.at/thymeleaf/shiro">
+>
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -184,18 +184,21 @@
                             <div id="toolbar">
                                 <shiro:hasPermission name="sys:menu:add">
                                     <button class="btn btn-primary menu_add">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                         新增
                                     </button>
                                 </shiro:hasPermission>
 
                                 <shiro:hasPermission name="sys:menu:alter">
                                     <button class="btn btn-primary menu_edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path><line x1="13.5" y1="6.5" x2="17.5" y2="10.5"></line></svg>
                                         编辑
                                     </button>
                                 </shiro:hasPermission>
 
                                 <shiro:hasPermission name="sys:menu:del">
                                     <button class="btn btn-primary menu_del">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><line x1="4" y1="7" x2="20" y2="7"></line><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg>
                                         删除
                                     </button>
                                 </shiro:hasPermission>
@@ -241,105 +244,6 @@
         <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
         <script src="/dist/js/base.js"></script>
         <script src="/dist/js/menu.js"></script>
-        <script type="text/javascript">
-            document.body.style.display = "block";
-            var $table = $('#user_table')
-            $(function () {
-                $table.bootstrapTable({
-                    url: '/menu/getTreeTable',
-                    idField: 'id',
-                    locale: 'zh-CN',
-                    treeEnable: true,
-                    treeShowField: 'title',
-                    parentIdField: 'pid',
-                    columns: [{radio: true},
-                        {
-                            field: 'title',
-                            title: '名称'
-                        },
-                        {
-                            field: 'type',
-                            title: '类型',
-                            formatter: function formatter(value, row) {
-                                if (value == 'D') {
-                                    return '<a class="btn btn-primary btn-pill btn-sm" style="cursor: default;color: #ffffff">目录</a>';
-                                }
-                                if (value == 'M') {
-                                    return '<a class="btn btn-success btn-pill btn-sm" style="cursor: default;color: #ffffff">菜单</a>';
-                                }
-                                if (value == 'B') {
-                                    return '<a class="btn btn-info btn-pill btn-sm" style="cursor: default;color: #ffffff">按钮</a>';
-                                }
-                            }
-                        },
-                        {
-                            field: 'url',
-                            title: '地址',
-                        },
-                        {
-                            field: 'permission',
-                            title: '权限'
-                        },
-                        {
-                            field: 'isDelete',
-                            title: '状态',
-                            formatter: function formatter(value, row) {
-                                if (1 == value) {
-                                    return "冻结";
-                                }
-                                if (0 == value) {
-                                    return "启用";
-                                }
-                            }
-                        }
-                    ],
-
-                    onPostBody: function () {
-                        var columns = $table.bootstrapTable('getOptions').columns
-
-                        if (columns && columns[0][1].visible) {
-                            $table.treegrid({
-                                treeColumn: 1,
-                                onChange: function () {
-                                    $table.bootstrapTable('resetView')
-                                }
-                            })
-                        }
-                    }
-                })
-            })
-
-            function edit(id, pid, type) {
-                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + pid + "&id=" + id + "&type=" + type);
-            }
-
-            $(".menu_add").click(function () {
-                layuiIframe("新增", "/menu/addMenu");
-            });
-
-            $(".menu_edit").click(function () {
-                var row = $table.bootstrapTable('getSelections');
-                if (row.length <= 0) {
-                    layer.msg('请选择一条记录！');
-                    return;
-                }
-                layuiIframe("编辑", "/menu/menuUpdate?parentId=" + row[0].pid + "&id=" + row[0].id + "&type=" + row[0].type);
-            });
-
-            $(".menu_del").click(function () {
-                var row = $table.bootstrapTable('getSelections');
-                if (row.length <= 0) {
-                    layer.msg('请选择一条记录！');
-                    return;
-                }
-                if (delMenu(row[0].id)) {
-                    layer.msg("请先删除子菜单");
-                    return;
-                }
-                ;
-                window.location.reload();
-            });
-
-        </script>
+        <script src="/dist/js/menu/listMenu.js"></script>
     </body>
 </html>
