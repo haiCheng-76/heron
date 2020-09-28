@@ -2,7 +2,6 @@ package webiste.lhc.heron.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import webiste.lhc.heron.service.MenuService;
 
@@ -38,9 +36,9 @@ public class LoginController extends AbstractController {
         return "login";
     }
 
-    @ResponseBody
+    //    @ResponseBody
     @PostMapping(value = "login")
-    public Map<String, Object> login(String account, String password) {
+    public String login(String account, String password) {
         Map<String, Object> map = new HashMap<>(2);
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
@@ -48,20 +46,9 @@ public class LoginController extends AbstractController {
             subject.login(token);
             log.info("登录成功");
         } catch (AuthenticationException e) {
-            map.put("code", 500);
-            if (e instanceof AccountException) {
-                map.put("message", e.getMessage());
-
-            } else {
-                map.put("message", "用户名或密码错误，请稍后再试！");
-            }
-            log.warn("用户登录失败；account:[{}];message:[{}],time:[{}]", account, e.getMessage(), System.currentTimeMillis());
-            return map;
-
+            return "/login";
         }
-        map.put("messge", "success");
-        map.put("code", 200);
-        return map;
+        return "redirect:/index";
     }
 
     @GetMapping(value = {"/index", "/"})
