@@ -1,6 +1,5 @@
 package webiste.lhc.heron.commo;
 
-import org.apache.tomcat.util.file.ConfigurationSource;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.exception.InvalidConfigurationException;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * @ProjectName: heron
@@ -63,9 +61,9 @@ public class CodeGenerator {
         context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
         // jdbc配置
         JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
-        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://cdb-3t9j3qtg.cd.tencentcdb.com:10178/heron?characterEncoding=utf-8&useSSL=false");
+        jdbcConnectionConfiguration.setConnectionURL("jdbc:mysql://localhost:3306/heron?characterEncoding=utf-8&useSSL=false");
         jdbcConnectionConfiguration.setUserId("lhc");
-        jdbcConnectionConfiguration.setPassword("lhc1043153738");
+        jdbcConnectionConfiguration.setPassword("123456");
         jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
         context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
         // 生成实体类的存放路径
