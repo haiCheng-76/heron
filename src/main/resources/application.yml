@@ -3,9 +3,9 @@ server:
 spring:
   datasource:
     username: lhc
-    password: 123456
+    password: 122121
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/heron?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:8080/heron?characterEncoding=utf-8&useSSL=false
   thymeleaf:
     cache: false
     suffix: .html
