@@ -13,7 +13,12 @@ public enum JobStatusEnum {
     /**
      * 停止
      */
-    stop(1, "停止");
+    stop(1, "停止"),
+
+    /**
+     * 暂停
+     */
+    pause(2, "暂停");
 
     private final int code;
     private final String value;

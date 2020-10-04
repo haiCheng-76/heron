@@ -99,4 +99,9 @@ public class TaskServiceImpl implements TaskService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Task getTaskById(long id) {
+        return taskMapper.selectByPrimaryKey(id);
+    }
 }

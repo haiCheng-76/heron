@@ -19,7 +19,6 @@
     <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
     <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
-    <link href="/dist/css/metroStyle/metroStyle.css" rel="stylesheet"/>
     <style>
         body {
             display: none;
@@ -35,64 +34,56 @@
                     <div class="row" style="padding: 20px">
                         <div class="card-body">
                             <form>
-                                <div class="form-group mb-3 ">
-                                    <label class="form-label">头像</label>
-                                    <div th:switch="${user.avatar == '' or user.avatar == null}">
-                                        <span class="avatar avatar-lg" th:case="true"><svg
-                                                xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24"
-                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                fill="none" stroke-linecap="round" stroke-linejoin="round"><path
-                                                stroke="none" d="M0 0h24v24H0z"></path><circle cx="12" cy="7"
-                                                                                               r="4"></circle><path
-                                                d="M5.5 21v-2a4 4 0 0 1 4 -4h5a4 4 0 0 1 4 4v2"></path></svg></span>
-                                        <span class="avatar avatar-lg" th:case="false"
-                                              th:style="'background-image:url('+${user.avatar}+')'"></span>
-                                    </div>
-                                </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label">用户名</label>
+                                    <label class="form-label">任务名称</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${user.userName}" disabled name="example-disabled-input">
+                                        <input type="text" class="form-control" th:value="${task.jobName}" disabled name="example-disabled-input">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label">账户名</label>
-                                    <input type="text" class="form-control" th:value="${user.account}" disabled name="example-disabled-input">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="form-label">电子邮箱</label>
+                                    <label class="form-label">所属组</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${user.eMail}" disabled name="example-disabled-input">
+                                        <input type="text" class="form-control" th:value="${task.jobGroup}" disabled name="example-disabled-input">
                                     </div>
                                 </div>
-                                <div class="form-group mb-3 menuPermission">
+                                <div class="form-group mb-3">
+                                    <label class="form-label">Cron表达式</label>
+                                    <div>
+                                        <input type="text" class="form-control" th:value="${task.cronExpression}" disabled
+                                               name="example-disabled-input">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">Class名称</label>
+                                    <div>
+                                        <input type="text" class="form-control" th:value="${task.beanClass}" disabled name="example-disabled-input">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">状态</label>
+                                    <div th:switch="${task.jobStatus}">
+                                        <input type="text" class="form-control" th:case="0" name="example-disabled-input" disabled value="运行">
+                                        <input type="text" class="form-control" th:case="1" name="example-disabled-input" disabled value="停止">
+                                        <input type="text" class="form-control" th:case="2" name="example-disabled-input" disabled value="暂停">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label">描述</label>
+                                    <div>
+                                        <input type="text" class="form-control task-description" name="example-disabled-input" disabled
+                                               th:value="${task.description}">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
                                     <label class="form-label">创建时间</label>
                                     <div>
-                                        <input type="text" class="form-control"
-                                               th:value="${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}"
-                                               disabled name="example-disabled-input">
+                                        <input type="text" class="form-control task-description" name="example-disabled-input" disabled th:value="${#dates.format(task.createTime, 'yyyy-MM-dd HH:mm:ss')}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">修改时间</label>
                                     <div>
-                                        <input type="text" class="form-control"
-                                               th:value="${#dates.format(user.updateTime, 'yyyy-MM-dd HH:mm:ss')}"
-                                               disabled name="example-disabled-input">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="form-label">状态</label>
-                                    <div>
-                                        <input type="text" min="0" class="form-control"
-                                               th:value="${user.isDelete} ? 失效 :有效" disabled name="example-disabled-input">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="form-label">是否启用</label>
-                                    <div>
-                                        <input type="text" min="0" class="form-control menuSort"
-                                               th:value="${user.enable} ==1 ? 冻结 :启用" disabled name="example-disabled-input">
+                                        <input type="text" class="form-control task-description" name="example-disabled-input" disabled th:value="${#dates.format(task.updateTime, 'yyyy-MM-dd HH:mm:ss')}">
                                     </div>
                                 </div>
                             </form>

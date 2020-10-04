@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <meta name="msapplication-TileColor" content="#206bc4"/>
+    <meta name="theme-color" content="#206bc4"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="robots" content="noindex,nofollow,noarchive"/>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+    <!-- CSS files -->
+    <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+    <link href="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+    <link href="/dist/css/metroStyle/metroStyle.css" rel="stylesheet"/>
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+<div class="page">
+    <div class="content">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-12">
+                    <div class="row" style="padding: 20px">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">任务名称</label>
+                                    <div>
+                                        <input type="text" class="form-control task-name">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">所属组</label>
+                                    <div>
+                                        <input type="text" class="form-control task-group">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">Cron表达式</label>
+                                    <div>
+                                        <input type="text" class="form-control cron-expression">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">Class名称</label>
+                                    <div>
+                                        <input type="text" class="form-control class-name">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="form-label required">状态</div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input delStstus" type="radio" value="0"
+                                                   name="userDel"/>
+                                            <span class="form-check-label">运行</span>
+                                        </label>
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input status" type="radio" value="1"
+                                                   name="userDel"/>
+                                            <span class="form-check-label">停止</span>
+                                        </label>
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input status" type="radio" value="2"
+                                                   name="userDel"/>
+                                            <span class="form-check-label">暂停</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label required">描述</label>
+                                    <div>
+                                        <input type="text" class="form-control task-description">
+                                    </div>
+                                </div>
+                                <div class="form-footer">
+                                    <button type="button" class="btn btn-primary formCommit">提交</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Libs JS -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/zTree.v3/3.5.01/js/jquery.ztree.all.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+<!-- Tabler Core -->
+<script src="/dist/js/tabler.min.js"></script>
+<script>
+    document.body.style.display = "block";
+    $(".formCommit").click(function () {
+        treeChecked = tree.getCheckedNodes();
+        if (treeChecked.length == 0) {
+            layer.msg("请选择归属关系!");
+            return;
+        }
+        let arr = [];
+        for (var i = 0; i < treeChecked.length; i++) {
+            arr.push(treeChecked[i].id)
+        }
+        var data = {
+            "roleName": $(".role-name").val(),
+            "sort": $(".role_sort").val(),
+            "remark": $(".role_remark").val(),
+            "ids": arr
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/role/saveRole',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (res) {
+                if (res.code == 1) {
+                    window.parent.location.reload();
+
+                } else {
+                    layer.msg(res.message);
+                }
+            },
+            error: function (res) {
+
+            }
+        });
+    });
+</script>
+</body>
+</html>
