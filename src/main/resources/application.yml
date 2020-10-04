@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     username: lhc
-    password: 122121
+    password: 243243434
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:8080/heron?characterEncoding=utf-8&useSSL=false
   thymeleaf:
@@ -47,4 +47,7 @@ logging:
       lhc:
         heron:
           mapper: debug
+mybatis:
+  base-packages: webiste.lhc.heron.model
+  mapper-locations: classpath:mapper/*.xml
 

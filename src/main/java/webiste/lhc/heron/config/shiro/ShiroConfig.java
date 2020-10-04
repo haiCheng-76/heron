@@ -52,6 +52,7 @@ public class ShiroConfig {
         map.put("/dist/**", "anon");
         map.put("/static/**", "anon");
         map.put("/login", "anon");
+        map.put("/favicon.ico", "anon");
         map.put("/**", "authc");
 
 //        map.put("/**", "anon");

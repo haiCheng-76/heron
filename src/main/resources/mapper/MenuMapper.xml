@@ -17,7 +17,6 @@
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="type" jdbcType="VARCHAR" property="type"/>
     </resultMap>
-
     <select id="getParent" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT *
         FROM menu
@@ -25,7 +24,6 @@
           AND parent_id = #{id}
         ORDER BY sort
     </select>
-
     <select id="listMenuIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
         SELECT DISTINCT t2.menu_id
         FROM user_role AS t1,
@@ -38,13 +36,6 @@
         FROM menu
         WHERE type = 'D'
            OR type = 'M' AND is_delete = FALSE and id = #{id}
-    </select>
-    <select id="haveChild" parameterType="java.lang.Long" resultType="java.lang.Integer">
-        SELECT COUNT(1)
-        FROM menu
-        WHERE parent_id = #{id}
-          AND is_delete = FALSE
-          and type = 'M'
     </select>
     <select id="listTree" resultMap="BaseResultMap">
         SELECT id, parent_id, menu_name, type
