@@ -1,4 +1,4 @@
-package webiste.lhc.heron.config.shiro;
+package webiste.lhc.heron.framework.shiro;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;

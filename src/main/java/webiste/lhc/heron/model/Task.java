@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 定时任务实体类
+ *
  * @author 582895699@qq.com
  */
 @Getter
@@ -48,7 +49,7 @@ public class Task implements Serializable {
      * 任务状态
      */
     @Column(name = "job_status")
-    private String jobStatus;
+    private Integer jobStatus;
 
     /**
      * 任务分组

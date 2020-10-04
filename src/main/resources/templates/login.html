@@ -23,7 +23,14 @@
     </style>
 </head>
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
+
 <div class="flex-fill d-flex flex-column justify-content-center">
+    <!--登录错误信息回显-->
+    <div style="text-align: center" class="alert alert-warning alert-dismissible" role="alert" th:if="${session.loginError} != null">
+        <span th:text="${session.loginError}"></span>
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    </div>
+
     <div class="container-tight py-6">
         <div class="text-center mb-4">
             <img src="./static/logo.svg" height="36" alt="">
@@ -69,11 +76,22 @@
             <div class="card-body">
                 <div class="btn-list">
                     <a href="#" class="btn btn-white btn-block">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
+                            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                            <polyline points="3 7 12 13 21 7"></polyline>
+                        </svg>
                         邮箱登录
                     </a>
                     <a href="#" class="btn btn-white btn-block">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M4 4h5l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v5a1 1 0 0 1 -1 1a16 16 0 0 1 -16 -16a1 1 0 0 1 1 -1"></path></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z"></path>
+                            <path d="M4 4h5l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v5a1 1 0 0 1 -1 1a16 16 0 0 1 -16 -16a1 1 0 0 1 1 -1"></path>
+                        </svg>
                         验证码登录
                     </a>
                 </div>

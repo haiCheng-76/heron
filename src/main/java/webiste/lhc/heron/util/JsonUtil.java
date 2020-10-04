@@ -19,7 +19,7 @@ import java.util.Locale;
  */
 public class JsonUtil {
     public static String toJsonString(Object o) {
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
+        Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
             @Override
             public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
                 return new JsonPrimitive(src.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE)));

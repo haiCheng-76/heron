@@ -1,4 +1,4 @@
-package webiste.lhc.heron.config.mapperconfig;
+package webiste.lhc.heron.framework.mybatis;
 
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;

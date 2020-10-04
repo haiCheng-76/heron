@@ -1,7 +1,7 @@
 package webiste.lhc.heron.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import webiste.lhc.heron.config.mapperconfig.BaseMapper;
+import webiste.lhc.heron.framework.mybatis.BaseMapper;
 import webiste.lhc.heron.model.RoleInfo;
 
 import java.util.List;

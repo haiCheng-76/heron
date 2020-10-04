@@ -47,7 +47,7 @@ public class CodeGenerator {
         PluginConfiguration mapperConfiguration = new PluginConfiguration();
         mapperConfiguration.setConfigurationType("tk.mybatis.mapper.generator.MapperPlugin");
 
-        mapperConfiguration.addProperty("mappers", "webiste.lhc.heron.config.mapperconfig.BaseMapper");
+        mapperConfiguration.addProperty("mappers", "webiste.lhc.heron.framework.mybatis.BaseMapper");
         // 序列化插件配置
         PluginConfiguration serializConfiguration = new PluginConfiguration();
         serializConfiguration.setConfigurationType("org.mybatis.generator.plugins.SerializablePlugin");

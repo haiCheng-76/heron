@@ -1,4 +1,4 @@
-package webiste.lhc.heron.config.shiro;
+package webiste.lhc.heron.framework.shiro;
 
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;

@@ -36,7 +36,6 @@ public class LoginController extends AbstractController {
         return "login";
     }
 
-    //    @ResponseBody
     @PostMapping(value = "login")
     public String login(String account, String password) {
         Map<String, Object> map = new HashMap<>(2);
@@ -46,6 +45,7 @@ public class LoginController extends AbstractController {
             subject.login(token);
             log.info("登录成功");
         } catch (AuthenticationException e) {
+            setSessionValue("loginError", e.getMessage());
             return "/login";
         }
         return "redirect:/index";
