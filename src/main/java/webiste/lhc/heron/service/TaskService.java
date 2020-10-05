@@ -21,4 +21,8 @@ public interface TaskService {
     void removeTask(long id);
 
     Task getTaskById(long id);
+
+    void pauseTask(long id);
+
+    void resumeTask(long id);
 }

@@ -64,17 +64,17 @@
                                     <div class="form-check-inline">
                                         <label class="form-check form-check-inline">
                                             <input class="form-check-input delStstus" type="radio" value="0"
-                                                   name="userDel"/>
+                                                   name="taskStatus"/>
                                             <span class="form-check-label">运行</span>
                                         </label>
                                         <label class="form-check form-check-inline">
                                             <input class="form-check-input status" type="radio" value="1"
-                                                   name="userDel"/>
+                                                   name="taskStatus"/>
                                             <span class="form-check-label">停止</span>
                                         </label>
                                         <label class="form-check form-check-inline">
                                             <input class="form-check-input status" type="radio" value="2"
-                                                   name="userDel"/>
+                                                   name="taskStatus"/>
                                             <span class="form-check-label">暂停</span>
                                         </label>
                                     </div>
@@ -107,38 +107,32 @@
 <script>
     document.body.style.display = "block";
     $(".formCommit").click(function () {
-        treeChecked = tree.getCheckedNodes();
-        if (treeChecked.length == 0) {
-            layer.msg("请选择归属关系!");
-            return;
-        }
-        let arr = [];
-        for (var i = 0; i < treeChecked.length; i++) {
-            arr.push(treeChecked[i].id)
-        }
         var data = {
-            "roleName": $(".role-name").val(),
-            "sort": $(".role_sort").val(),
-            "remark": $(".role_remark").val(),
-            "ids": arr
+            "taskName": $(".task-name").val(),
+            "description": $(".task-description").val(),
+            "cronExpression": $(".cron-expression").val(),
+            "beanClass": $(".class-name").val(),
+            "jobStatus": $("input[name='taskStatus']:checked").val(),
+            "jobGroup": $(".task-group").val()
         };
+        alert(JSON.stringify(data));
 
         $.ajax({
             type: "POST",
-            url: '/role/saveRole',
+            url: '/task/addTask',
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (res) {
                 if (res.code == 1) {
                     window.parent.location.reload();
-
+                    return;
                 } else {
                     layer.msg(res.message);
                 }
             },
             error: function (res) {
-
+                layer.msg("失败");
             }
         });
     });

@@ -38,33 +38,48 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label">任务名称</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${task.jobName}">
+                                        <input type="text" class="form-control task-name" th:value="${task.jobName}"
+                                               name="example-disabled-input" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">所属组</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${task.jobGroup}">
+                                        <input type="text" class="form-control task-group" th:value="${task.jobGroup}"
+                                               name="example-disabled-input" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label">Cron表达式</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${task.cronExpression}">
+                                        <input type="text" class="form-control cron-expression"
+                                               th:value="${task.cronExpression}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class="form-label required">Class名称</label>
                                     <div>
-                                        <input type="text" class="form-control" th:value="${task.beanClass}">
+                                        <input type="text" class="form-control class-name" th:value="${task.beanClass}">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label required">状态</label>
-                                    <div th:switch="${task.jobStatus}">
-                                        <input type="text" class="form-control" th:case="0" readonly value="运行">
-                                        <input type="text" class="form-control" th:case="1" readonly value="停止">
-                                        <input type="text" class="form-control" th:case="2" readonly value="暂停">
+                                    <div class="form-label">状态</div>
+                                    <div class="form-check-inline">
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input status" type="radio" value="0"
+                                                   name="taskStatus" th:checked="${task.jobStatus == 0}"/>
+                                            <span class="form-check-label">运行</span>
+                                        </label>
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input status" type="radio" value="1"
+                                                   name="taskStatus" th:checked="${task.jobStatus == 1}"/>
+                                            <span class="form-check-label">停止</span>
+                                        </label>
+                                        <label class="form-check form-check-inline">
+                                            <input class="form-check-input status" type="radio" value="2"
+                                                   name="taskStatus" th:checked="${task.jobStatus == 2}"/>
+                                            <span class="form-check-label">暂停</span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
@@ -73,6 +88,9 @@
                                         <input type="text" class="form-control task-description"
                                                th:value="${task.description}">
                                     </div>
+                                </div>
+                                <div class="form-footer">
+                                    <button type="button" class="btn btn-primary formCommit">提交</button>
                                 </div>
                             </form>
                         </div>
@@ -92,6 +110,36 @@
 <script src="/dist/js/tabler.min.js"></script>
 <script>
     document.body.style.display = "block";
+    var taskId = '[[${task.id}]]';
+    $(".formCommit").click(function () {
+        var data = {
+            "id": taskId,
+            "taskName": $(".task-name").val(),
+            "jobGroup": $(".task-group").val(),
+            "description": $(".task-description").val(),
+            "cronExpression": $(".cron-expression").val(),
+            "beanClass": $(".class-name").val(),
+            "jobStatus": $("input[name='taskStatus']:checked").val(),
+        };
+        alert(JSON.stringify(data))
+        $.ajax({
+            type: "POST",
+            url: "/task/updateTask",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (res) {
+                if (1 == res.code) {
+                    window.parent.location.reload();
+                    return;
+                }
+                layer.msg('失败');
+            },
+            error: function () {
+                layer.msg('失败');
+            }
+        });
+    });
 </script>
 </body>
 </html>

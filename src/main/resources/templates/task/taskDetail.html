@@ -54,13 +54,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label required">Class名称</label>
+                                    <label class="form-label">Class名称</label>
                                     <div>
                                         <input type="text" class="form-control" th:value="${task.beanClass}" disabled name="example-disabled-input">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label class="form-label required">状态</label>
+                                    <label class="form-label">状态</label>
                                     <div th:switch="${task.jobStatus}">
                                         <input type="text" class="form-control" th:case="0" name="example-disabled-input" disabled value="运行">
                                         <input type="text" class="form-control" th:case="1" name="example-disabled-input" disabled value="停止">
@@ -80,10 +80,12 @@
                                         <input type="text" class="form-control task-description" name="example-disabled-input" disabled th:value="${#dates.format(task.createTime, 'yyyy-MM-dd HH:mm:ss')}">
                                     </div>
                                 </div>
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-3" th:if="${task.updateTime} != null">
                                     <label class="form-label">修改时间</label>
                                     <div>
-                                        <input type="text" class="form-control task-description" name="example-disabled-input" disabled th:value="${#dates.format(task.updateTime, 'yyyy-MM-dd HH:mm:ss')}">
+                                        <input type="text" class="form-control task-description"
+                                               name="example-disabled-input" disabled
+                                               th:value="${#dates.format(task.updateTime, 'yyyy-MM-dd HH:mm:ss')}">
                                     </div>
                                 </div>
                             </form>

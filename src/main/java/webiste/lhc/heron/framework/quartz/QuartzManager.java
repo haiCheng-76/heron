@@ -7,7 +7,9 @@ import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import webiste.lhc.heron.dto.TaskDto;
 import webiste.lhc.heron.model.Task;
+import webiste.lhc.heron.util.JsonUtil;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -32,19 +34,20 @@ public class QuartzManager {
      * @throws SchedulerException
      */
     public void addTask(Task task) throws ClassNotFoundException, SchedulerException {
-        String beanClass = task.getBeanClass();
+        String beanClass = task.getBeanClass().trim();
         Class clazz = Class.forName(beanClass);
         // 定义任务
         JobDetail jobDetail = JobBuilder.newJob(clazz)
                 .withIdentity(task.getJobName(), task.getJobGroup())
                 .build();
         // 定义表达式
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression().trim());
         // 触发器
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(DEFAULT_TRIGGER_NAME + "_" + task.getJobName(), DEFAULT_TRIGGER_GROUP + "_" + task.getJobGroup())
                 .startNow()
                 .withSchedule(cronScheduleBuilder)
+                .withDescription(task.getDescription())
                 .build();
         scheduler.scheduleJob(jobDetail, trigger);
         if (scheduler.isShutdown()) {
@@ -54,29 +57,37 @@ public class QuartzManager {
     }
 
     /**
-     * 修改job对应的时间
+     * 获取原来的job，并重新放入
      *
      * @param taskName
-     * @param cronExpression
+     * @param dto
      * @throws SchedulerException
      */
-    public void updateCronExpression(String taskName, String cronExpression) throws SchedulerException {
-        TriggerKey triggerKey = TriggerKey.triggerKey(DEFAULT_TRIGGER_NAME + "_" + taskName, DEFAULT_TRIGGER_GROUP + "_" + taskName);
+    public void updateCronExpression(String taskName, String groupName, TaskDto dto) throws SchedulerException, ClassNotFoundException {
+        log.info("修改定时任务;taskName:{};dto:{}", taskName, JsonUtil.toJsonString(dto));
+        TriggerKey triggerKey = TriggerKey.triggerKey(DEFAULT_TRIGGER_NAME + "_" + taskName, DEFAULT_TRIGGER_GROUP + "_" + groupName);
         CronTrigger cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
         if (cronTrigger == null) {
             return;
         }
-        String oldCronExpression = cronTrigger.getCronExpression();
-        if (oldCronExpression.equals(cronExpression)) {
-            return;
-        }
-        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression);
+        String beanClass = dto.getBeanClass();
+        Class clazz = Class.forName(beanClass);
+        JobDetail jobDetail = JobBuilder.newJob(clazz)
+                .withIdentity(dto.getTaskName(), dto.getJobGroup())
+                .build();
+        CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(dto.getCronExpression());
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity(DEFAULT_TRIGGER_NAME + "_" + taskName, DEFAULT_TRIGGER_GROUP + "_" + taskName)
+                .withIdentity(DEFAULT_TRIGGER_NAME + "_" + taskName, DEFAULT_TRIGGER_GROUP + "_" + groupName)
                 .startNow()
                 .withSchedule(cronScheduleBuilder)
+                .withDescription(dto.getDescription())
                 .build();
-        scheduler.rescheduleJob(triggerKey, trigger);
+        scheduler.pauseTrigger(triggerKey);
+        scheduler.unscheduleJob(triggerKey);
+        scheduler.scheduleJob(jobDetail, trigger);
+        if (scheduler.isShutdown()) {
+            scheduler.start();
+        }
     }
 
     /**
@@ -85,9 +96,9 @@ public class QuartzManager {
      * @param taskName
      * @throws SchedulerException
      */
-    public void removeTask(String taskName) throws SchedulerException {
-        TriggerKey triggerKey = TriggerKey.triggerKey(taskName, DEFAULT_TRIGGER_GROUP + "_" + taskName);
-        JobKey jobKey = JobKey.jobKey(taskName);
+    public void removeTask(String taskName, String group) throws SchedulerException {
+        TriggerKey triggerKey = TriggerKey.triggerKey(DEFAULT_TRIGGER_NAME + "_" + taskName, DEFAULT_TRIGGER_GROUP + "_" + group);
+        JobKey jobKey = JobKey.jobKey(taskName, group);
         Trigger trigger = scheduler.getTrigger(triggerKey);
         if (trigger == null) {
             return;
@@ -104,8 +115,11 @@ public class QuartzManager {
      * @param taskName
      * @throws SchedulerException
      */
-    public void pauseTask(String taskName) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(taskName);
+    public void pauseTask(String taskName, String group) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(taskName, group);
+        if (Objects.isNull(jobKey)) {
+            return;
+        }
         scheduler.pauseJob(jobKey);
     }
 
@@ -115,8 +129,11 @@ public class QuartzManager {
      * @param taskName
      * @throws SchedulerException
      */
-    public void resumeTask(String taskName) throws SchedulerException {
-        JobKey jobKey = JobKey.jobKey(taskName);
+    public void resumeTask(String taskName, String group) throws SchedulerException {
+        JobKey jobKey = JobKey.jobKey(taskName, group);
+        if (Objects.isNull(jobKey)) {
+            return;
+        }
         scheduler.resumeJob(jobKey);
     }
 

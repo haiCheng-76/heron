@@ -47,7 +47,6 @@ public class UserInfoRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
-        log.info("principalCollection:{}", userInfo.toString());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Set<String> permissionSet = new HashSet<>(1);
         if (1 == userInfo.getId()) {

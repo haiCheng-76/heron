@@ -9,16 +9,16 @@ public enum JobStatusEnum {
     /**
      * 运行
      */
-    start(0, "运行"),
+    START(0, "运行"),
     /**
      * 停止
      */
-    stop(1, "停止"),
+    STOP(1, "停止"),
 
     /**
      * 暂停
      */
-    pause(2, "暂停");
+    PAUSE(2, "暂停");
 
     private final int code;
     private final String value;

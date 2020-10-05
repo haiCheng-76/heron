@@ -316,7 +316,7 @@
             layer.msg('请选择一条记录！');
             return;
         }
-        // layuiIframe("编辑", "/userInfo/updateUserInfo?id=" + row[0].id);
+        layuiIframe("编辑", "/task/updateTask?id=" + row[0].id);
     });
 
     // 删除
@@ -326,17 +326,19 @@
             layer.msg('请选择一条记录！');
             return;
         }
-        // $.ajax({
-        //     type: 'GET',
-        //     url: '/userInfo/deleteUser?id=' + row[0].id,
-        //     success: function (res) {
-        //         if (1 == res.code) {
-        //             window.location.reload();
-        //         }
-        //     }, error: function () {
-        //         alert('失败')
-        //     }
-        // });
+        $.ajax({
+            type: 'GET',
+            url: '/task/delTask?id=' + row[0].id,
+            success: function (res) {
+                if (1 == res.code) {
+                    window.location.reload();
+                    return;
+                }
+                layer.msg('失败');
+            }, error: function () {
+                layer.msg('失败');
+            }
+        });
     });
     // 暂停
     $(".task_pause").click(function () {
@@ -345,6 +347,19 @@
             layer.msg('请选择一条记录！');
             return;
         }
+        $.ajax({
+            type: 'GET',
+            url: '/task/pauseTask?id=' + row[0].id,
+            success: function (res) {
+                if (1 == res.code) {
+                    window.location.reload();
+                    return;
+                }
+                layer.msg('失败');
+            }, error: function () {
+                layer.msg('失败');
+            }
+        });
     });
     //  恢复
     $(".task_resume").click(function () {
@@ -353,6 +368,20 @@
             layer.msg('请选择一条记录！');
             return;
         }
+
+        $.ajax({
+            type: 'GET',
+            url: '/task/resumeTask?id=' + row[0].id,
+            success: function (res) {
+                if (1 == res.code) {
+                    window.location.reload();
+                    return;
+                }
+                layer.msg(res.message);
+            }, error: function () {
+                layer.msg('失败');
+            }
+        });
     });
 
 

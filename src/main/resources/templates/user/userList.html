@@ -308,9 +308,10 @@
             success: function (res) {
                 if (1 == res.code) {
                     window.location.reload();
+                    return;
                 }
             }, error: function () {
-                alert('失败')
+                layer.msg('失败');
             }
         });
     });
