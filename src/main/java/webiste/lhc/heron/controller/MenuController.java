@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import webiste.lhc.heron.commo.RoleConstant;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
-import webiste.lhc.heron.util.JsonUtil;
 import webiste.lhc.heron.util.Resp;
 import webiste.lhc.heron.vo.ZtreeVo;
 
@@ -31,16 +29,6 @@ public class MenuController extends AbstractController {
 
     @Autowired
     private MenuService menuService;
-
-
-//    @ResponseBody
-//    @RequiresPermissions(value = {"sys:menu:view"})
-//    @GetMapping(value = "listMenus")
-//    public List<Menu> listMens() {
-//        List<Menu> menuList = menuService.getMenuByUserId(RoleConstant.ADMIN_USER_ID);
-//        log.info("data:[{}]", JsonUtil.toJsonString(menuList));
-//        return menuList;
-//    }
 
     /**
      *

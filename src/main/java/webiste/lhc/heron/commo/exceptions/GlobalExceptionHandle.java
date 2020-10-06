@@ -20,4 +20,10 @@ public class GlobalExceptionHandle {
     public Resp constraintNotMatchException(ConstraintNotMatchException e) {
         return Resp.error(e.getMessage());
     }
+
+    @ResponseBody
+    @ExceptionHandler(HeronException.class)
+    public Resp heronException(HeronException e) {
+        return Resp.error(e.getMessage());
+    }
 }

@@ -1,5 +1,6 @@
 package webiste.lhc.heron.controller;
 
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class SystemMonitorController extends AbstractController {
         return modelAndView;
     }
 
-    @RequiresPermissions(value = "sys:monitor:list")
+    @RequiresPermissions(value = {"sys:monitor:list", "sys:memory:view"}, logical = Logical.OR)
     @ResponseBody
     @GetMapping(value = "getChartsData")
     public Resp getChartsData(@RequestParam(value = "type") int type) {
@@ -97,7 +98,13 @@ public class SystemMonitorController extends AbstractController {
         return Resp.ok(longList);
     }
 
-    @RequiresPermissions(value = "sys:monitor:list")
+    /**
+     * 内存占用饼图
+     *
+     * @param type
+     * @return
+     */
+    @RequiresPermissions(value = {"sys:monitor:list", "sys:memory:view"}, logical = Logical.OR)
     @ResponseBody
     @GetMapping(value = "getMemoryInfo")
     public Resp getMemoryInfo(@RequestParam(value = "type") int type) {

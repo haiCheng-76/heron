@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webiste.lhc.heron.mapper.ResourceMapper">
+    <resultMap id="BaseResultMap" type="webiste.lhc.heron.model.Resource">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="resource_name" jdbcType="VARCHAR" property="resourceName"/>
+        <result column="resource_path" jdbcType="VARCHAR" property="resourcePath"/>
+        <result column="resource_type" jdbcType="VARCHAR" property="resourceType"/>
+        <result column="size" jdbcType="BIGINT" property="size"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="bucket_name" jdbcType="VARCHAR" property="bucketName"/>
+    </resultMap>
+</mapper>

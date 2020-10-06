@@ -158,21 +158,19 @@
                     </div>
                 </div>
             </div>
-            <div class="row row-deck row-cards">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="chart-total-sales"></div>
-                    </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart-total-sales"></div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div id="chart-social-referrals"></div>
-                    </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart-social-referrals"></div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div id="chart-tasks-overview"></div>
-                    </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart-tasks-overview"></div>
                 </div>
             </div>
         </div>
@@ -249,6 +247,9 @@
         },
         title: {
             text: "虚拟机内存占用"
+        },
+        noData: {
+            text: '数据不存在！'
         },
         dataLabels: {
             formatter(val, opts) {
