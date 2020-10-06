@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import webiste.lhc.heron.service.MenuService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
 /**
  * @ProjectName: heron
@@ -38,12 +35,11 @@ public class LoginController extends AbstractController {
 
     @PostMapping(value = "login")
     public String login(String account, String password) {
-        Map<String, Object> map = new HashMap<>(2);
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
         try {
             subject.login(token);
-            log.info("登录成功");
+            log.info("登录成功;account:{}", account);
         } catch (AuthenticationException e) {
             setSessionValue("loginError", e.getMessage());
             return "/login";

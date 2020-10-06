@@ -121,7 +121,6 @@
             "beanClass": $(".class-name").val(),
             "jobStatus": $("input[name='taskStatus']:checked").val(),
         };
-        alert(JSON.stringify(data))
         $.ajax({
             type: "POST",
             url: "/task/updateTask",

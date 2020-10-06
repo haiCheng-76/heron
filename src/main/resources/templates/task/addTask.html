@@ -115,7 +115,6 @@
             "jobStatus": $("input[name='taskStatus']:checked").val(),
             "jobGroup": $(".task-group").val()
         };
-        alert(JSON.stringify(data));
 
         $.ajax({
             type: "POST",

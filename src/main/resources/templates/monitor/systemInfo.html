@@ -32,7 +32,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="." class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+            <a href="/" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
                 <img src="./static/logo.svg" th:src="@{/static/logo.svg}" alt="Tabler" class="navbar-brand-image">
             </a>
             <div class="navbar-nav flex-row order-md-last">
@@ -184,10 +184,6 @@
                                 <td>cpu用户使用率</td>
                                 <td th:text="${systemMonitor.cpuUserUsage}"></td>
                             </tr>
-                            <!--                            <tr>-->
-                            <!--                                <td>cpu当前等待率</td>-->
-                            <!--                                <td th:text="${systemMonitor.cpuWaitUsage}"></td>-->
-                            <!--                            </tr>-->
                             <tr>
                                 <td>cpu当前使用率</td>
                                 <td th:text="${systemMonitor.cpuUsage}"></td>
@@ -212,15 +208,15 @@
                             <tbody>
                             <tr>
                                 <td>总内存</td>
-                                <td th:text="${systemMonitor.memoryTotal}"></td>
+                                <td th:text="${systemMonitor.memoryTotalStr}"></td>
                             </tr>
                             <tr>
                                 <td>已用内存</td>
-                                <td th:text="${systemMonitor.memoryUsed}"></td>
+                                <td th:text="${systemMonitor.memoryUsedStr}"></td>
                             </tr>
                             <tr>
                                 <td>剩余内存</td>
-                                <td th:text="${systemMonitor.memoryAvailable}"></td>
+                                <td th:text="${systemMonitor.memoryAvailableStr}"></td>
                             </tr>
                             <tr>
                                 <td>内存使用率</td>
@@ -250,15 +246,15 @@
                             </tr>
                             <tr>
                                 <td>jvm内存总量</td>
-                                <td th:text="${systemMonitor.jvmMemoryTotal}"></td>
+                                <td th:text="${systemMonitor.jvmMemoryTotalStr}"></td>
                             </tr>
                             <tr>
                                 <td>jvm已使用内存</td>
-                                <td th:text="${systemMonitor.jvmMemoryUsed}"></td>
+                                <td th:text="${systemMonitor.jvmMemoryUsedStr}"></td>
                             </tr>
                             <tr>
                                 <td>jvm剩余内存</td>
-                                <td th:text="${systemMonitor.jvmMemoryAvaliable}"></td>
+                                <td th:text="${systemMonitor.jvmMemoryAvaliableStr}"></td>
                             </tr>
                             </tbody>
                         </table>
