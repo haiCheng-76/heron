@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,13 @@ import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
+import oshi.util.FormatUtil;
 import webiste.lhc.heron.mapper.SystemMonitorMapper;
 import webiste.lhc.heron.model.SystemMonitor;
 import webiste.lhc.heron.service.SystemMonitorService;
 
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 
 
 @Slf4j
@@ -94,8 +95,67 @@ public class SystemMonitorServiceImpl implements SystemMonitorService {
         systemMonitorMapper.insertUseGeneratedKeys(systemMonitor);
     }
 
+    /**
+     * 获取当前设备最新的系统信息
+     *
+     * @return
+     */
     @Override
     public SystemMonitor getLastSystemMonitor() {
-        return systemMonitorMapper.getLastMonitor();
+        return systemMonitorMapper.getLastMonitor(System.getProperty("java.version"));
+    }
+
+    /**
+     * 获取当前设备的内存波动信息
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getMemoryData(int type) {
+        // jvm内存信息
+        if (1 == type) {
+            List<Map<String, Object>> mapList = systemMonitorMapper.listJvmMemoryCharts(System.getProperty("java.version"));
+            if (CollectionUtil.isEmpty(mapList)) {
+                return Collections.emptyList();
+            }
+            for (Map<String, Object> stringLongMap : mapList) {
+                long y = Long.parseLong(String.valueOf(stringLongMap.get("y")));
+                stringLongMap.put("y", FormatUtil.formatBytes(y));
+            }
+            return mapList;
+        } else {
+            List<Map<String, Object>> mapList = systemMonitorMapper.listMemoryCharts(System.getProperty("java.version"));
+            if (CollectionUtil.isEmpty(mapList)) {
+                return Collections.emptyList();
+            }
+            for (Map<String, Object> stringLongMap : mapList) {
+                long y = Long.parseLong(String.valueOf(stringLongMap.get("y")));
+                stringLongMap.put("y", FormatUtil.formatBytes(y));
+            }
+            return mapList;
+        }
+    }
+
+    @Override
+    public List<Long> getMemoryInfo(int type) {
+        List<Long> list = new ArrayList<>(2);
+        // jvm内存信息
+        if (1 == type) {
+            Map<String, Long> memoryInfo = systemMonitorMapper.getJvmMemoryInfo(System.getProperty("java.version"));
+            if (CollectionUtil.isEmpty(memoryInfo)) {
+                return Collections.emptyList();
+            }
+            list.add(memoryInfo.get("used"));
+            list.add(memoryInfo.get("available"));
+            return list;
+        } else {
+            Map<String, Long> memoryInfo = systemMonitorMapper.getMemoryInfo(System.getProperty("java.version"));
+            if (CollectionUtil.isEmpty(memoryInfo)) {
+                return Collections.emptyList();
+            }
+            list.add(memoryInfo.get("used"));
+            list.add(memoryInfo.get("available"));
+            return list;
+        }
     }
 }

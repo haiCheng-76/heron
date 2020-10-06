@@ -25,6 +25,18 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <select id="getLastMonitor" resultMap="BaseResultMap">
-    SELECT * FROM `system_monitor` ORDER BY create_time DESC LIMIT 1
+        SELECT * FROM `system_monitor` WHERE java_version=#{javaVersion} ORDER BY create_time DESC LIMIT 1
   </select>
+    <select id="listMemoryCharts" resultType="java.util.Map">
+        SELECT create_time AS x,memory_used AS y FROM `system_monitor` WHERE java_version=#{javaVersion} ORDER BY  id DESC LIMIT 50
+    </select>
+    <select id="getMemoryInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT memory_available AS available, memory_used AS used FROM system_monitor WHERE java_version=#{javaVersion} ORDER BY id DESC LIMIT 1
+    </select>
+    <select id="listJvmMemoryCharts" resultType="java.util.Map">
+        SELECT create_time AS x,jvm_memory_used AS y FROM `system_monitor` WHERE java_version=#{javaVersion} ORDER BY  id DESC LIMIT 50
+    </select>
+    <select id="getJvmMemoryInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT jvm_memory_avaliable AS available, jvm_memory_used AS used FROM system_monitor WHERE java_version=#{javaVersion} ORDER BY id DESC LIMIT 1
+    </select>
 </mapper>

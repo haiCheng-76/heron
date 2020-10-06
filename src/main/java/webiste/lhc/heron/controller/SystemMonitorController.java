@@ -7,12 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import oshi.util.FormatUtil;
 import webiste.lhc.heron.model.SystemMonitor;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.SystemMonitorService;
+import webiste.lhc.heron.util.Resp;
 import webiste.lhc.heron.vo.SystemMonitorVo;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "monitor")
@@ -24,6 +29,12 @@ public class SystemMonitorController extends AbstractController {
     @Autowired
     private SystemMonitorService systemMonitorService;
 
+    /**
+     * 跳转系统概况界面
+     *
+     * @param name
+     * @return
+     */
     @RequiresPermissions(value = "sys:monitor:view")
     @GetMapping(value = "monitorPage")
     public ModelAndView monitorPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
@@ -42,5 +53,56 @@ public class SystemMonitorController extends AbstractController {
         systemMonitorVo.setJvmMemoryAvaliableStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryAvaliable()));
         modelAndView.addObject("systemMonitor", systemMonitorVo);
         return modelAndView;
+    }
+
+    /**
+     * 跳转内存信息页面
+     *
+     * @param name
+     * @return
+     */
+    @RequiresPermissions(value = "sys:memory:view")
+    @GetMapping(value = "memoryPage")
+    public ModelAndView memoryPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("monitor/memory");
+        modelAndView.addObject("text", name);
+        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
+        return modelAndView;
+    }
+
+
+    /**
+     * 跳转虚拟机信息页面
+     *
+     * @param name
+     * @return
+     */
+    @RequiresPermissions(value = "sys:vm:view")
+    @GetMapping(value = "vmPage")
+    public ModelAndView vmPage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("text", name);
+        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
+        modelAndView.setViewName("monitor/vm");
+        return modelAndView;
+    }
+
+    @RequiresPermissions(value = "sys:monitor:list")
+    @ResponseBody
+    @GetMapping(value = "getChartsData")
+    public Resp getChartsData(@RequestParam(value = "type") int type) {
+        // 通过type判断需要读取的数据
+        List<Map<String, Object>> longList = systemMonitorService.getMemoryData(type);
+        return Resp.ok(longList);
+    }
+
+    @RequiresPermissions(value = "sys:monitor:list")
+    @ResponseBody
+    @GetMapping(value = "getMemoryInfo")
+    public Resp getMemoryInfo(@RequestParam(value = "type") int type) {
+        // 通过type判断需要读取的数据
+        List<Long> longList = systemMonitorService.getMemoryInfo(type);
+        return Resp.ok(longList);
     }
 }
