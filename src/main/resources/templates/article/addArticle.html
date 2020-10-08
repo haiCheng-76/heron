@@ -19,7 +19,6 @@
     <!-- CSS files -->
     <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
-    <link href="https://cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.css" rel="stylesheet"/>
     <style>
         body {
             display: none;
@@ -148,7 +147,7 @@
             </div>
         </div>
     </div>
-    <!--chart展示区-->
+    <!--主体-->
     <div class="content">
         <div class="container-fluid">
             <!-- Page title -->
@@ -157,17 +156,21 @@
                     <div class="col-auto">
                         <h2 class="page-title" th:text="${text}"></h2>
                     </div>
+                    <div class="col-auto ml-auto d-print-none">
+                        <button type="button" class="btn btn-primary btn-pill btn-block publish">发布</button>
+                    </div>
                 </div>
+
             </div>
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 col-xl-12">
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="example-text-input" placeholder="请输入文章标题">
+                                <input type="text" class="form-control title" name="example-text-input"
+                                       placeholder="请输入文章标题">
                             </div>
                             <div id="editor">
-                                <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
                             </div>
                         </div>
                     </div>
@@ -185,6 +188,7 @@
                             <li class="list-inline-item"><a href="./faq.html" class="link-secondary">FAQ</a></li>
                             <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank"
                                                             class="link-secondary">源代码</a></li>
+
                         </ul>
                     </div>
                     <div class="col-12 col-lg-auto mt-3 mt-lg-0">
@@ -200,31 +204,99 @@
 <!-- Libs JS -->
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.staticfile.org/wangEditor/3.1.1/wangEditor.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
 <!-- Tabler Core -->
 <script src="/dist/js/tabler.min.js"></script>
 <script>
     document.body.style.display = "block";
-    var E = window.wangEditor
-    var editor = new E('#editor')
-    // 字体
-    editor.customConfig.fontNames = [
+    const E = window.wangEditor;
+    const editor = new E('#editor');
+    editor.config.placeholder = '开始创作';
+    // 配置字体
+    editor.config.fontNames = [
+        '黑体',
+        '仿宋',
+        '楷体',
+        '标楷体',
+        '华文仿宋',
+        '华文楷体',
         '宋体',
         '微软雅黑',
         'Arial',
         'Tahoma',
         'Verdana',
+        'Times New Roman',
+        'Courier New',
         "JetBrains Mono"
-    ],
-        editor.customConfig.uploadFileName = 'file';
-    editor.customConfig.uploadImgServer = '/resource/uploadResource',
-        editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024,
-        editor.customConfig.uploadImgMaxLength = 5,
-        editor.customConfig.customAlert = function (info) {
-            // info 是需要提示的内容
-            alert('自定义提示：' + info)
+    ];
+    editor.config.uploadFileName = 'file';
+    editor.config.uploadImgServer = '/resource/uploadResource';
+    editor.config.uploadImgMaxSize = 5 * 1024 * 1024;
+    editor.config.uploadImgMaxLength = 3;
+    editor.config.customAlert = function (s) {
+    };
+    editor.config.showLinkImg = false;
+    var index;
+    editor.config.uploadImgHooks = {
+        before: function (xhr) {
+            index = layer.load(2, {shade: false});
+        },
+        success: function (xhr) {
+            layer.close(index);
+        },
+        fail: function (xhr, editor, resData) {
+            layer.msg(resData.message);
+            layer.close(index);
+        },
+        error: function (xhr, editor, resData) {
+            layer.close(index);
+        },
+        timeout: function (xhr) {
+            layer.close(index);
+            layer.msg("上传超时！");
         }
-    editor.create()
+    };
+    editor.create();
+
+    // $(".save").click(function () {
+    //     layer.msg("save");
+    // });
+
+
+    $(".publish").click(function () {
+        // alert()
+        // var html = '<p><strong>Editor.md</strong>: The open source embeddable online markdown editor (component), based on CodeMirror &amp; jQuery &amp; Marked.</p><h3><a href="https://github.com/pandao/editor.md#features"><path></path></a>Features</h3><ul><li>Support Standard Markdown / CommonMark and GFM (GitHub Flavored Markdown);</li><li>Full-featured: Real-time Preview, Image (cross-domain) upload, Preformatted text/Code blocks/Tables insert, Code fold, Search replace, Read only, Themes, Multi-languages, L18n, HTML entities, Code syntax highlighting...;</li><li>Markdown Extras : Support<a href="https://pandao.github.io/editor.md/examples/toc.html">ToC (Table of Contents)</a>,<a href="https://pandao.github.io/editor.md/examples/emoji.html">Emoji</a>,<a href="https://pandao.github.io/editor.md/examples/task-lists.html">Task lists</a>,<a href="https://pandao.github.io/editor.md/examples/@links.html">@Links</a>...;</li><li>Compatible with all major browsers (IE8+), compatible Zepto.js and iPad;</li><li>Support<a href="https://pandao.github.io/editor.md/examples/html-tags-decode.html">decode &amp; fliter of the HTML tags &amp; attributes</a>;</li><li>Support<a href="https://pandao.github.io/editor.md/examples/katex.html">TeX (LaTeX expressions, Based on KaTeX)</a>,<a href="https://pandao.github.io/editor.md/examples/flowchart.html">Flowchart</a>and<a href="https://pandao.github.io/editor.md/examples/sequence-diagram.html">Sequence Diagram</a>of Markdown extended syntax;</li><li>Support AMD/CMD (Require.js &amp; Sea.js) Module Loader, and Custom/define editor plugins;<hr><img src="https://oss.haicheng.website/20201007/20201007222629421.PNG"></li></ul>';
+        // var a = editor.txt.html(html);
+        // console.log(a)
+
+
+        var menuData = {
+            "title": $(".title").val(),
+            "content": editor.txt.html()
+
+        };
+        $.ajax({
+            type: "POST",
+            url: '/article/saveArticle',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(menuData),
+            success: function (res) {
+                if (res.code == 1) {
+                    // window.parent.location.reload();
+                    layer.msg("成功");
+
+                } else {
+                    layer.msg(res.message);
+                }
+            },
+            error: function (res) {
+
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
