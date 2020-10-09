@@ -259,18 +259,8 @@
     };
     editor.create();
 
-    // $(".save").click(function () {
-    //     layer.msg("save");
-    // });
-
 
     $(".publish").click(function () {
-        // alert()
-        // var html = '<p><strong>Editor.md</strong>: The open source embeddable online markdown editor (component), based on CodeMirror &amp; jQuery &amp; Marked.</p><h3><a href="https://github.com/pandao/editor.md#features"><path></path></a>Features</h3><ul><li>Support Standard Markdown / CommonMark and GFM (GitHub Flavored Markdown);</li><li>Full-featured: Real-time Preview, Image (cross-domain) upload, Preformatted text/Code blocks/Tables insert, Code fold, Search replace, Read only, Themes, Multi-languages, L18n, HTML entities, Code syntax highlighting...;</li><li>Markdown Extras : Support<a href="https://pandao.github.io/editor.md/examples/toc.html">ToC (Table of Contents)</a>,<a href="https://pandao.github.io/editor.md/examples/emoji.html">Emoji</a>,<a href="https://pandao.github.io/editor.md/examples/task-lists.html">Task lists</a>,<a href="https://pandao.github.io/editor.md/examples/@links.html">@Links</a>...;</li><li>Compatible with all major browsers (IE8+), compatible Zepto.js and iPad;</li><li>Support<a href="https://pandao.github.io/editor.md/examples/html-tags-decode.html">decode &amp; fliter of the HTML tags &amp; attributes</a>;</li><li>Support<a href="https://pandao.github.io/editor.md/examples/katex.html">TeX (LaTeX expressions, Based on KaTeX)</a>,<a href="https://pandao.github.io/editor.md/examples/flowchart.html">Flowchart</a>and<a href="https://pandao.github.io/editor.md/examples/sequence-diagram.html">Sequence Diagram</a>of Markdown extended syntax;</li><li>Support AMD/CMD (Require.js &amp; Sea.js) Module Loader, and Custom/define editor plugins;<hr><img src="https://oss.haicheng.website/20201007/20201007222629421.PNG"></li></ul>';
-        // var a = editor.txt.html(html);
-        // console.log(a)
-
-
         var menuData = {
             "title": $(".title").val(),
             "content": editor.txt.html()
@@ -284,8 +274,8 @@
             data: JSON.stringify(menuData),
             success: function (res) {
                 if (res.code == 1) {
-                    // window.parent.location.reload();
                     layer.msg("成功");
+                    window.location.href='/article/articleListPage?menuName=文章列表'
 
                 } else {
                     layer.msg(res.message);

@@ -13,7 +13,7 @@ import webiste.lhc.heron.service.TaskService;
 import webiste.lhc.heron.util.Assert;
 import webiste.lhc.heron.util.Resp;
 
-@Controller()
+@Controller
 @RequestMapping(value = "task")
 public class TaskController extends AbstractController {
 

@@ -174,19 +174,7 @@
             <div class="card">
                 <div class="table-responsive" style="padding: 10px">
                     <div id="toolbar">
-                        <shiro:hasPermission name="sys:user:add">
-                            <button type="button" class="btn btn-primary user_add">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
-                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                新增
-                            </button>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:user:alter">
+                        <shiro:hasPermission name="sys:article:alter">
                             <button type="button" class="btn btn-primary user_edit">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -198,7 +186,7 @@
                                 编辑
                             </button>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:user:del">
+                        <shiro:hasPermission name="sys:article:del">
                             <button type="button" class="btn btn-primary user_del">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
