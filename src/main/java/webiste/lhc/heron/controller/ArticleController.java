@@ -53,8 +53,8 @@ public class ArticleController extends AbstractController {
     @ResponseBody
     @GetMapping(value = "pageArticle")
     @RequiresPermissions(value = "sys:article:list")
-    public PageInfo<Article> pageArticle(@RequestParam(value = "current", defaultValue = "0") int current,
-                                         @RequestParam(value = "size", defaultValue = "10") int size) {
+    public PageInfo<Article> pageArticle(@RequestParam(value = "offset") int current,
+                                         @RequestParam(value = "limit") int size) {
         return articleService.pageArticle(current, size);
 
     }

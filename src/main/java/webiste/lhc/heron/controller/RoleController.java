@@ -28,8 +28,8 @@ public class RoleController extends AbstractController {
 
     @ResponseBody
     @GetMapping(value = "pageRole")
-    public PageInfo<RoleInfo> pageRole(@RequestParam(value = "current", defaultValue = "0") int current,
-                                       @RequestParam(value = "size", defaultValue = "10") int size) {
+    public PageInfo<RoleInfo> pageRole(@RequestParam(value = "offset") int current,
+                                       @RequestParam(value = "limit") int size) {
         return roleService.pageRole(current, size);
     }
 

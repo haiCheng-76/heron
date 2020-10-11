@@ -52,8 +52,8 @@ public class UserInfoController extends AbstractController {
 
     @ResponseBody
     @GetMapping(value = "pageUserInfo")
-    public PageInfo<UserInfo> pageUserInfo(@RequestParam(value = "offset", defaultValue = "0") int current,
-                                            @RequestParam(value = "limit", defaultValue = "10") int size) {
+    public PageInfo<UserInfo> pageUserInfo(@RequestParam(value = "offset") int current,
+                                            @RequestParam(value = "limit") int size) {
         PageInfo<UserInfo> pageInfo = userInfoService.pageUserInfo(current, size);
         return pageInfo;
     }

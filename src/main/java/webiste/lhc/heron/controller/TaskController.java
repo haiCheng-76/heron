@@ -34,7 +34,7 @@ public class TaskController extends AbstractController {
     @RequiresPermissions(value = "sys:task:list")
     @ResponseBody
     @GetMapping(value = "pageTask")
-    public PageInfo<Task> pageTask(@RequestParam(value = "offset", required = false, defaultValue = "1") int offset, @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+    public PageInfo<Task> pageTask(@RequestParam(value = "offset", required = false) int offset, @RequestParam(value = "limit", required = false) int size) {
         return taskService.listTasks(offset, size);
     }
 

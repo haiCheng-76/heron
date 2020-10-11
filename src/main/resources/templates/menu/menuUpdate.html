@@ -48,26 +48,29 @@
                                     </div>
                                     <div id="menu_per" class="mb-3">
                                         <label class="form-label">权限</label>
-                                        <input type="text" class="form-control menu_permission" th:value="${menu.permission}">
+                                        <input type="text" class="form-control menu_permission"
+                                               th:value="${menu.permission}">
                                     </div>
-<!--                                    <div class="mb-3">-->
-<!--                                        <div class="form-label">状态</div>-->
-<!--                                        <select class="form-select menu_type">-->
-<!--                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>-->
-<!--                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
+                                    <!--                                    <div class="mb-3">-->
+                                    <!--                                        <div class="form-label">状态</div>-->
+                                    <!--                                        <select class="form-select menu_type">-->
+                                    <!--                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>-->
+                                    <!--                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>-->
+                                    <!--                                        </select>-->
+                                    <!--                                    </div>-->
 
 
                                     <div class="form-group mb-3">
                                         <div class="form-label">状态</div>
                                         <div class="form-check-inline">
                                             <label class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="menuStatus" value="false" th:checked="${menu.isDelete == false}"/>
+                                                <input class="form-check-input" type="radio" name="menuStatus"
+                                                       value="false" th:checked="${menu.isDelete == false}"/>
                                                 <span class="form-check-label">有效</span>
                                             </label>
                                             <label class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="menuStatus" value="true" th:checked="${menu.isDelete == true}"/>
+                                                <input class="form-check-input" type="radio" name="menuStatus"
+                                                       value="true" th:checked="${menu.isDelete == true}"/>
                                                 <span class="form-check-label">失效</span>
                                             </label>
                                         </div>
@@ -75,7 +78,8 @@
 
                                     <div class="mb-3">
                                         <label class="form-label">排序</label>
-                                        <input type="number" min="0" class="form-control menu_sort" th:value="${menu.sort}">
+                                        <input type="number" min="0" class="form-control menu_sort"
+                                               th:value="${menu.sort}">
                                     </div>
                                     <div class="form-footer">
                                         <button type="button" class="btn btn-primary formCommit">提交</button>
@@ -95,93 +99,6 @@
         <script src="/dist/js/menu.js"></script>
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
-        <script>
-            document.body.style.display = "block";
-            var menuId = '[[${menu.id}]]';
-            var menuPid = '[[${pid}]]';
-            var menuType = '[[${type}]]';
-            if ('D' == menuType) {
-                $("#menu_url").hide();
-                $("#menu_per").hide();
-            }
-            if ('B' == menuType) {
-                $("#menu_url").hide();
-            }
-            var setting = {
-                check: {
-                    enable: true,
-                    chkStyle: "radio",
-                    radioType: "all"
-                },
-                data: {
-                    simpleData: {
-                        enable: true
-                    }
-                }
-            };
-
-            var ztree;
-            $(document).ready(function () {
-                var treeData = null;
-                $.ajax({
-                    type: "POST",
-                    url: '/menu/getZtreeMenu',
-                    data: JSON.stringify(["D", "M"]),
-                    async: false,
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    success: function (res) {
-                        treeData = res;
-                    }
-                });
-                ztree = $.fn.zTree.init($("#menuTree"), setting, treeData);
-                ztree.expandAll(true);
-                var nodes = ztree.transformToArray(ztree.getNodes());
-                if (nodes.length>0) {
-                    for(var i=0;i<nodes.length;i++){
-                        if(menuPid == nodes[i].id){
-                            nodes[i].checked = true;
-                            ztree.updateNode(nodes[i]);
-                            return;
-                        }
-                    }
-                }
-            });
-
-
-            $(".formCommit").click(function () {
-                var menuData = {
-                    "id": menuId,
-                    "parentId": ztree.getCheckedNodes()[0].id,
-                    "menuName": $(".menu_name").val(),
-                    "url": $(".url").val(),
-                    "permission": $(".menu_permission").val(),
-                    "isDelete": $("input[name='menuStatus']:checked").val(),
-                    "sort": $(".menu_sort").val()
-                };
-                $.ajax({
-                    type: "POST",
-                    url: '/menu/updateMenu',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify(menuData),
-                    success: function (res) {
-                        if (res.code == 1) {
-
-                            // window.location.reload();
-                            window.parent.location.reload();
-
-                        } else {
-                            layer.msg(res.message);
-                        }
-                    },
-                    error: function (res) {
-
-                    }
-                });
-            });
-
-
-        </script>
+        <script src="/dist/js/menu/menuUpdate.js"></script>
     </body>
 </html>
