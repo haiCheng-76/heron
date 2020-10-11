@@ -62,7 +62,7 @@ $(function () {
                 })
             }
         }
-    })
+    });
 })
 
 function edit(id, pid, type) {

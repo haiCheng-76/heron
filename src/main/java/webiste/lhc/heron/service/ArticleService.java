@@ -12,4 +12,10 @@ public interface ArticleService {
     PageInfo<Article> pageArticle(int current, int size);
 
     Map<String, String> getContentById(long id);
+
+    void removeArticle(long id);
+
+    Article getArticleById(long id);
+
+    void updateArticle(ArticleDto dto);
 }

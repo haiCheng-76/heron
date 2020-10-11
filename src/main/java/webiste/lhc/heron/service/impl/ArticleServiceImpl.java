@@ -54,4 +54,25 @@ public class ArticleServiceImpl implements ArticleService {
         map.put("content", article.getContent());
         return map;
     }
+
+    @Override
+    public void removeArticle(long id) {
+        articleMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Article getArticleById(long id) {
+        Article article = articleMapper.selectByPrimaryKey(id);
+        return article;
+    }
+
+    @Override
+    public void updateArticle(ArticleDto dto) {
+        Article article = new Article();
+        article.setId(dto.getId());
+        article.setArticleName(dto.getTitle());
+        article.setContent(dto.getContent());
+        article.setUpdateTime(new Date());
+        articleMapper.updateByPrimaryKeySelective(article);
+    }
 }
