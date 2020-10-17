@@ -18,7 +18,7 @@ import webiste.lhc.heron.util.Resp;
  * @Package: webiste.lhc.heron.controller
  * @ClassName: UserInfoController
  * @Author: lhc
- * @Description: TODO
+ * @Description: 用户相关
  * @Date: 2020/8/16 下午 02:35
  */
 @Slf4j

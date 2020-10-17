@@ -1,12 +1,5 @@
-Heron
+加入`maven-assembly-plugin`插件
 ---
-* 登录
-![](img/login.png)
-* 菜单管理
-![](img/menu.png)
-* 定时任务
-![](img/task.png)
-* 系统信息
-![](img/info.png)
-* 系统内存占用
-![](img/memory.png)
+1. 使用`mvn clean package -DskipTests -e`将文件打包，并生成`.tar.gz`和`.jar`两个文件
+* `.tar.gz` 用于全量发布
+* `.jar`用于增量发布

@@ -1,10 +1,10 @@
 <configuration scan="true" scanPeriod="5 seconds">
     <contextName>heron</contextName>
-    <property name="appName" value="heron"></property>
-    <property name="logPath" value="/mnt/logs"></property>
+    <property name="appName" value="heron"/>
+    <property name="logPath" value="/mnt/logs"/>
 
 
-    <timestamp key="bySecond" datePattern="yyyyMMddHH"></timestamp>
+    <timestamp key="bySecond" datePattern="yyyyMMddHH"/>
 
     <!--控制台日志-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -14,21 +14,8 @@
         </encoder>
     </appender>
 
-    <!--基于时间的轮转-->
-    <!--    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-    <!--        <file>${logPath}/${appName}/heron.log</file>-->
-    <!--        <append>true</append>-->
-    <!--        <encoder>-->
-    <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-    <!--        </encoder>-->
-    <!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-    <!--            <fileNamePattern>${logPath}/${appName}/%d{yyyy-MM-dd,aux}/heron-%d{yyyyMMddHHmm}.log</fileNamePattern>-->
-    <!--            <maxHistory>10</maxHistory>-->
-    <!--        </rollingPolicy>-->
-    <!--    </appender>-->
-
     <!--基于时间和文件尺寸的轮转-->
-    <appender name="SizeAndTimeBasedRollingPolicy" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${logPath}/${appName}/heron.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${logPath}/${appName}/%d{yyyyMMddHH}/heron-%i.log</fileNamePattern>
@@ -41,12 +28,12 @@
         </encoder>
     </appender>
 
-    <logger name="webiste.lhc.heron" level="all" additivity="false">
-        <appender-ref ref="rollingFileAppender"></appender-ref>
+    <logger name="webiste.lhc.heron" level="debug" additivity="false">
+        <appender-ref ref="rollingFileAppender"/>
     </logger>
 
 
-    <root level="debug">
-        <appender-ref ref="STDOUT"></appender-ref>
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
