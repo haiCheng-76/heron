@@ -16,12 +16,12 @@
 
     <!--基于时间和文件尺寸的轮转-->
     <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logPath}/${appName}/heron.log</file>
+        <file>${logPath}/${appName}/${appName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${logPath}/${appName}/%d{yyyyMMddHH}/heron-%i.log</fileNamePattern>
-            <maxFileSize>500KB</maxFileSize>
-            <maxHistory>20</maxHistory>
-            <totalSizeCap>10GB</totalSizeCap>
+            <fileNamePattern>${logPath}/${appName}/%d{yyyyMMddHH}/${appName}-%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>15</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
