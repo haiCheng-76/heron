@@ -1,7 +1,9 @@
 package webiste.lhc.heron.framework.minio;
 
+import cn.hutool.core.collection.CollectionUtil;
 import io.minio.MinioClient;
 import io.minio.errors.*;
+import io.minio.messages.Bucket;
 import io.minio.policy.PolicyType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -70,5 +75,48 @@ public class MinIoService {
         }
         client.putObject(bucketName, fileName, inputStream, size, contentType);
         return client.getObjectUrl(bucketName, fileName);
+    }
+
+    /**
+     * 获取所有存储桶名称
+     *
+     * @return
+     */
+    public List<String> bucketList() {
+        List<Bucket> bucketList = null;
+        try {
+            MinioClient client = minioClient();
+            bucketList = client.listBuckets();
+        } catch (InvalidPortException e) {
+            e.printStackTrace();
+        } catch (InvalidEndpointException e) {
+            e.printStackTrace();
+        } catch (InvalidBucketNameException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InsufficientDataException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (NoResponseException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (ErrorResponseException e) {
+            e.printStackTrace();
+        } catch (InternalException e) {
+            e.printStackTrace();
+        }
+        if (CollectionUtil.isEmpty(bucketList)) {
+            return Collections.emptyList();
+        }
+        List<String> bucketNameList = new ArrayList<>(bucketList.size());
+        for (Bucket bucket : bucketList) {
+            bucketNameList.add(bucket.name());
+        }
+        return bucketNameList;
     }
 }

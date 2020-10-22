@@ -49,7 +49,6 @@ public class Resource implements Serializable {
     @Column(name = "create_time")
     private Date createTime;
 
-
     /**
      * 上传者
      */

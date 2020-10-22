@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Example;
 import webiste.lhc.heron.framework.minio.MinIoService;
 import webiste.lhc.heron.mapper.ResourceMapper;
 import webiste.lhc.heron.model.Resource;
@@ -82,4 +83,24 @@ public class ResourceServiceImpl implements ResourceService {
         map.put("data", list);
         return map;
     }
+
+    @Override
+    public List<String> listBucketName() {
+        return minIoService.bucketList();
+    }
+
+    @Override
+    public List<String> listResoureType() {
+        return resourceMapper.resourceType();
+    }
+
+    @Override
+    public List<Resource> getResources(String bucket) {
+        Example example = new Example(Resource.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.orEqualTo("", bucket);
+        example.orderBy("createTime").desc();
+        return resourceMapper.selectByExample(example);
+    }
+
 }

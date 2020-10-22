@@ -14,4 +14,10 @@
         <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
         <result column="bucket_name" jdbcType="VARCHAR" property="bucketName"/>
     </resultMap>
+
+    <select id="resourceType" resultType="java.lang.String">
+        SELECT bucket_name
+        FROM `resource`
+        GROUP BY bucket_name
+    </select>
 </mapper>

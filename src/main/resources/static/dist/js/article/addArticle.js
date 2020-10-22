@@ -16,13 +16,13 @@ editor.config.fontNames = [
     'Tahoma',
     'Verdana',
     'Times New Roman',
-    'Courier New',
-    "JetBrains Mono"
+    'Courier New'
 ];
 editor.config.uploadFileName = 'file';
 editor.config.uploadImgServer = '/resource/uploadResource';
 editor.config.uploadImgMaxSize = 5 * 1024 * 1024;
 editor.config.uploadImgMaxLength = 3;
+editor.config.height = 500;
 editor.config.customAlert = function (s) {
 };
 editor.config.showLinkImg = false;
