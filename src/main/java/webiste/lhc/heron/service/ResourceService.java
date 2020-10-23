@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service;
 
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 import webiste.lhc.heron.model.Resource;
 
@@ -13,4 +14,6 @@ public interface ResourceService {
     List<String> listResoureType();
 
     List<Resource> getResources(String bucket);
+
+    PageInfo<Resource> pageResource(int current, int size, String type);
 }

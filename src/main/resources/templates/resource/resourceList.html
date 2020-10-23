@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Heron</title>
+    <title th:text="${text}">Heron</title>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <meta name="msapplication-TileColor" content="#206bc4"/>
     <meta name="theme-color" content="#206bc4"/>
@@ -19,9 +19,17 @@
     <!-- CSS files -->
     <link href="/dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="/dist/css/demo.min.css" rel="stylesheet"/>
+    <!--    <link href="https://cdn.staticfile.org/bootstrap-table/1.1.4/bootstrap-table.min.css" rel="stylesheet">-->
+    <link href="/dist/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.6.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             display: none;
+        }
+
+        #select {
+            width: 200px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -32,8 +40,9 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a href="." class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
-                <img src="./static/logo.svg" th:src="@{/static/logo.svg}" alt="Tabler" class="navbar-brand-image">
+            <a href="/" class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
+                <img src="./static/logo.svg" th:src="@{/static/logo.svg}" alt="Tabler"
+                     class="navbar-brand-image">
             </a>
             <div class="navbar-nav flex-row order-md-last">
                 <div class="nav-item dropdown">
@@ -55,13 +64,16 @@
                         </div>
                         <div class="d-none d-xl-block pl-2">
                             <div th:text="${session.currentUser.account}">Paweł Kuna</div>
-                            <div class="mt-1 small text-muted" th:text="${session.currentUser.eMail}">UI Designer</div>
+                            <div class="mt-1 small text-muted" th:text="${session.currentUser.eMail}">UI
+                                Designer
+                            </div>
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                 fill="none"
                                  stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z"/>
                                 <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -71,7 +83,8 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                 fill="none"
                                  stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z"/>
                                 <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"/>
@@ -104,19 +117,25 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="/index">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                                 class="icon" width="24" height="24"
-                                                                                 viewBox="0 0 24 24" stroke-width="2"
-                                                                                 stroke="currentColor" fill="none"
-                                                                                 stroke-linecap="round"
-                                                                                 stroke-linejoin="round"><path
-                            stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path
-                            d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path
-                            d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
-                    </span>
+                                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 class="icon" width="24" height="24"
+                                                 viewBox="0 0 24 24" stroke-width="2"
+                                                 stroke="currentColor" fill="none"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+                                                <path
+                                                        stroke="none" d="M0 0h24v24H0z"/>
+                                                <polyline points="5 12 3 12 12 3 21 12 19 12"/>
+                                                <path
+                                                        d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/>
+                                                <path
+                                                        d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/>
+                                            </svg>
+                                        </span>
                                 <span class="nav-link-title">
-                      首页
-                    </span>
+                                            首页
+                                        </span>
                             </a>
                         </li>
                         <li class="nav-item" th:each="menu:${menus}"
@@ -160,31 +179,20 @@
             <div class="card">
                 <div class="table-responsive" style="padding: 10px">
                     <div id="toolbar">
-                        <shiro:hasPermission name="sys:user:add">
+                        <shiro:hasPermission name="sys:resource:upload">
                             <button type="button" class="btn btn-primary user_add">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                      stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <path d="M7 18a4.6 4.4 0 0 1 0 -9h0a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
+                                    <polyline points="9 15 12 12 15 15"></polyline>
+                                    <line x1="12" y1="12" x2="12" y2="21"></line>
                                 </svg>
-                                新增
+                                上传
                             </button>
                         </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:user:alter">
-                            <button type="button" class="btn btn-primary user_edit">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
-                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-                                    <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"></line>
-                                </svg>
-                                编辑
-                            </button>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:user:del">
+                        <shiro:hasPermission name="sys:resource:del">
                             <button type="button" class="btn btn-primary user_del">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -199,19 +207,95 @@
                                 删除
                             </button>
                         </shiro:hasPermission>
+                        <shiro:hasPermission name="sys:resource:search">
+                            <select id="select" class="form-control form-select" name="filterAlgorithm">
+                                <option value="">选择文件类型</option>
+                                <option th:each="item:${resourceTypes}" th:text="${item}" th:value="${item}"></option>
+                            </select>
+                            <button class="btn btn-primary" id="filterBy">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z"></path>
+                                    <circle cx="10" cy="10" r="7"></circle>
+                                    <line x1="21" y1="21" x2="15" y2="15"></line>
+                                </svg>
+                                过滤
+                            </button>
+                        </shiro:hasPermission>
                     </div>
-                    <table id="user_table" data-toolbar="#toolbar" class="table table-striped table-bordered"></table>
+                    <table id="resource_table" data-toolbar="#toolbar" class="table table-striped table-bordered"
+                           data-checkbox-header="false" data-click-to-select="true"></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Libs JS -->
+<script src="https://libs.cdnjs.net/jquery/1.10.0/jquery.min.js"></script>
 <script src="/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/dist/js/bootstrap-table.min.js"></script>
+<script src="/dist/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
 <!-- Tabler Core -->
 <script src="/dist/js/tabler.min.js"></script>
-<script>
-    document.body.style.display = "block"
+<script src="/dist/js/base.js"></script>
+<script type="text/javascript">
+    document.body.style.display = "block";
+    var clipboard = new ClipboardJS('.copy_link');
+    var $table = $('#resource_table');
+    $(document).ready(function () {
+        $table.bootstrapTable({
+            url: '/resource/resourcePageInfo',
+            pagination: true,
+            sortable: false,
+            locale: 'zh-CN',
+            virtualScroll: true,
+            totalField: 'total',
+            dataField: 'list',
+            sidePagination: 'server',
+            pageSize: 5,
+            pageList: [5, 10, 20, 50],
+            search: false,
+            cache: true,
+            idField: 'id',
+            showRefresh: false,
+            columns: [{
+                field: 'resourceName',
+                title: '名称'
+            }, {
+                field: 'resourceType',
+                title: '类型'
+            }, {
+                field: 'createTime',
+                title: '创建时间'
+            }, {
+                field: 'bucketName',
+                title: '存储桶名称'
+            }, {
+                field: 'resourcePath',
+                title: '操作',
+                formatter: function accountFormatter(value, row) {
+                    // console.log(row.resourcePath)
+                    // console.log(value)
+                    var html = '';
+                    html += '<a type="button" href="' + value + '" target="_blank" title="下载"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4"></path><line x1="12" y1="13" x2="12" y2="22"></line><polyline points="9 19 12 22 15 19"></polyline></svg></a>';
+                    html += '&nbsp;&nbsp;&nbsp;&nbsp;'
+                    // html += '<input class="res_link_'+row.id+'" value="' + value + '" hidden/>'
+                    html += '<a href="javascript:void(0)"  class="copy_link" title="复制链接" data-clipboard-text="' + value + '"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a>';
+                    return html;
+                }
+            }]
+        });
+    });
+    clipboard.on('success', function (e) {
+        layer.msg('复制链接成功！');
+        e.clearSelection();
+    });
+    clipboard.on('error', function (e) {
+        layer.msg('复制链接失败！');
+    });
 </script>
 </body>
 </html>

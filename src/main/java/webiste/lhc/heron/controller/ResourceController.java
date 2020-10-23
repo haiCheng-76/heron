@@ -1,5 +1,6 @@
 package webiste.lhc.heron.controller;
 
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import webiste.lhc.heron.model.Resource;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.ResourceService;
 
@@ -37,8 +39,16 @@ public class ResourceController extends AbstractController {
         modelAndView.setViewName("resource/resourceList");
         modelAndView.addObject("text", name);
         modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
-        modelAndView.addObject("buckets", resourceService.listBucketName());
-        modelAndView.addObject("types", resourceService.listResoureType());
+        modelAndView.addObject("resourceTypes", resourceService.listResoureType());
         return modelAndView;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "resourcePageInfo")
+    public PageInfo<Resource> resourcePageInfo(@RequestParam(value = "offset") int current,
+                                               @RequestParam(value = "limit") int size,
+                                               @RequestParam(value = "type",required = false) String type) {
+        return resourceService.pageResource(current, size, type);
+
     }
 }

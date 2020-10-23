@@ -1,6 +1,8 @@
 package webiste.lhc.heron.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,6 +103,19 @@ public class ResourceServiceImpl implements ResourceService {
         criteria.orEqualTo("", bucket);
         example.orderBy("createTime").desc();
         return resourceMapper.selectByExample(example);
+    }
+
+    @Override
+    public PageInfo<Resource> pageResource(int current, int size, String type) {
+        PageHelper.offsetPage(current, size);
+        Example example = new Example(Resource.class);
+        if (StringUtils.hasLength(type)) {
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("resourceType", type);
+        }
+        example.orderBy("createTime").desc();
+        List<Resource> resourceList = resourceMapper.selectByExample(example);
+        return new PageInfo<>(resourceList);
     }
 
 }

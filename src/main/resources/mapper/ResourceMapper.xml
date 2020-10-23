@@ -16,8 +16,8 @@
     </resultMap>
 
     <select id="resourceType" resultType="java.lang.String">
-        SELECT bucket_name
+        SELECT resource_type
         FROM `resource`
-        GROUP BY bucket_name
+        GROUP BY resource_type
     </select>
 </mapper>
