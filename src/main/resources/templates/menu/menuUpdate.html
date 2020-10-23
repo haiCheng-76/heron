@@ -51,15 +51,6 @@
                                         <input type="text" class="form-control menu_permission"
                                                th:value="${menu.permission}">
                                     </div>
-                                    <!--                                    <div class="mb-3">-->
-                                    <!--                                        <div class="form-label">状态</div>-->
-                                    <!--                                        <select class="form-select menu_type">-->
-                                    <!--                                            <option value="true" th:selected="${menu.isDelete eq true}">失效</option>-->
-                                    <!--                                            <option value="false" th:selected="${menu.isDelete eq false}">有效</option>-->
-                                    <!--                                        </select>-->
-                                    <!--                                    </div>-->
-
-
                                     <div class="form-group mb-3">
                                         <div class="form-label">状态</div>
                                         <div class="form-check-inline">
@@ -100,5 +91,57 @@
         <!-- Tabler Core -->
         <script src="/dist/js/tabler.min.js"></script>
         <script src="/dist/js/menu/menuUpdate.js"></script>
+        <script type="text/javascript">
+            var menuId = '[[${menu.id}]]';
+            var menuPid = '[[${pid}]]';
+            var menuType = '[[${type}]]';
+            if ('D' == menuType) {
+                $("#menu_url").hide();
+                $("#menu_per").hide();
+            }
+            if ('B' == menuType) {
+                $("#menu_url").hide();
+            }
+            var setting = {
+                check: {
+                    enable: true,
+                    chkStyle: "radio",
+                    radioType: "all"
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                }
+            };
+
+            var ztree;
+            $(document).ready(function () {
+                var treeData = null;
+                $.ajax({
+                    type: "POST",
+                    url: '/menu/getZtreeMenu',
+                    data: JSON.stringify(["D", "M"]),
+                    async: false,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (res) {
+                        treeData = res;
+                    }
+                });
+                ztree = $.fn.zTree.init($("#menuTree"), setting, treeData);
+                ztree.expandAll(true);
+                var nodes = ztree.transformToArray(ztree.getNodes());
+                if (nodes.length > 0) {
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (menuPid == nodes[i].id) {
+                            nodes[i].checked = true;
+                            ztree.updateNode(nodes[i]);
+                            return;
+                        }
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
