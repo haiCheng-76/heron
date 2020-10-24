@@ -15,6 +15,7 @@ import webiste.lhc.heron.mapper.ResourceMapper;
 import webiste.lhc.heron.model.Resource;
 import webiste.lhc.heron.service.ResourceService;
 import webiste.lhc.heron.util.Assert;
+import webiste.lhc.heron.util.JsonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,9 +60,8 @@ public class ResourceServiceImpl implements ResourceService {
             return map;
         }
         String bucketName = DateUtil.format(LocalDateTime.now(), "yyyyMMdd");
-        String newFileName = DateUtil.format(LocalDateTime.now(), "yyyyMMddHHmmssSSS") + "." + StringUtils.split(path, ".")[1];
         try {
-            fileUrl = minIoService.uploadFile(bucketName, newFileName, inputStream, contentType, fileSize);
+            fileUrl = minIoService.uploadFile(bucketName, path, inputStream, contentType, fileSize);
         } catch (Exception e) {
             log.warn("MinIo文件上传异常;Exception:{}", e.getMessage());
             e.printStackTrace();
@@ -69,11 +69,11 @@ public class ResourceServiceImpl implements ResourceService {
             map.put("message", "对象存储服务异常，请稍后再试！");
             return map;
         }
-        log.info("fileSize:{};path:{};contentType:{};bucketName:{};newFileName:{}", fileSize, path, contentType, bucketName, newFileName);
+        log.info("fileSize:{};path:{};contentType:{};bucketName:{}", fileSize, path, contentType, bucketName);
         Resource resource = new Resource();
         resource.setBucketName(bucketName);
         resource.setCreateTime(new Date());
-        resource.setResourceName(newFileName);
+        resource.setResourceName(path);
         resource.setSize(fileSize);
         resource.setResourceType(StringUtils.split(path, ".")[1]);
         resource.setResourcePath(fileUrl);
@@ -116,6 +116,30 @@ public class ResourceServiceImpl implements ResourceService {
         example.orderBy("createTime").desc();
         List<Resource> resourceList = resourceMapper.selectByExample(example);
         return new PageInfo<>(resourceList);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void delResources(List<Integer> ids) {
+        if (log.isDebugEnabled()) {
+            log.debug("删除minio文件;ids:[{}]", JsonUtil.toJsonString(ids));
+        }
+        for (Integer id : ids) {
+            Resource resource = resourceMapper.selectByPrimaryKey(id);
+            if (Objects.isNull(resource)) {
+                continue;
+            }
+            String bucket = resource.getBucketName();
+            String file = resource.getResourceName();
+            try {
+                minIoService.delObject(bucket, file);
+            } catch (Exception e) {
+                log.warn("删除minio文件异常;id:[{}],bucket:[{}],file:[{}],Exception:[{}]", id, bucket, file, e.getMessage());
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage());
+            }
+            resourceMapper.deleteByPrimaryKey(id);
+        }
     }
 
 }

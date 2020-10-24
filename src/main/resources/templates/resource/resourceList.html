@@ -22,14 +22,13 @@
     <!--    <link href="https://cdn.staticfile.org/bootstrap-table/1.1.4/bootstrap-table.min.css" rel="stylesheet">-->
     <link href="/dist/css/bootstrap-table.min.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.6.0/css/all.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" integrity="sha384-GfS9Y0ZPEvQKO7UhzAiYGSuSCMuBmmj4EAnIV5f+lPiW3bV5/O85wugohIReUmKM"
+          href="https://lib.baomitu.com/blueimp-file-upload/10.31.0/css/jquery.fileupload.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" integrity="sha384-vGVVwOgi5RT4K7OJ21OxiR8NchnF9caAVAFhXgNVg3X21ECIwJV7nXRP8Ty9kiQi"
+          href="https://lib.baomitu.com/blueimp-file-upload/10.31.0/css/jquery.fileupload-ui.min.css" rel="stylesheet">
     <style>
         body {
             display: none;
-        }
-
-        #select {
-            width: 200px;
-            display: inline-block;
         }
     </style>
 </head>
@@ -180,7 +179,9 @@
                 <div class="table-responsive" style="padding: 10px">
                     <div id="toolbar">
                         <shiro:hasPermission name="sys:resource:upload">
-                            <button type="button" class="btn btn-primary user_add">
+                            <input type="file" id="file" name="file" data-url="/resource/uploadResource"
+                                   style="display: none" multiple>
+                            <button type="button" class="btn btn-primary upload">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                      stroke-linecap="round" stroke-linejoin="round">
@@ -193,7 +194,7 @@
                             </button>
                         </shiro:hasPermission>
                         <shiro:hasPermission name="sys:resource:del">
-                            <button type="button" class="btn btn-primary user_del">
+                            <button type="button" class="btn btn-primary res_del">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
                                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                      stroke-linecap="round" stroke-linejoin="round">
@@ -205,22 +206,6 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
                                 </svg>
                                 删除
-                            </button>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="sys:resource:search">
-                            <select id="select" class="form-control form-select" name="filterAlgorithm">
-                                <option value="">选择文件类型</option>
-                                <option th:each="item:${resourceTypes}" th:text="${item}" th:value="${item}"></option>
-                            </select>
-                            <button class="btn btn-primary" id="filterBy">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24"
-                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <circle cx="10" cy="10" r="7"></circle>
-                                    <line x1="21" y1="21" x2="15" y2="15"></line>
-                                </svg>
-                                过滤
                             </button>
                         </shiro:hasPermission>
                     </div>
@@ -238,6 +223,12 @@
 <script src="/dist/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
 <script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-HkHKYfCol0Gg2dkUiNVrKw/EGcqk1X+L3Jj6jRzcLhRGadAPwkHv89Rq3zlW+caC"
+        src="https://lib.baomitu.com/blueimp-file-upload/10.31.0/js/vendor/jquery.ui.widget.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-C8E+OigLmgvqsVaZx5O+y3CFThdNepYBLWUoFk9BCsd+t3nhNyXQEkAyb55Ty/jY"
+        src="https://lib.baomitu.com/blueimp-file-upload/10.31.0/js/jquery.iframe-transport.min.js"></script>
+<script crossorigin="anonymous" integrity="sha384-jz5ZN63KwvpmpLeYtlkZcIziGmLw9jG01X73LqUE8MqsLB4MjZkJ0PPOgqHku99v"
+        src="https://lib.baomitu.com/blueimp-file-upload/10.31.0/js/jquery.fileupload.min.js"></script>
 <!-- Tabler Core -->
 <script src="/dist/js/tabler.min.js"></script>
 <script src="/dist/js/base.js"></script>
@@ -262,6 +253,8 @@
             idField: 'id',
             showRefresh: false,
             columns: [{
+                checkbox: true
+            }, {
                 field: 'resourceName',
                 title: '名称'
             }, {
@@ -277,8 +270,6 @@
                 field: 'resourcePath',
                 title: '操作',
                 formatter: function accountFormatter(value, row) {
-                    // console.log(row.resourcePath)
-                    // console.log(value)
                     var html = '';
                     html += '<a type="button" href="' + value + '" target="_blank" title="下载"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"></path><path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4"></path><line x1="12" y1="13" x2="12" y2="22"></line><polyline points="9 19 12 22 15 19"></polyline></svg></a>';
                     html += '&nbsp;&nbsp;&nbsp;&nbsp;'
@@ -296,6 +287,71 @@
     clipboard.on('error', function (e) {
         layer.msg('复制链接失败！');
     });
+
+    $('.upload').click(function () {
+        $('#file').click();
+    });
+    var index;
+    $('#file').fileupload({
+        dataType: 'json',
+        progressall: function (e, data) {
+            // var progress = parseInt(data.loaded / data.total * 100, 10);
+            // 显示上传进度条
+            index = layer.load(2, {});
+        },
+        done: function (e, data) {
+            var result = data._response.result;
+            if (1 == result.errno) {
+                layer.close(index);
+                layer.msg(result.message);
+                return;
+            } else {
+                layer.close(index);
+                layer.msg('上传成功！');
+                $table.bootstrapTable('refresh');
+            }
+        }
+    });
+
+    var ids = [];
+    $('.res_del').click(function () {
+        var rows = $table.bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            layer.msg('请选择一条记录！');
+            return;
+        }
+        index = layer.load(2, {});
+        $(rows).each(function () {
+            ids.push(this.id);
+        });
+        delRes(ids);
+        ids = [];
+    });
+
+
+    function delRes(arr) {
+        $.ajax({
+            type: 'POST',
+            url: '/resource/batchDelResources',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(arr),
+            success: function (resp) {
+                if (1 == resp.code) {
+                    layer.close(index);
+                    layer.msg('删除成功！');
+                    $table.bootstrapTable('refresh');
+                } else {
+                    layer.close(index);
+                    layer.msg('删除失败！');
+                }
+            },
+            error: function (res) {
+                layer.close(index);
+                layer.msg('删除失败！');
+            }
+        });
+    }
 </script>
 </body>
 </html>

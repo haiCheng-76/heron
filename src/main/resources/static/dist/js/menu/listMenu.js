@@ -49,7 +49,6 @@ $(function () {
                 }
             }
         ],
-
         onPostBody: function () {
             var columns = $table.bootstrapTable('getOptions').columns
 
@@ -63,6 +62,7 @@ $(function () {
             }
         }
     });
+
 })
 
 function edit(id, pid, type) {

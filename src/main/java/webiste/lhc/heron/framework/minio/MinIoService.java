@@ -2,8 +2,10 @@ package webiste.lhc.heron.framework.minio;
 
 import cn.hutool.core.collection.CollectionUtil;
 import io.minio.MinioClient;
+import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
+import io.minio.messages.Item;
 import io.minio.policy.PolicyType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
@@ -118,5 +121,21 @@ public class MinIoService {
             bucketNameList.add(bucket.name());
         }
         return bucketNameList;
+    }
+
+    /**
+     * 通过存储桶名称和对象名称删除文件
+     *
+     * @param bucketName
+     * @param objectName
+     */
+    public void delObject(String bucketName, String objectName) throws Exception {
+        MinioClient client = minioClient();
+        client.removeObject(bucketName, objectName);
+        Iterable<Result<Item>> iterable = client.listObjects(bucketName);
+        Iterator<Result<Item>> iterator = iterable.iterator();
+        if (!iterator.hasNext()) {
+            client.removeBucket(bucketName);
+        }
     }
 }

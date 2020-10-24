@@ -16,4 +16,6 @@ public interface ResourceService {
     List<Resource> getResources(String bucket);
 
     PageInfo<Resource> pageResource(int current, int size, String type);
+
+    void delResources(List<Integer> ids);
 }
