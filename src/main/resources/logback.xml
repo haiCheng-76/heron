@@ -24,7 +24,7 @@
         </encoder>
     </appender>
 
-    <logger name="项目名称" level="debug" additivity="false">
+    <logger name="项目名称" level="info" additivity="false">
         <appender-ref ref="rollingFileAppender"/>
     </logger>
 

@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.model.Menu;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.util.Assert;
+import webiste.lhc.heron.util.CacheUtil;
 import webiste.lhc.heron.vo.ZtreeVo;
 
 import java.util.*;
@@ -45,8 +47,18 @@ public class MenuServiceImpl implements MenuService {
         if (RoleConstant.ADMIN_USER_ID == userId) {
             return getAllMenus(null);
         }
-        List<Long> menuIdList = menuMapper.listMenuIdByUserId(userId);
-        return getAllMenus(menuIdList);
+        List<Menu> cacheResult = (List<Menu>) CacheUtil.get(String.valueOf(userId + "menu"));
+        if (CollectionUtil.isEmpty(cacheResult)) {
+            List<Long> menuIdList = menuMapper.listMenuIdByUserId(userId);
+            List<Menu> menus = getAllMenus(menuIdList);
+            if (CollectionUtil.isEmpty(menus)) {
+                return Collections.emptyList();
+            } else {
+                CacheUtil.set(String.valueOf(userId), menus);
+                return menus;
+            }
+        }
+        return cacheResult;
     }
 
 

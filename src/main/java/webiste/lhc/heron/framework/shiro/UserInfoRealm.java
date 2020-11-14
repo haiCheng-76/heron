@@ -6,17 +6,18 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import webiste.lhc.heron.model.UserInfo;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.UserInfoService;
+import webiste.lhc.heron.util.CacheUtil;
 import webiste.lhc.heron.util.PasswordUtil;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @ProjectName: heron
@@ -28,7 +29,6 @@ import java.util.Set;
  */
 public class UserInfoRealm extends AuthorizingRealm {
 
-    private static final Logger log = LoggerFactory.getLogger(UserInfoRealm.class);
 
     @Autowired
     private UserInfoService userInfoService;
@@ -48,11 +48,22 @@ public class UserInfoRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         UserInfo userInfo = (UserInfo) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        Set<String> permissionSet = new HashSet<>(1);
+        Set<String> permissionSet = new HashSet<>();
         if (1 == userInfo.getId()) {
             permissionSet.add("*:*:*");
         } else {
-            permissionSet = menuService.listPermissionByUserId(userInfo.getId());
+//            permissionSet = menuService.listPermissionByUserId(userInfo.getId());
+            try {
+//                permissionSet = (Set<String>) CacheUtil.getWithCallBack(String.valueOf(userInfo.getId() + "per"), new PermissionCallBack(userInfo.getId()));
+                permissionSet = (Set<String>) CacheUtil.getWithCallBack(String.valueOf(userInfo.getId() + "permission"), new Callable() {
+                    @Override
+                    public Object call() throws Exception {
+                        return menuService.listPermissionByUserId(userInfo.getId());
+                    }
+                });
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
         authorizationInfo.setStringPermissions(permissionSet);
         return authorizationInfo;
