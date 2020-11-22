@@ -5,6 +5,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import webiste.lhc.heron.commo.enums.CacheEnum;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,12 +14,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description:
+ * @description: guava缓存
  * @author: 582895699@qq.com
  * @time: 2020/11/14 下午 11:19
  */
 @Slf4j
 public class CacheUtil {
+
+    /**
+     * 分隔符
+     */
+    private static final String SEPARATOR = ":";
+
     private static final Cache<String, Object> cache;
 
     static {
@@ -30,30 +37,30 @@ public class CacheUtil {
                 .build();
     }
 
-    public static void set(String key, Object val) {
+    public static void set(CacheEnum prefix, String key, Object val) {
         if (StringUtils.hasLength(key) && Objects.nonNull(val)) {
-            cache.put(key, val);
+            cache.put(prefix.name() + SEPARATOR + key, val);
         }
     }
 
-    public static Object get(String key) {
+    public static Object get(CacheEnum prefix, String key) {
         if (StringUtils.hasLength(key)) {
             log.info("缓存命中率：{}；命中次数：{}", cache.stats().hitRate(), cache.stats().hitCount());
-            return cache.getIfPresent(key);
+            return cache.getIfPresent(prefix.name() + SEPARATOR + key);
         }
         return null;
     }
 
-    public static Object getWithCallBack(String key, Callable callable) throws ExecutionException {
+    public static Object getWithCallBack(CacheEnum prefix, String key, Callable callable) throws ExecutionException {
         if (StringUtils.hasLength(key)) {
-            return cache.get(key, callable);
+            return cache.get(prefix.name() + SEPARATOR + key, callable);
         }
         return null;
     }
 
-    public static void del(String key) {
+    public static void del(CacheEnum prefix, String key) {
         if (StringUtils.hasLength(key)) {
-            cache.invalidate(key);
+            cache.invalidate(prefix.name() + SEPARATOR + key);
         }
     }
 

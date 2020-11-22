@@ -1,5 +1,6 @@
 package webiste.lhc.heron.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -8,16 +9,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.AlternativeJdkIdGenerator;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import webiste.lhc.heron.commo.enums.CacheEnum;
+import webiste.lhc.heron.commo.exceptions.HeronException;
 import webiste.lhc.heron.dto.UserVo;
 import webiste.lhc.heron.mapper.UserInfoMapper;
 import webiste.lhc.heron.model.UserInfo;
+import webiste.lhc.heron.service.MailService;
 import webiste.lhc.heron.service.UserInfoService;
-import webiste.lhc.heron.util.Assert;
+import webiste.lhc.heron.util.CacheUtil;
 import webiste.lhc.heron.util.JsonUtil;
 import webiste.lhc.heron.util.PasswordUtil;
 
+import javax.mail.MessagingException;
 import java.util.Date;
 import java.util.Objects;
+
+import static webiste.lhc.heron.util.Assert.objectNotNull;
+import static webiste.lhc.heron.util.Assert.stat;
 
 /**
  * @ProjectName: heron
@@ -35,6 +45,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
     @Override
     public UserInfo getUserByAccount(String account) {
         UserInfo userInfo = new UserInfo();
@@ -49,7 +65,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         log.info("添加用户;userVo:{}", JsonUtil.toJsonString(vo));
         UserInfo user = new UserInfo();
         UserInfo hasUser = getUserByAccount(vo.getAccount());
-        Assert.stat(Objects.nonNull(hasUser), "该用户已存在");
+        stat(Objects.nonNull(hasUser), "该用户已存在");
         String salt = new AlternativeJdkIdGenerator().generateId().toString();
         String password = PasswordUtil.generatorPassword(vo.getPassword(), salt);
         user.setCreateTime(new Date());
@@ -79,6 +95,46 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setUpdateTime(new Date());
         userInfo.setId(id);
         userInfoMapper.updateByPrimaryKeySelective(userInfo);
+    }
+
+    @Override
+    public void updatePassword(String email, String ip) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEMail(email);
+        UserInfo user = userInfoMapper.selectOne(userInfo);
+        objectNotNull(user, "邮箱地址不存在，无法重置密码");
+        Object object = CacheUtil.get(CacheEnum.RESETPASSWORD, email);
+        if (Objects.nonNull(object)) {
+            long time = (long) object;
+            long now = System.currentTimeMillis();
+            stat(now - time < 6000, "邮件已发送，请稍后再试");
+        }
+
+        String randomPassword = new AlternativeJdkIdGenerator().generateId().toString().replaceAll("-", "");
+        Context context = new Context();
+        context.setVariable("account", user.getAccount());
+        context.setVariable("newPassword", randomPassword);
+        context.setVariable("to", email);
+        context.setVariable("createDate", DateUtil.format(user.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+        context.setVariable("ip", ip);
+        context.setVariable("sendDate", DateUtil.now());
+        String content = templateEngine.process("/mail", context);
+        try {
+            mailService.sendHtmlMail(email, "重置密码", content);
+        } catch (MessagingException e) {
+            log.warn("发送html邮件失败", e);
+            e.printStackTrace();
+            throw new HeronException("邮件发送失败，请稍后再试！");
+        }
+        String salt = new AlternativeJdkIdGenerator().generateId().toString();
+        String newPassword = PasswordUtil.generatorPassword(randomPassword, salt);
+        UserInfo userInfo1 = new UserInfo();
+        userInfo1.setSalt(salt);
+        userInfo1.setPassword(newPassword);
+        userInfo1.setUpdateTime(new Date());
+        userInfo1.setId(user.getId());
+        userInfoMapper.updateByPrimaryKeySelective(userInfo1);
+        CacheUtil.set(CacheEnum.RESETPASSWORD, email, System.currentTimeMillis());
     }
 
     @Override

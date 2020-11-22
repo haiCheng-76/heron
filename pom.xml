@@ -105,6 +105,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!--hutool-->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -154,6 +158,7 @@
             <artifactId>commons-text</artifactId>
             <version>1.1</version>
         </dependency>
+
     </dependencies>
 
     <build>

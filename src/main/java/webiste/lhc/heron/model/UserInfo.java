@@ -37,7 +37,7 @@ public class UserInfo implements Serializable {
     /**
      * 密码
      */
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     /**
@@ -100,6 +100,12 @@ public class UserInfo implements Serializable {
     public UserInfo(Boolean isDelete) {
         this.isDelete = isDelete;
     }
+
+
+
+
+
+
 
     @Override
     public String toString() {

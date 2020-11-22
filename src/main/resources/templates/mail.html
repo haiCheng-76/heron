@@ -1,0 +1,36 @@
+<div style="background-color:#ECECEC; padding: 35px;" xmlns:th="http://www.w3.org/1999/xhtml">
+    <table cellpadding="0" align="center"
+           style="width: 600px; margin: 0px auto; text-align: left; position: relative; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; font-size: 14px; font-family:微软雅黑, 黑体; line-height: 1.5; box-shadow: rgb(153, 153, 153) 0px 0px 5px; border-collapse: collapse; background-position: initial initial; background-repeat: initial initial;background:#fff;">
+        <tbody>
+        <tr>
+            <th valign="middle"
+                style="height: 25px; line-height: 25px; padding: 15px 35px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #42a3d3; background-color: #49bcff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;">
+                <span style="color: rgb(255, 255, 255);  font-family: 微软雅黑; font-size: large; ">重置密码</span>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <div style="padding:25px 35px 40px; background-color:#fff;">
+                    <h2 style="margin: 5px 0px; " th:text="${title}">
+                    </h2>
+                    <p>首先感谢您加入Heron！下面是您的账号信息<br>
+                        您的账号：<b th:text="${account}"></b><br>
+                        您的新密码：<b th:text="${newPassword}"></b><br>
+                        您的邮箱：<b th:text="${to}"></b><br>
+                        账户创建日期：<b th:text="${createDate}"></b><br>
+                        操作IP：<b th:text="${ip}"></b><br>
+                        当您在使用本网站时，遵守当地法律法规。<br>
+                    <p align="right" th:text="${sendDate}"></p>
+                    <div style="width:700px;margin:0 auto;">
+                        <div style="padding:10px 10px 0;border-top:1px solid #ccc;color:#747474;margin-bottom:20px;line-height:1.3em;font-size:12px;">
+                            <p>此为系统邮件，请勿回复<br>
+                                请保管好您的邮箱，避免账号被他人盗用
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

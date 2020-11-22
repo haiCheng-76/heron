@@ -123,6 +123,43 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"></script>
 <!-- Tabler Core -->
 <script src="/dist/js/tabler.min.js"></script>
-<script src="/dist/js/user/updateUser.js"></script>
+<!--<script src="/dist/js/user/updateUser.js"></script>-->
+<script>
+    document.body.style.display = "block";
+    var userid = '[[${user.id}]]';
+    // 头像上传
+    $('.avatarUpload').click(function () {
+        $('.avatarChoose').click();
+    });
+    // 保存
+    $('.formCommit').click(function () {
+        var data = {
+            'id': userid,
+            'userName': $(".username").val(),
+            'account': $(".account").val(),
+            'password': $(".pwd").val().replace(/\s*/g,""),
+            'isDelete': $("input[name='userDel']:checked").val(),
+            'enable': $("input[name='userStatus']:checked").val(),
+            // 'avatar': '',
+            'eMail': $(".mail").val()
+        }
+        alert(JSON.stringify(data))
+        $.ajax({
+            type: 'POST',
+            url: '/userInfo/updateUer',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (res) {
+                if (1 == res.code) {
+                    window.parent.location.reload();
+                }
+            }, error: function () {
+                layer.msg('失败');
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

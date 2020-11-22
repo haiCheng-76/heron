@@ -26,4 +26,6 @@ public interface UserInfoService {
 
 
     void deleteUser(long id);
+
+    void updatePassword(String email, String ip);
 }

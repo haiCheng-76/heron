@@ -15,12 +15,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import webiste.lhc.heron.service.MenuService;
+import webiste.lhc.heron.service.UserInfoService;
+import webiste.lhc.heron.util.Assert;
 import webiste.lhc.heron.util.IpUtil;
+import webiste.lhc.heron.util.Resp;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -48,10 +54,16 @@ public class LoginController extends AbstractController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private UserInfoService userInfoService;
+
     @GetMapping(value = "login")
     public String login() {
         return "login";
+
     }
+
+    Pattern pattern = Pattern.compile("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
 
     @PostMapping(value = "login")
     public String login(String account, String password) {
@@ -113,5 +125,30 @@ public class LoginController extends AbstractController {
             log.info("weatherResponse:{}", JSONUtil.toJsonStr(weatherResponse));
         }
         return "success";
+    }
+
+    /**
+     * 忘记密码页面跳转
+     *
+     * @return
+     */
+    @GetMapping(value = "/forgetPassword")
+    public String forgetPassword() {
+        return "forgot-password";
+    }
+
+    /**
+     * 密码更新
+     *
+     * @return
+     */
+    @ResponseBody
+    @GetMapping(value = "/createNewPassword")
+    public Resp createNewPassword(@RequestParam(value = "email") String mail, HttpServletRequest request) {
+        Matcher matcher = pattern.matcher(mail);
+        boolean match = matcher.matches();
+        Assert.stat(!match, "请输入正确的邮箱地址");
+        userInfoService.updatePassword(mail, IpUtil.getIpFromRequest(request));
+        return Resp.ok();
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 import webiste.lhc.heron.commo.RoleConstant;
+import webiste.lhc.heron.commo.enums.CacheEnum;
 import webiste.lhc.heron.commo.enums.MenuEnum;
 import webiste.lhc.heron.mapper.MenuMapper;
 import webiste.lhc.heron.model.Menu;
@@ -47,14 +48,14 @@ public class MenuServiceImpl implements MenuService {
         if (RoleConstant.ADMIN_USER_ID == userId) {
             return getAllMenus(null);
         }
-        List<Menu> cacheResult = (List<Menu>) CacheUtil.get(String.valueOf(userId + "menu"));
+        List<Menu> cacheResult = (List<Menu>) CacheUtil.get(CacheEnum.MENU, String.valueOf(userId + "menu"));
         if (CollectionUtil.isEmpty(cacheResult)) {
             List<Long> menuIdList = menuMapper.listMenuIdByUserId(userId);
             List<Menu> menus = getAllMenus(menuIdList);
             if (CollectionUtil.isEmpty(menus)) {
                 return Collections.emptyList();
             } else {
-                CacheUtil.set(String.valueOf(userId), menus);
+                CacheUtil.set(CacheEnum.MENU, String.valueOf(userId), menus);
                 return menus;
             }
         }

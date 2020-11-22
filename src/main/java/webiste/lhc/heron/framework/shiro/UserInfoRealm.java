@@ -7,6 +7,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import webiste.lhc.heron.commo.enums.CacheEnum;
 import webiste.lhc.heron.model.UserInfo;
 import webiste.lhc.heron.service.MenuService;
 import webiste.lhc.heron.service.UserInfoService;
@@ -16,7 +17,6 @@ import webiste.lhc.heron.util.PasswordUtil;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -52,15 +52,8 @@ public class UserInfoRealm extends AuthorizingRealm {
         if (1 == userInfo.getId()) {
             permissionSet.add("*:*:*");
         } else {
-//            permissionSet = menuService.listPermissionByUserId(userInfo.getId());
             try {
-//                permissionSet = (Set<String>) CacheUtil.getWithCallBack(String.valueOf(userInfo.getId() + "per"), new PermissionCallBack(userInfo.getId()));
-                permissionSet = (Set<String>) CacheUtil.getWithCallBack(String.valueOf(userInfo.getId() + "permission"), new Callable() {
-                    @Override
-                    public Object call() throws Exception {
-                        return menuService.listPermissionByUserId(userInfo.getId());
-                    }
-                });
+                permissionSet = (Set<String>) CacheUtil.getWithCallBack(CacheEnum.PERMISSION, String.valueOf(userInfo.getId()), () -> menuService.listPermissionByUserId(userInfo.getId()));
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
