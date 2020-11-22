@@ -45,6 +45,8 @@ public class MailServiceImpl implements MailService {
     @Async
     @Override
     public void sendHtmlMail(String to, String subject, String content) throws MessagingException {
+        long time = System.currentTimeMillis();
+        log.info("发送HTML邮件；to:{}", to);
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
         messageHelper.setFrom(from);
@@ -53,5 +55,6 @@ public class MailServiceImpl implements MailService {
         messageHelper.setSentDate(new Date());
         messageHelper.setText(content, true);
         mailSender.send(mimeMessage);
+        log.info("发送成功，耗时：{}ms", System.currentTimeMillis() - time);
     }
 }
