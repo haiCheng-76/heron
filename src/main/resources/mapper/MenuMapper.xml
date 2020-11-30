@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="webiste.lhc.heron.mapper.MenuMapper">
-    <resultMap id="BaseResultMap" type="webiste.lhc.heron.model.Menu">
+<mapper namespace="website.lhc.heron.mapper.MenuMapper">
+    <resultMap id="BaseResultMap" type="website.lhc.heron.model.Menu">
         <!--
           WARNING - @mbg.generated
         -->
@@ -57,7 +57,7 @@
     </select>
 
 
-    <select id="getMenu" resultType="webiste.lhc.heron.vo.ZtreeVo">
+    <select id="getMenu" resultType="website.lhc.heron.vo.ZtreeVo">
         SELECT id,
         parent_id AS pId,
         menu_name AS NAME

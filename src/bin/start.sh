@@ -2,7 +2,7 @@
 #author:582895699@qq.com
 #date:2020年11月14日15:14:27
 PARENT_DIR=$(dirname $PWD)
-MAINCLASS="webiste.lhc.heron.HeronApplication"
+MAINCLASS="website.lhc.heron.HeronApplication"
 JVM_OPTS="-Xms512m -Xmx1g"
 CONSOLE_FILE_NAME="console.log"
 echo "=====  开始执行脚本  ====="
