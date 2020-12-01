@@ -100,12 +100,6 @@ public class UserInfo implements Serializable {
         this.isDelete = isDelete;
     }
 
-
-
-
-
-
-
     @Override
     public String toString() {
         return JsonUtil.toJsonString(this);

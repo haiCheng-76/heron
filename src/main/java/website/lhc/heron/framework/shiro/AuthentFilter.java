@@ -7,14 +7,18 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import website.lhc.heron.mapper.LogsMapper;
 import website.lhc.heron.mapper.UserInfoMapper;
+import website.lhc.heron.model.Logs;
 import website.lhc.heron.model.UserInfo;
+import website.lhc.heron.util.IpUtil;
 import website.lhc.heron.util.UserSession;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * @ProjectName: heron
@@ -30,6 +34,9 @@ public class AuthentFilter extends FormAuthenticationFilter {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private LogsMapper logsMapper;
+
 
     private static final Logger log = LoggerFactory.getLogger(AuthentFilter.class);
 
@@ -38,7 +45,6 @@ public class AuthentFilter extends FormAuthenticationFilter {
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         String userName = (String) token.getPrincipal();
-        log.info("userName:{}", userName);
         HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
         HttpSession httpSession = httpServletRequest.getSession();
         UserInfo userInfo = userInfoMapper.selectOne(new UserInfo(userName));
@@ -48,8 +54,13 @@ public class AuthentFilter extends FormAuthenticationFilter {
         userSession.setUserId(userInfo.getId());
         userSession.setAvatar(userInfo.getAvatar());
         userSession.seteMail(userInfo.getEMail());
-
         httpSession.setAttribute("currentUser", userSession);
+        String ip = IpUtil.getIpFromRequest((HttpServletRequest) request);
+        Logs logs = new Logs();
+        logs.setIp(ip);
+        logs.setTime(new Date());
+        logs.setAccount(userInfo.getAccount());
+        logsMapper.insertUseGeneratedKeys(logs);
         return super.onLoginSuccess(token, subject, request, response);
     }
 

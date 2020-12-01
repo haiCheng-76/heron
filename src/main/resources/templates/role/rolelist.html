@@ -63,31 +63,6 @@
                             </div>
                         </div>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                 fill="none"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z"/>
-                                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            个人中心
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                 fill="none"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z"/>
-                                <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"/>
-                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"/>
-                                <line x1="16" y1="5" x2="19" y2="8"/>
-                            </svg>
-                            登录日志
-                        </a>
-                    </div>
                 </div>
                 <div class="nav-item" style="margin-left: 20px;margin-right: 20px">
                     <a href="/logout">
@@ -134,8 +109,8 @@
                             </a>
                         </li>
                         <li class="nav-item" th:each="menu:${menus}"
-                            th:classappend="${menu.child.size() == 0} ? '' : dropdown"
-                            th:switch="${menu.child.size() > 0}">
+                            th:classappend="${menu.child == null} ? '' : dropdown"
+                            th:switch="${menu.child != null}">
                             <a th:case="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
                                role="button"
                                aria-expanded="false">
@@ -148,7 +123,7 @@
                                 <span class="nav-link-title" th:text="${menu.menuName}"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-columns dropdown-menu-columns-2"
-                                th:if="${menu.child.size() > 0}">
+                                th:if="${menu.child != null}">
                                 <li th:each="item:${menu.child}">
                                     <a class="dropdown-item"
                                        th:href="@{{url}(url=${item.url}, menuName=${item.menuName})}"

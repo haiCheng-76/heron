@@ -30,16 +30,16 @@ public class ArticleController extends AbstractController {
     @Autowired
     private MenuService menuService;
 
-//    @ApiOperation(value = "跳转文章页面")
-//    @RequiresPermissions(value = "sys:article:add")
-//    @GetMapping(value = "/articlePage")
-//    public ModelAndView articlePage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("article/addArticle");
-//        modelAndView.addObject("text", name);
-//        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
-//        return modelAndView;
-//    }
+    @ApiOperation(value = "跳转文章新增界面")
+    @RequiresPermissions(value = "sys:article:add")
+    @GetMapping(value = "/articlePage")
+    public ModelAndView articlePage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("article/addArticle");
+        modelAndView.addObject("text", name);
+        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
+        return modelAndView;
+    }
 
 
     @ApiOperation(value = "跳转文章页面")

@@ -3,6 +3,7 @@ package website.lhc.heron.service.impl;
 import cn.hutool.core.date.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,14 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Map<String, Object> saveResource(MultipartFile file) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = Maps.newHashMapWithExpectedSize(2);
         if (file == null || file.isEmpty()) {
             map.put("errno", 1);
             map.put("message", "文件为空，请重新上传！");
             return map;
         }
         Assert.stat(file.isEmpty(), "文件为空，请选择文件");
-        String fileUrl = null;
+        String fileUrl;
         long fileSize = file.getSize();
         String path = file.getOriginalFilename();
         String contentType = file.getContentType();

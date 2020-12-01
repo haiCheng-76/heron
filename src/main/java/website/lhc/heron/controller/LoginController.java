@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,21 +91,6 @@ public class LoginController extends AbstractController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
-        String iputil = IpUtil.getIpFromRequest(request);
-        String ipAddress = request.getRemoteHost();
-        log.info("iputil:{};ipAddress:{}", iputil, ipAddress);
-        String url = ipUrl + "?key=" + appKey + "&ip" + ipAddress;
-        HttpResponse response = HttpRequest.get(url).execute();
-        JsonObject ipJsonObject = JsonParser.parseString(response.body()).getAsJsonObject();
-        String province = ipJsonObject.get("province").getAsString();
-        String city = ipJsonObject.get("city").getAsString();
-        String adcode = ipJsonObject.get("adcode").getAsString();
-        log.info("province:{};city:{},adcode:{}", province, city, adcode);
-        String weather = weatherUrl + "?city=" + adcode + "&key=" + appKey + "&extensions=base";
-        HttpResponse weatherResponse = HttpRequest.get(weather).execute();
-        if (weatherResponse.isOk()) {
-            log.info("weatherUrl:{};weatherResponse:{}", weather, JSONUtil.toJsonStr(weatherResponse));
-        }
         return modelAndView;
     }
 
@@ -161,5 +147,16 @@ public class LoginController extends AbstractController {
         Assert.stat(!match, "请输入正确的邮箱地址");
         userInfoService.updatePassword(mail, IpUtil.getIpFromRequest(request));
         return Resp.ok();
+    }
+
+    @ApiOperation(value = "跳转登录日志页面")
+    @RequiresPermissions(value = "sys:logs:list")
+    @GetMapping(value = "/logs")
+    public ModelAndView resourcePage(@RequestParam(value = "menuName", required = false, defaultValue = "Heron") String name) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("logs");
+        modelAndView.addObject("text", name);
+        modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
+        return modelAndView;
     }
 }

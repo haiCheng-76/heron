@@ -58,8 +58,7 @@ public class ShiroConfig {
         map.put("/webjars/**/**", "anon");
         map.put("/swagger-resources/**/**", "anon");
         map.put("/v2/**/**", "anon");
-//        map.put("/**", "authc");
-        map.put("/**", "anon");
+        map.put("/**", "authc");
         filterFactoryBean.setFilterChainDefinitionMap(map);
         filterFactoryBean.setLoginUrl("/login");
         filterFactoryBean.setUnauthorizedUrl("/403");
