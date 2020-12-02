@@ -6,6 +6,7 @@ import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,13 +34,21 @@ public class ShiroConfig {
         return realm;
     }
 
+    @Bean
+    public DefaultWebSessionManager defaultWebSessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        return sessionManager;
+    }
 
     @Bean(name = "webSecurityManager")
-    public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier(value = "userInfoRealm") UserInfoRealm userInfoRealm) {
+    public DefaultWebSecurityManager defaultWebSecurityManager(@Qualifier(value = "userInfoRealm") UserInfoRealm userInfoRealm, @Qualifier(value = "defaultWebSessionManager") DefaultWebSessionManager sessionManager) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(userInfoRealm);
+        defaultWebSecurityManager.setSessionManager(sessionManager);
         return defaultWebSecurityManager;
     }
+
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier(value = "webSecurityManager") DefaultWebSecurityManager securityManager) {
@@ -55,6 +64,7 @@ public class ShiroConfig {
         map.put("/forgetPassword", "anon");
         map.put("/createNewPassword", "anon");
         map.put("/doc.html", "anon");
+        map.put("/error", "anon");
         map.put("/webjars/**/**", "anon");
         map.put("/swagger-resources/**/**", "anon");
         map.put("/v2/**/**", "anon");
