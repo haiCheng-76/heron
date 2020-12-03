@@ -21,6 +21,7 @@ import website.lhc.heron.vo.SystemMonitorVo;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Api(tags = "系统监控")
 @Controller
@@ -48,15 +49,20 @@ public class SystemMonitorController extends AbstractController {
         modelAndView.addObject("text", name);
         modelAndView.addObject("menus", menuService.getMenuByUserId(getUerId()));
         SystemMonitor systemMonitor = systemMonitorService.getLastSystemMonitor();
-        SystemMonitorVo systemMonitorVo = new SystemMonitorVo();
-        BeanUtils.copyProperties(systemMonitor, systemMonitorVo);
-        systemMonitorVo.setMemoryTotalStr(FormatUtil.formatBytes(systemMonitor.getMemoryTotal()));
-        systemMonitorVo.setMemoryUsedStr(FormatUtil.formatBytes(systemMonitor.getMemoryUsed()));
-        systemMonitorVo.setMemoryAvailableStr(FormatUtil.formatBytes(systemMonitor.getMemoryAvailable()));
-        systemMonitorVo.setJvmMemoryTotalStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryTotal()));
-        systemMonitorVo.setJvmMemoryUsedStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryUsed()));
-        systemMonitorVo.setJvmMemoryAvaliableStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryAvaliable()));
-        modelAndView.addObject("systemMonitor", systemMonitorVo);
+        if (Objects.nonNull(systemMonitor)) {
+            SystemMonitorVo systemMonitorVo = new SystemMonitorVo();
+            BeanUtils.copyProperties(systemMonitor, systemMonitorVo);
+            systemMonitorVo.setMemoryTotalStr(FormatUtil.formatBytes(systemMonitor.getMemoryTotal()));
+            systemMonitorVo.setMemoryUsedStr(FormatUtil.formatBytes(systemMonitor.getMemoryUsed()));
+            systemMonitorVo.setMemoryAvailableStr(FormatUtil.formatBytes(systemMonitor.getMemoryAvailable()));
+            systemMonitorVo.setJvmMemoryTotalStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryTotal()));
+            systemMonitorVo.setJvmMemoryUsedStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryUsed()));
+            systemMonitorVo.setJvmMemoryAvaliableStr(FormatUtil.formatBytes(systemMonitor.getJvmMemoryAvaliable()));
+            modelAndView.addObject("systemMonitor", systemMonitorVo);
+        } else {
+            modelAndView.addObject("systemMonitor", new SystemMonitorVo());
+        }
+
         return modelAndView;
     }
 
